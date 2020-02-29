@@ -36,12 +36,18 @@ You can alternatively copy, paste, and rename the file `templates/template_confi
 ####  4. Run the software
 
 Install the following dependencies (a setup.py is under construction):
+
 ```shell script
-beautifulsoup4
-lxml
 python-telegram-bot
 requests
 ```
+If you think you'll use the [api parser](#api-parser) you'll also need
+
+```shell script
+beautifulsoup4
+lxml
+```
+
 Move to the folder `debrid` and run `main.py` using your favourite method
 ```shell script
 python main.py
@@ -66,6 +72,16 @@ The plan is to implement all the APIs available [here](https://api.real-debrid.c
 UnchainedBot was made using Python 3.7, thanks to the wrapper [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot).
 
 PRs are welcome.
+
+### API Parser
+
+To speed up the creation of function talking to Real Debid's APIs a parser was written. It reads the content of https://api.real-debrid.com/ and save it in a more structure form.
+
+It can be used with:
+
+`python api_parser/api_page_parser.py` 
+
+that will save a file under the `parsed` folder. A `parsed_api_json` should already be available
 
 #### Code state: ugly
 
