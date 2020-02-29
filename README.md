@@ -19,11 +19,11 @@ Use git:
 git clone https://github.com/LivingWithHippos/unchained-bot.git
 ```
 Don't use git:
-* download [this repo](https://github.com/LivingWithHippos/unchained-bot) as a zip file ("Clone Or Download" on the right and then "Download ZIP")
+* download this repository as a zip file ("Clone Or Download" on the right and then "Download ZIP")
 * extract it somewhere
 
 ####  3. Save your bot's token
- Create a file named `config.json` under the root directory (unchained-bot).
+ Create a file named `config.json` under the root directory of the repository (unchained-bot).
  Copy and paste this, using your token:
  
  ```json
@@ -31,29 +31,29 @@ Don't use git:
   "bot_token": "Paste here your bot token, check https://core.telegram.org/bots#6-botfather"
 }
 ```
-You can alternatively copy, paste, and rename the file `templates/template_config.json` and edit its content.
+You can alternatively copy and paste the file `templates/config.json` and edit its content.
 
 ####  4. Run the software
 
-Install the following dependencies (a setup.py is under construction):
+- Install the following dependencies (a setup.py is under construction):
 
 ```shell script
 python-telegram-bot
 requests
 ```
-If you think you'll use the [api parser](#api-parser) you'll also need
+If you are going to use the [API parser,](#api-parser) you'll also need
 
 ```shell script
 beautifulsoup4
 lxml
 ```
 
-Move to the folder `debrid` and run `main.py` using your favourite method
+- Move to the folder `debrid` and run `main.py` using your favourite method
 ```shell script
 python main.py
 ```
 
-If this your first time running it, talk to the bot (search for it using the username you chose in step 1) and use `/login` to start the login procedure.
+If this your first time running it, talk to the bot (search for it using the username you chose in [step 1](1.-create-your-telegram-bot)) and use `/login` to start the login procedure.
 
 **IMPORTANT:**
 The bot will respond only as long as the software runs. My suggestion is to use a raspberry pi.
@@ -75,21 +75,19 @@ PRs are welcome.
 
 ### API Parser
 
-To speed up the creation of function talking to Real Debid's APIs a parser was written. It reads the content of https://api.real-debrid.com/ and save it in a more structure form.
 
+To speed up the creation of function talking to Real Debid's APIs, I wrote a parser. It reads the content of https://api.real-debrid.com/ and saves it in a more structured form.
 It can be used with:
 
 `python api_parser/api_page_parser.py` 
 
-that will save a file under the `parsed` folder. A `parsed_api_json` should already be available
+that will save a file under the `parsed` folder. A `parsed_api.json` should already be available
 
 #### Code state: ugly
 
-<a href="https://ibb.co/s21dMZq"><img src="https://i.ibb.co/f2NzPsH/danger.png" width=100 alt="danger" border="0"></a>
+<a href="https://ibb.co/s21dMZq"><img src="https://i.ibb.co/f2NzPsH/danger.png" width=150 alt="danger" border="0"></a>
 
 I coded the core of this software in a single day, and python is not my strong suit. But for now, "it just works."
 
 ### Thanks, Mr. Unchained
-<p align="center">
 <a href="https://imgbb.com/"><img src="https://i.ibb.co/grzjQsT/Oliva.jpg" width=300 alt="Mr. Unchained" border="0"></a>
-</p>
