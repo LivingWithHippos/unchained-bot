@@ -57,6 +57,7 @@ The bot will respond only as long as the software runs. My suggestion is to use 
 
 If you do not have `pipenv` installed, follow [these instructions.](https://pipenv.readthedocs.io/en/latest/#install-pipenv-today) If you have `brew`,
 just run `brew install pipenv`.
+
 Now run from the root folder
 
 ```shell script
@@ -76,24 +77,18 @@ Use `pip3` to install from setup.py
 ```shell script
 # install the dependencies (mind the dot at the end)
 pip3 install .
-# wait for eveything to be installed and then
+# wait for eveything to be installed and then start the bot
 python3 unchained-bot.py
 ```
 
 
 ##### Manual install
 
-- Install the following dependencies (a setup.py is under construction):
+- Install the following dependencies:
 
 ```shell script
 python-telegram-bot
 requests
-```
-If you are going to use the [API parser,](#api-parser) you'll also need
-
-```shell script
-beautifulsoup4
-lxml
 ```
 
 - Run `unchained-bot.py` using your favourite method
@@ -121,7 +116,8 @@ PRs are welcome.
 ### API Parser
 
 
-To speed up the creation of function talking to Real Debid's APIs, I wrote a parser. It reads the content of https://api.real-debrid.com/ and saves it in a more structured form.
+To speed up the creation of function talking to Real Debid's APIs, I wrote a parser. It reads the content of https://api.real-debrid.com/ and saves it in a more structured form easier to operate on.
+
 Install the dependencies
 
 ```shell script
