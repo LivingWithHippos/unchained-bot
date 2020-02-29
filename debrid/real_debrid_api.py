@@ -185,7 +185,7 @@ def refresh_current_token():
 #   UTILITIES    #
 #################
 
-def prettifyJSON(data):
+def prettify_json(data):
     pretty_data = "```javascript\n" + \
                   json.dumps(data, indent=4) + \
                   "\n```"
@@ -215,6 +215,7 @@ def token_check_and_update(response):
         return False
     return False
 
+
 #################
 #   USER API    #
 #################
@@ -230,7 +231,7 @@ def api_user_get():
         user_url,
         headers=headers
     )
-    return prettifyJSON(result.json())
+    return prettify_json(result.json())
 
 
 #######################
@@ -265,7 +266,7 @@ def api_unrestrict_check(link, password=None):
     # else:
     #    return "Error : \n" + result.json()
 
-    return prettifyJSON(result.json())
+    return prettify_json(result.json())
 
 
 # Unrestrict a hoster link and get a new unrestricted link
@@ -298,10 +299,10 @@ def api_unrestrict_link(link, password=None, remote=None):
 
     if "download" in result.json():
         output = "[Download link](" + result.json()["download"] + ")\n"
-        output += prettifyJSON(result.json())
+        output += prettify_json(result.json())
         return output
 
-    return prettifyJSON(result.json())
+    return prettify_json(result.json())
 
 
 #######################
@@ -347,7 +348,7 @@ def api_downloads_list(offset=None, page=None, limit=3):
             headers=headers
         )
 
-    return prettifyJSON(result.json())
+    return prettify_json(result.json())
 
 
 ######################
@@ -389,7 +390,7 @@ def api_torrents_list(offset="", page=None, limit=3, filter="active"):
             headers=headers
         )
 
-    return prettifyJSON(result.json())
+    return prettify_json(result.json())
 
 
 #####################
