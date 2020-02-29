@@ -7,11 +7,11 @@ UnchainedBot is a [Telegram Bot](https://core.telegram.org/bots) that allows you
 
 ## Setup
 
-##### 1. Create your telegram bot
+#### 1. Create your telegram bot
 
 Follow the [official instructions](https://core.telegram.org/bots#6-botfather) to chat with the BotFather, choose a name, a username, and get your private token. 
 
-##### 2. Get the repository
+#### 2. Get the repository
 
 Use git:
 ```shell script
@@ -22,7 +22,7 @@ Don't use git:
 * download [this repo](https://github.com/LivingWithHippos/unchained-bot) as a zip file ("Clone Or Download" on the right and then "Download ZIP")
 * extract it somewhere
 
-#####  3. Save your bot's token
+####  3. Save your bot's token
  Create a file named `config.json` under the root directory (unchained-bot).
  Copy and paste this, using your token:
  
@@ -33,7 +33,7 @@ Don't use git:
 ```
 You can alternatively copy, paste, and rename the file `templates/template_config.json` and edit its content.
 
-#####  3. Run the software
+####  4. Run the software
 
 Install the following dependencies (a setup.py is under construction):
 ```shell script
@@ -61,19 +61,19 @@ The plan is to implement all the APIs available [here](https://api.real-debrid.c
 | `/user`  | Gives information about the user  |   |
 |  `/unrestrict link` | Unrestrict the `link`  |   |
 
-##Development
+## Development
 
 UnchainedBot was made using Python 3.7, thanks to the wrapper [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot).
 
 PRs are welcome.
 
-#####Code state: ugly
+#### Code state: ugly
 
 <a href="https://ibb.co/s21dMZq"><img src="https://i.ibb.co/f2NzPsH/danger.png" width=100 alt="danger" border="0"></a>
 
 I coded the core of this software in a single day, and python is not my strong suit. But for now, "it just works."
 
-##### Thanks, Mr. Unchained
+### Thanks, Mr. Unchained
 <p align="center">
-<a href="https://imgbb.com/"><img src="https://i.ibb.co/grzjQsT/Oliva.jpg" width=250 alt="Mr. Unchained" border="0"></a>
+<a href="https://imgbb.com/"><img src="https://i.ibb.co/grzjQsT/Oliva.jpg" width=300 alt="Mr. Unchained" border="0"></a>
 </p>
