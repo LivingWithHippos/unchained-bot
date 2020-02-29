@@ -65,7 +65,7 @@ lxml
 python main.py
 ```
 
-If this your first time running it, talk to the bot (search for it using the username you chose in [step 1](1.-create-your-telegram-bot)) and use `/login` to start the login procedure.
+If this your first time running it, talk to the bot (search for it using the username you chose in [step 1](#1.-create-your-telegram-bot)) and use `/login` to start the login procedure.
 
 **IMPORTANT:**
 The bot will respond only as long as the software runs. My suggestion is to use a raspberry pi.
