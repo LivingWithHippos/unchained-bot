@@ -11,11 +11,12 @@ UnchainedBot is a [Telegram Bot](https://core.telegram.org/bots) that allows you
       - [2. Get the repository](#2-get-the-repository)
       - [3. Save your bot's token](#3-save-your-bot-s-token)
       - [4. Run the software](#4-run-the-software)
+        * [Automatic install with pipenv (recomended)](#automatic-install-with-pipenv--recomended-)
+        * [Automatic install with setup.py](#automatic-install-with-setuppy)
+        * [Manual install](#manual-install)
   * [Available Commands](#available-commands)
   * [Development](#development)
     + [API Parser](#api-parser)
-
-
 
 ## Setup
 
@@ -47,6 +48,41 @@ You can alternatively copy and paste the file `templates/config.json` and edit i
 
 ####  4. Run the software
 
+This part will assume you have python > 3.4 installed.
+
+**IMPORTANT:**
+The bot will respond only as long as the software runs. My suggestion is to use a raspberry pi.
+
+##### Automatic install with pipenv (recomended)
+
+If you do not have `pipenv` installed, follow [these instructions.](https://pipenv.readthedocs.io/en/latest/#install-pipenv-today) If you have `brew`,
+just run `brew install pipenv`.
+Now run from the root folder
+
+```shell script
+# install the dependencies
+pipenv install
+# launch the virtual environment
+pipenv shell
+# start the bot
+python3 unchained-bot.py
+```
+
+**Note about pipenv:** minimum python version [is not supported](https://github.com/pypa/pipenv/issues/1050) by `pipenv` so I put `python_version = "3"` in Pipfile. This value means any version 3.x of Python will be considered acceptable, but to run unchained-bot, you need a version >=3.4. It also won't work with any version >=4, but at the moment, this avoids python 2.x, which is the most probable "wrong version."
+
+##### Automatic install with setup.py
+
+Use `pip3` to install from setup.py
+```shell script
+# install the dependencies (mind the dot at the end)
+pip3 install .
+# wait for eveything to be installed and then
+python3 unchained-bot.py
+```
+
+
+##### Manual install
+
 - Install the following dependencies (a setup.py is under construction):
 
 ```shell script
@@ -62,13 +98,10 @@ lxml
 
 - Run `unchained-bot.py` using your favourite method
 ```shell script
-python unchained-bot.py
+python3 unchained-bot.py
 ```
 
 If this your first time running it, talk to the bot (search for it using the username you chose in [step 1](#1-create-your-telegram-bot)) and use `/login` to start the login procedure.
-
-**IMPORTANT:**
-The bot will respond only as long as the software runs. My suggestion is to use a raspberry pi.
 
 ## Available Commands
 The plan is to implement all the APIs available [here](https://api.real-debrid.com/).
@@ -89,9 +122,16 @@ PRs are welcome.
 
 
 To speed up the creation of function talking to Real Debid's APIs, I wrote a parser. It reads the content of https://api.real-debrid.com/ and saves it in a more structured form.
-It can be used with:
+Install the dependencies
 
-`python api_parser/api_page_parser.py` 
+```shell script
+beautifulsoup4
+lxml
+```
+
+And use it with:
+
+`python3 api_parser/api_page_parser.py` 
 
 that will save a file under the `parsed` folder. A `parsed_api.json` should already be available
 
