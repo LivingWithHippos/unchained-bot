@@ -2,13 +2,12 @@ import logging
 import telegram
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
-from debrid.real_debrid_api import DebridApi
 import debrid.real_debrid_api as real_debrid
 import time
 from pathlib import Path
 import json
 
-rd = DebridApi
+rd = real_debrid.DebridApi
 sleep_time = 5
 
 bot_config_path = "config.json"
