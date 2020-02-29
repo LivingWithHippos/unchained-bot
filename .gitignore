@@ -132,3 +132,4 @@ dmypy.json
 .idea/
 user_data/refresh_token.json
 user_data/credentials.json
+config.json
