@@ -124,8 +124,8 @@ def check_credentials():
 
         if "access_token" not in last_credentials:
             return False
-        # todo: check if we need a token refresh
-        return True
+        # refresh the token if present
+        return check_token_call()
 
     else:
         return False
@@ -191,6 +191,17 @@ def prettifyJSON(data):
                   "\n```"
 
     return pretty_data
+
+
+# checks the current token using a call to /user
+def check_token_call():
+    global last_credentials
+    headers = {"Authorization": "Bearer {}".format(last_credentials["access_token"])}
+    result = requests.get(
+        user_url,
+        headers=headers
+    )
+    return token_check_and_update(result)
 
 
 # return true if the token has been updated
