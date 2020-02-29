@@ -60,9 +60,9 @@ beautifulsoup4
 lxml
 ```
 
-- Move to the folder `debrid` and run `main.py` using your favourite method
+- Run `unchained-bot.py` using your favourite method
 ```shell script
-python main.py
+python unchained-bot.py
 ```
 
 If this your first time running it, talk to the bot (search for it using the username you chose in [step 1](#1-create-your-telegram-bot)) and use `/login` to start the login procedure.
