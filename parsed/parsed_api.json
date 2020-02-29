@@ -1,0 +1,794 @@
+[
+    {
+        "call_type": "GET",
+        "endpoint": "/disable_access_token",
+        "summary": "Disable current access token",
+        "lead": "Disable current access token, do not return anything with a 204 HTTP code",
+        "Return values": "None",
+        "error codes": [
+            {
+                "HTTP Status Code": "401",
+                "Reason": "Bad token (expired, invalid)"
+            }
+        ]
+    },
+    {
+        "call_type": "GET",
+        "endpoint": "/time",
+        "summary": "Get server time",
+        "lead": "Get server time, raw data returned. This request is not requiring authentication.",
+        "Return values": "Y-m-d H:i:s"
+    },
+    {
+        "call_type": "GET",
+        "endpoint": "/time/iso",
+        "summary": "Get server time in ISO",
+        "lead": "Get server time in ISO, raw data returned. This request is not requiring authentication.",
+        "Return values": "Y-m-dTH:i:sO"
+    },
+    {
+        "call_type": "GET",
+        "endpoint": "/user",
+        "summary": "Get current user info",
+        "lead": "Returns some informations on the current user.",
+        "Return values": "json scheme",
+        "error codes": [
+            {
+                "HTTP Status Code": "401",
+                "Reason": "Bad token (expired, invalid)"
+            },
+            {
+                "HTTP Status Code": "403",
+                "Reason": "Permission denied (account locked)"
+            }
+        ]
+    },
+    {
+        "call_type": "POST",
+        "endpoint": "/unrestrict/check",
+        "summary": "Check a link",
+        "lead": "Check if a file is downloadable on the concerned hoster. This request is not requiring authentication.",
+        "parameters": [
+            {
+                "parameter_type": "POST",
+                "Name": "link *",
+                "Type": "string",
+                "Description": "The original hoster link"
+            },
+            {
+                "parameter_type": "POST",
+                "Name": "password",
+                "Type": "string",
+                "Description": "Password to unlock the file access hoster side"
+            }
+        ],
+        "Return values": "json scheme",
+        "error codes": [
+            {
+                "HTTP Status Code": "503",
+                "Reason": "File unavailable"
+            }
+        ]
+    },
+    {
+        "call_type": "POST",
+        "endpoint": "/unrestrict/link",
+        "summary": "Unrestrict a link",
+        "lead": "Unrestrict a hoster link and get a new unrestricted link",
+        "parameters": [
+            {
+                "parameter_type": "POST",
+                "Name": "link *",
+                "Type": "string",
+                "Description": "The original hoster link"
+            },
+            {
+                "parameter_type": "POST",
+                "Name": "password",
+                "Type": "string",
+                "Description": "Password to unlock the file access hoster side"
+            },
+            {
+                "parameter_type": "POST",
+                "Name": "remote",
+                "Type": "int",
+                "Description": "0 or 1, use Remote traffic, dedicated servers and account sharing protections lifted"
+            }
+        ],
+        "Return values": "json scheme",
+        "error codes": [
+            {
+                "HTTP Status Code": "401",
+                "Reason": "Bad token (expired, invalid)"
+            },
+            {
+                "HTTP Status Code": "403",
+                "Reason": "Permission denied (account locked)"
+            }
+        ]
+    },
+    {
+        "call_type": "POST",
+        "endpoint": "/unrestrict/folder",
+        "summary": "Unrestrict a folder link",
+        "lead": "Unrestrict a hoster folder link and get individual links, returns an empty array if no links found.",
+        "parameters": [
+            {
+                "parameter_type": "POST",
+                "Name": "link *",
+                "Type": "string",
+                "Description": "The hoster folder link"
+            }
+        ],
+        "Return values": "json scheme",
+        "error codes": [
+            {
+                "HTTP Status Code": "401",
+                "Reason": "Bad token (expired, invalid)"
+            },
+            {
+                "HTTP Status Code": "403",
+                "Reason": "Permission denied (account locked)"
+            }
+        ]
+    },
+    {
+        "call_type": "PUT",
+        "endpoint": "/unrestrict/containerFile",
+        "summary": "Decrypt container file",
+        "lead": "Decrypt a container file (RSDF, CCF, CCF3, DLC)",
+        "Return values": "json scheme",
+        "error codes": [
+            {
+                "HTTP Status Code": "400",
+                "Reason": "Bad Request (see "
+            },
+            {
+                "HTTP Status Code": "401",
+                "Reason": "Bad token (expired, invalid)"
+            },
+            {
+                "HTTP Status Code": "403",
+                "Reason": "Permission denied (account locked, not premium)"
+            },
+            {
+                "HTTP Status Code": "503",
+                "Reason": "Service unavailable (see "
+            }
+        ]
+    },
+    {
+        "call_type": "POST",
+        "endpoint": "/unrestrict/containerLink",
+        "summary": "Decrypt container file from link",
+        "lead": "Decrypt a container file from a link.",
+        "parameters": [
+            {
+                "parameter_type": "POST",
+                "Name": "link *",
+                "Type": "string",
+                "Description": "HTTP Link of the container file"
+            }
+        ],
+        "Return values": "json scheme",
+        "error codes": [
+            {
+                "HTTP Status Code": "400",
+                "Reason": "Bad Request (see "
+            },
+            {
+                "HTTP Status Code": "401",
+                "Reason": "Bad token (expired, invalid)"
+            },
+            {
+                "HTTP Status Code": "403",
+                "Reason": "Permission denied (account locked, not premium)"
+            },
+            {
+                "HTTP Status Code": "503",
+                "Reason": "Service unavailable (see "
+            }
+        ]
+    },
+    {
+        "call_type": "GET",
+        "endpoint": "/traffic",
+        "summary": "Traffic informations for limited hosters",
+        "lead": "Get traffic informations for limited hosters (limits, current usage, extra packages)",
+        "Return values": "json scheme",
+        "error codes": [
+            {
+                "HTTP Status Code": "401",
+                "Reason": "Bad token (expired, invalid)"
+            },
+            {
+                "HTTP Status Code": "403",
+                "Reason": "Permission denied (account locked)"
+            }
+        ]
+    },
+    {
+        "call_type": "GET",
+        "endpoint": "/traffic/details",
+        "summary": "Traffic details on used hosters",
+        "lead": "Get traffic details on each hoster used during a defined period",
+        "parameters": [
+            {
+                "parameter_type": "GET",
+                "Name": "start",
+                "Type": "date (YYYY-MM-DD)",
+                "Description": "Start period, default: a week ago"
+            },
+            {
+                "parameter_type": "GET",
+                "Name": "end",
+                "Type": "date (YYYY-MM-DD)",
+                "Description": "End period, default: today"
+            }
+        ],
+        "Return values": "json scheme",
+        "error codes": [
+            {
+                "HTTP Status Code": "401",
+                "Reason": "Bad token (expired, invalid)"
+            },
+            {
+                "HTTP Status Code": "403",
+                "Reason": "Permission denied (account locked)"
+            }
+        ]
+    },
+    {
+        "call_type": "GET",
+        "endpoint": "/streaming/transcode/{id}",
+        "summary": "Get transcoding links for given file",
+        "lead": "Get transcoding links for given file, {id} from /downloads or /unrestrict/link",
+        "Return values": "json scheme",
+        "error codes": [
+            {
+                "HTTP Status Code": "401",
+                "Reason": "Bad token (expired, invalid)"
+            },
+            {
+                "HTTP Status Code": "403",
+                "Reason": "Permission denied (account locked)"
+            }
+        ]
+    },
+    {
+        "call_type": "GET",
+        "endpoint": "/streaming/mediaInfos/{id}",
+        "summary": "Get media informations for given file",
+        "lead": "Get detailled media informations for given file, {id} from /downloads or /unrestrict/link",
+        "Return values": "json scheme",
+        "error codes": [
+            {
+                "HTTP Status Code": "401",
+                "Reason": "Bad token (expired, invalid)"
+            },
+            {
+                "HTTP Status Code": "403",
+                "Reason": "Permission denied (account locked)"
+            },
+            {
+                "HTTP Status Code": "503",
+                "Reason": "Service unavailable (problem finding metadata of the media)"
+            }
+        ]
+    },
+    {
+        "call_type": "GET",
+        "endpoint": "/downloads",
+        "summary": "Get user downloads list",
+        "lead": "Get user downloads list",
+        "parameters": [
+            {
+                "parameter_type": "GET",
+                "Name": "offset",
+                "Type": "int",
+                "Description": "Starting offset (must be within 0 and "
+            },
+            {
+                "parameter_type": "GET",
+                "Name": "page",
+                "Type": "int",
+                "Description": "Pagination system"
+            },
+            {
+                "parameter_type": "GET",
+                "Name": "limit",
+                "Type": "int",
+                "Description": "Entries returned per page / request (must be within 0 and 100, default: 50)"
+            }
+        ],
+        "Return values": "json scheme",
+        "error codes": [
+            {
+                "HTTP Status Code": "401",
+                "Reason": "Bad token (expired, invalid)"
+            },
+            {
+                "HTTP Status Code": "403",
+                "Reason": "Permission denied (account locked)"
+            }
+        ]
+    },
+    {
+        "call_type": "DELETE",
+        "endpoint": "/downloads/delete/{id}",
+        "summary": "Delete a link from downloads list",
+        "lead": "Delete a link from downloads list, do not return anything with a 204 HTTP code",
+        "Return values": "None",
+        "error codes": [
+            {
+                "HTTP Status Code": "401",
+                "Reason": "Bad token (expired, invalid)"
+            },
+            {
+                "HTTP Status Code": "403",
+                "Reason": "Permission denied (account locked)"
+            },
+            {
+                "HTTP Status Code": "404",
+                "Reason": "Unknown Ressource"
+            }
+        ]
+    },
+    {
+        "call_type": "GET",
+        "endpoint": "/torrents",
+        "summary": "Get user torrents list",
+        "lead": "Get user torrents list",
+        "parameters": [
+            {
+                "parameter_type": "GET",
+                "Name": "offset",
+                "Type": "int",
+                "Description": "Starting offset (must be within 0 and "
+            },
+            {
+                "parameter_type": "GET",
+                "Name": "page",
+                "Type": "int",
+                "Description": "Pagination system"
+            },
+            {
+                "parameter_type": "GET",
+                "Name": "limit",
+                "Type": "int",
+                "Description": "Entries returned per page / request (must be within 0 and 100, default: 50)"
+            },
+            {
+                "parameter_type": "GET",
+                "Name": "filter",
+                "Type": "string",
+                "Description": "\"active\", list active torrents first"
+            }
+        ],
+        "Return values": "json scheme",
+        "error codes": [
+            {
+                "HTTP Status Code": "401",
+                "Reason": "Bad token (expired, invalid)"
+            },
+            {
+                "HTTP Status Code": "403",
+                "Reason": "Permission denied (account locked)"
+            }
+        ]
+    },
+    {
+        "call_type": "GET",
+        "endpoint": "/torrents/info/{id}",
+        "summary": "Get infos on torrent",
+        "lead": "Get all informations on the asked torrent",
+        "Return values": "json scheme",
+        "error codes": [
+            {
+                "HTTP Status Code": "401",
+                "Reason": "Bad token (expired, invalid)"
+            },
+            {
+                "HTTP Status Code": "403",
+                "Reason": "Permission denied (account locked)"
+            }
+        ]
+    },
+    {
+        "call_type": "GET",
+        "endpoint": "/torrents/instantAvailability/{hash}",
+        "summary": "Get list of instantly available file IDs",
+        "lead": "Get list of instantly available file IDs by hoster, {hash} is the SHA1 of the torrent.\n\t\t\t\t\t\t\t\t\t\t\t\tYou can test multiple hashes adding multiple /{hash} at the end of the request",
+        "Return values": "json scheme",
+        "error codes": [
+            {
+                "HTTP Status Code": "401",
+                "Reason": "Bad token (expired, invalid)"
+            },
+            {
+                "HTTP Status Code": "403",
+                "Reason": "Permission denied (account locked)"
+            }
+        ]
+    },
+    {
+        "call_type": "GET",
+        "endpoint": "/torrents/activeCount",
+        "summary": "Get currently active torrents number",
+        "lead": "Get currently active torrents number and the current maximum limit",
+        "Return values": "json scheme",
+        "error codes": [
+            {
+                "HTTP Status Code": "401",
+                "Reason": "Bad token (expired, invalid)"
+            },
+            {
+                "HTTP Status Code": "403",
+                "Reason": "Permission denied (account locked)"
+            }
+        ]
+    },
+    {
+        "call_type": "GET",
+        "endpoint": "/torrents/availableHosts",
+        "summary": "Get available hosts",
+        "lead": "Get available hosts to upload the torrent to.",
+        "Return values": "json scheme",
+        "error codes": [
+            {
+                "HTTP Status Code": "401",
+                "Reason": "Bad token (expired, invalid)"
+            },
+            {
+                "HTTP Status Code": "403",
+                "Reason": "Permission denied (account locked)"
+            }
+        ]
+    },
+    {
+        "call_type": "PUT",
+        "endpoint": "/torrents/addTorrent",
+        "summary": "Add torrent file",
+        "lead": "Add a torrent file to download, return a 201 HTTP code.",
+        "parameters": [
+            {
+                "parameter_type": "GET",
+                "Name": "host",
+                "Type": "string",
+                "Description": "Hoster domain (retrieved from /torrents/availableHosts)"
+            }
+        ],
+        "Return values": "json scheme",
+        "error codes": [
+            {
+                "HTTP Status Code": "400",
+                "Reason": "Bad Request (see "
+            },
+            {
+                "HTTP Status Code": "401",
+                "Reason": "Bad token (expired, invalid)"
+            },
+            {
+                "HTTP Status Code": "403",
+                "Reason": "Permission denied (account locked, not premium)"
+            },
+            {
+                "HTTP Status Code": "503",
+                "Reason": "Service unavailable (see "
+            }
+        ]
+    },
+    {
+        "call_type": "POST",
+        "endpoint": "/torrents/addMagnet",
+        "summary": "Add magnet link",
+        "lead": "Add a magnet link to download, return a 201 HTTP code.",
+        "parameters": [
+            {
+                "parameter_type": "POST",
+                "Name": "magnet *",
+                "Type": "string",
+                "Description": "Magnet link"
+            },
+            {
+                "parameter_type": "POST",
+                "Name": "host",
+                "Type": "string",
+                "Description": "Hoster domain (retrieved from /torrents/availableHosts)"
+            }
+        ],
+        "Return values": "json scheme",
+        "error codes": [
+            {
+                "HTTP Status Code": "400",
+                "Reason": "Bad Request (see "
+            },
+            {
+                "HTTP Status Code": "401",
+                "Reason": "Bad token (expired, invalid)"
+            },
+            {
+                "HTTP Status Code": "403",
+                "Reason": "Permission denied (account locked, not premium)"
+            },
+            {
+                "HTTP Status Code": "503",
+                "Reason": "Service unavailable (see "
+            }
+        ]
+    },
+    {
+        "call_type": "POST",
+        "endpoint": "/torrents/selectFiles/{id}",
+        "summary": "Select files of a torrent",
+        "lead": "Select files of a torrent to start it, do not return anything with a 204 HTTP code.",
+        "parameters": [
+            {
+                "parameter_type": "POST",
+                "Name": "files *",
+                "Type": "string",
+                "Description": "Selected files IDs (comma separated) or \"all\""
+            }
+        ],
+        "Return values": "None",
+        "error codes": [
+            {
+                "HTTP Status Code": "202",
+                "Reason": "Action already done"
+            },
+            {
+                "HTTP Status Code": "400",
+                "Reason": "Bad Request (see "
+            },
+            {
+                "HTTP Status Code": "401",
+                "Reason": "Bad token (expired, invalid)"
+            },
+            {
+                "HTTP Status Code": "403",
+                "Reason": "Permission denied (account locked, not premium)"
+            },
+            {
+                "HTTP Status Code": "404",
+                "Reason": "Wrong parameter (invalid file id(s)) / Unknown ressource (invalid id)"
+            }
+        ]
+    },
+    {
+        "call_type": "DELETE",
+        "endpoint": "/torrents/delete/{id}",
+        "summary": "Delete a torrent from torrents list",
+        "lead": "Delete a torrent from torrents list, do not return anything with a 204 HTTP code",
+        "Return values": "None",
+        "error codes": [
+            {
+                "HTTP Status Code": "401",
+                "Reason": "Bad token (expired, invalid)"
+            },
+            {
+                "HTTP Status Code": "403",
+                "Reason": "Permission denied (account locked)"
+            },
+            {
+                "HTTP Status Code": "404",
+                "Reason": "Unknown Ressource"
+            }
+        ]
+    },
+    {
+        "call_type": "GET",
+        "endpoint": "/hosts",
+        "summary": "Get supported hosts",
+        "lead": "Get supported hosts. This request is not requiring authentication.",
+        "Return values": "json scheme"
+    },
+    {
+        "call_type": "GET",
+        "endpoint": "/hosts/status",
+        "summary": "Get status of hosters",
+        "lead": "Get status of supported hosters or not and their status on competitors.",
+        "Return values": "json scheme"
+    },
+    {
+        "call_type": "GET",
+        "endpoint": "/hosts/regex",
+        "summary": "Get all supported regex.",
+        "lead": "Get all supported links Regex, useful to find supported links inside a document. This request is not requiring authentication.",
+        "Return values": "json scheme"
+    },
+    {
+        "call_type": "GET",
+        "endpoint": "/hosts/domains",
+        "summary": "Get all supported domains.",
+        "lead": "Get all hoster domains supported on the service. This request is not requiring authentication.",
+        "Return values": "json scheme"
+    },
+    {
+        "call_type": "GET",
+        "endpoint": "/forum",
+        "summary": "Get forums list",
+        "lead": "Get the list of all forums with their category names.",
+        "Return values": "json scheme",
+        "error codes": [
+            {
+                "HTTP Status Code": "401",
+                "Reason": "Bad token (expired, invalid)"
+            },
+            {
+                "HTTP Status Code": "403",
+                "Reason": "Permission denied (account locked)"
+            }
+        ]
+    },
+    {
+        "call_type": "GET",
+        "endpoint": "/forum/{id}",
+        "summary": "Get forum topic list",
+        "lead": "Get the list of all topics inside the concerned forum.",
+        "parameters": [
+            {
+                "parameter_type": "GET",
+                "Name": "offset",
+                "Type": "int",
+                "Description": "Starting offset (must be within 0 and "
+            },
+            {
+                "parameter_type": "GET",
+                "Name": "page",
+                "Type": "int",
+                "Description": "Pagination system"
+            },
+            {
+                "parameter_type": "GET",
+                "Name": "limit",
+                "Type": "int",
+                "Description": "Entries returned per page / request (must be within 0 and 100, default: 50)"
+            },
+            {
+                "parameter_type": "GET",
+                "Name": "meta",
+                "Type": "int",
+                "Description": "0 or 1, show meta informations"
+            }
+        ],
+        "Return values": "json scheme",
+        "error codes": [
+            {
+                "HTTP Status Code": "401",
+                "Reason": "Bad token (expired, invalid)"
+            },
+            {
+                "HTTP Status Code": "403",
+                "Reason": "Permission denied (account locked)"
+            }
+        ]
+    },
+    {
+        "call_type": "GET",
+        "endpoint": "/settings",
+        "summary": "Get current user settings",
+        "lead": "Get current user settings with possible values to update.",
+        "Return values": "json scheme",
+        "error codes": [
+            {
+                "HTTP Status Code": "401",
+                "Reason": "Bad token (expired, invalid)"
+            },
+            {
+                "HTTP Status Code": "403",
+                "Reason": "Permission denied (account locked)"
+            }
+        ]
+    },
+    {
+        "call_type": "POST",
+        "endpoint": "/settings/update",
+        "summary": "Update a user setting",
+        "lead": "Update a user setting, do not return anything with a 204 HTTP code.",
+        "parameters": [
+            {
+                "parameter_type": "POST",
+                "Name": "setting_name *",
+                "Type": "string",
+                "Description": "\"download_port\", \"locale\", \"streaming_language_preference\", \"streaming_quality\", \"mobile_streaming_quality\", \"streaming_cast_audio_preference\""
+            },
+            {
+                "parameter_type": "POST",
+                "Name": "setting_value *",
+                "Type": "string",
+                "Description": "Possible values are available in "
+            }
+        ],
+        "Return values": "None",
+        "error codes": [
+            {
+                "HTTP Status Code": "400",
+                "Reason": "Bad request (bad setting value or setting name)"
+            },
+            {
+                "HTTP Status Code": "401",
+                "Reason": "Bad token (expired, invalid)"
+            },
+            {
+                "HTTP Status Code": "403",
+                "Reason": "Permission denied (account locked)"
+            }
+        ]
+    },
+    {
+        "call_type": "POST",
+        "endpoint": "/settings/convertPoints",
+        "summary": "Convert fidelity points",
+        "lead": "Convert fidelity points, do not return anything with a 204 HTTP code.",
+        "Return values": "None",
+        "error codes": [
+            {
+                "HTTP Status Code": "401",
+                "Reason": "Bad token (expired, invalid)"
+            },
+            {
+                "HTTP Status Code": "403",
+                "Reason": "Permission denied (account locked)"
+            },
+            {
+                "HTTP Status Code": "503",
+                "Reason": "Service unavailable (not enough points)"
+            }
+        ]
+    },
+    {
+        "call_type": "POST",
+        "endpoint": "/settings/changePassword",
+        "summary": "Send verification email to change the password",
+        "lead": "Send the verification email to change the password, do not return anything with a 204 HTTP code.",
+        "Return values": "None",
+        "error codes": [
+            {
+                "HTTP Status Code": "401",
+                "Reason": "Bad token (expired, invalid)"
+            },
+            {
+                "HTTP Status Code": "403",
+                "Reason": "Permission denied (account locked)"
+            }
+        ]
+    },
+    {
+        "call_type": "PUT",
+        "endpoint": "/settings/avatarFile",
+        "summary": "Upload avatar image",
+        "lead": "Upload a new user avatar image, do not return anything with a 204 HTTP code.",
+        "Return values": "None",
+        "error codes": [
+            {
+                "HTTP Status Code": "400",
+                "Reason": "Bad Request (see "
+            },
+            {
+                "HTTP Status Code": "401",
+                "Reason": "Bad token (expired, invalid)"
+            },
+            {
+                "HTTP Status Code": "403",
+                "Reason": "Permission denied (account locked)"
+            }
+        ]
+    },
+    {
+        "call_type": "DELETE",
+        "endpoint": "/settings/avatarDelete",
+        "summary": "Reset user avatar",
+        "lead": "Reset user avatar image to default, do not return anything with a 204 HTTP code",
+        "Return values": "None",
+        "error codes": [
+            {
+                "HTTP Status Code": "401",
+                "Reason": "Bad token (expired, invalid)"
+            },
+            {
+                "HTTP Status Code": "403",
+                "Reason": "Permission denied (account locked)"
+            }
+        ]
+    }
+]
