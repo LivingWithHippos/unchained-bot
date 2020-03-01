@@ -436,7 +436,7 @@ def api_downloads_list(offset=None, page=None, limit=3):
 ######################
 
 torrents_endpoint = "torrents"
-torrents_url = base_url + downloads_endpoint
+torrents_url = base_url + torrents_endpoint
 
 
 # Get user downloads list
