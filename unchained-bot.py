@@ -18,28 +18,6 @@ dispatcher = None
 updater = None
 
 
-def load_bot():
-    global dispatcher
-    global updater
-    if Path(bot_config_path).is_file():
-        with open(bot_config_path, 'r') as f:
-            bot_data = json.load(f)
-            my_token = bot_data["bot_token"]
-            if my_token is None:
-                print("Missing token in file: " + bot_config_path + "./nObtain one following instruction at "
-                                                                    "https://core.telegram.org/bots#6-botfather")
-                exit(1)
-
-            updater = Updater(token=my_token, use_context=True)
-            dispatcher = updater.dispatcher
-            logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                                level=logging.INFO)
-            logger = logging.getLogger(__name__)
-    else:
-        print("Missing bot token file: " + bot_config_path)
-        exit(1)
-
-
 def unknown(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="Sorry, I didn't understand that command.")
 
@@ -186,6 +164,28 @@ def torrents_list(update, context):
                              text=tlist,
                              parse_mode=telegram.ParseMode.MARKDOWN)
 
+
+def load_bot():
+    global dispatcher
+    global updater
+    if Path(bot_config_path).is_file():
+        with open(bot_config_path, 'r') as f:
+            bot_data = json.load(f)
+            my_token = bot_data["bot_token"]
+            if my_token is None:
+                print("Missing token in file: " + bot_config_path + "./nObtain one following instruction at "
+                                                                    "https://core.telegram.org/bots#6-botfather")
+                exit(1)
+
+            updater = Updater(token=my_token, use_context=True)
+            dispatcher = updater.dispatcher
+            logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                                level=logging.INFO)
+            logger = logging.getLogger(__name__)
+    else:
+        print("Missing bot token file: " + bot_config_path)
+        exit(1)
+        
 
 #####################
 #   I START HERE    #
