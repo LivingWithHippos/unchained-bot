@@ -199,6 +199,12 @@ def prettify_json(data, _description=None, _link=None):
     return pretty_data
 
 
+def get_headers():
+    global last_credentials
+    headers = {"Authorization": "Bearer {}".format(last_credentials["access_token"])}
+    return headers
+
+
 # checks the current token using a call to /user
 def check_token_call():
     global last_credentials
