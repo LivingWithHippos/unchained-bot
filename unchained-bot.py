@@ -15,6 +15,7 @@ sleep_time = 5
 
 bot_config_path = "config.json"
 
+
 def unknown(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="Sorry, I didn't understand that command.")
 
@@ -167,7 +168,6 @@ def torrents_list(update, context):
 #####################
 
 def main():
-
     # load the bot properties
     if Path(bot_config_path).is_file():
         with open(bot_config_path, 'r') as f:
@@ -200,6 +200,8 @@ def main():
     api_user_handler = CommandHandler('user', user)
     dispatcher.add_handler(api_user_handler)
 
+    # note: maybe if I add the same command without filters after this I could catch the /check
+    # command written the wrong way and advise the user
     api_file_check = CommandHandler('check', check_file, (Filters.text & Filters.entity(MessageEntity.URL)))
     dispatcher.add_handler(api_file_check)
 
