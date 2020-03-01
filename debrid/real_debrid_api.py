@@ -335,7 +335,6 @@ def api_unrestrict_link(link, password=None, remote=None):
         return "Command syntax is `/unrestrict  www.your_link.com`, please retry"
 
     endpoint = unrestrict_url + "link"
-    headers = {"Authorization": "Bearer {}".format(last_credentials["access_token"])}
 
     data = {"link": link}
     if password is not None:
@@ -344,19 +343,7 @@ def api_unrestrict_link(link, password=None, remote=None):
     if remote is not None:
         data["remote"] = remote
 
-    result = requests.post(
-        endpoint,
-        data=data,
-        headers=headers
-    )
-
-    if not token_check_and_update(result):
-        headers = {"Authorization": "Bearer {}".format(last_credentials["access_token"])}
-        result = requests.post(
-            unrestrict_url + "link",
-            data=data,
-            headers=headers
-        )
+    result = make_post(endpoint, data)
 
     pretty_data = prettify_json(data)
 
@@ -379,23 +366,10 @@ def api_unrestrict_folder(link):
         return "Command syntax is `/unrestrict  www.your_link.com`, please retry"
 
     endpoint = unrestrict_url + "folder"
-    headers = {"Authorization": "Bearer {}".format(last_credentials["access_token"])}
 
     data = {"link": link}
 
-    result = requests.post(
-        endpoint,
-        data=data,
-        headers=headers
-    )
-
-    if not token_check_and_update(result):
-        headers = {"Authorization": "Bearer {}".format(last_credentials["access_token"])}
-        result = requests.post(
-            unrestrict_url + "link",
-            data=data,
-            headers=headers
-        )
+    result = make_post(endpoint, data)
 
     if "error_code" in result.json():
         return result.json()
