@@ -237,7 +237,8 @@ def api_user_get():
         user_url,
         headers=headers
     )
-    return prettify_json(result.json())
+    data = result.json()
+    return prettify_json(data,_description="Avatar", _link=data["avatar"])
 
 
 #######################
