@@ -185,10 +185,16 @@ def refresh_current_token():
 #   UTILITIES    #
 #################
 
-def prettify_json(data):
-    pretty_data = "```javascript\n" + \
-                  json.dumps(data, indent=4) + \
-                  "\n```"
+def prettify_json(data, _description=None, _link=None):
+    pretty_data = ""
+    if _link is not None:
+        if _description is None:
+            _description = _link
+        pretty_data = "[{}]({})".format(_description, _link)
+
+    pretty_data += "```javascript\n" + \
+                   json.dumps(data, indent=4) + \
+                   "\n```"
 
     return pretty_data
 
