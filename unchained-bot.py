@@ -10,13 +10,10 @@ from pathlib import Path
 import json
 
 rd = real_debrid.DebridApi
+
 sleep_time = 5
 
 bot_config_path = "config.json"
-
-dispatcher = None
-updater = None
-
 
 def unknown(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="Sorry, I didn't understand that command.")
@@ -165,9 +162,13 @@ def torrents_list(update, context):
                              parse_mode=telegram.ParseMode.MARKDOWN)
 
 
-def load_bot():
-    global dispatcher
-    global updater
+#####################
+#   I START HERE    #
+#####################
+
+def main():
+
+    # load the bot properties
     if Path(bot_config_path).is_file():
         with open(bot_config_path, 'r') as f:
             bot_data = json.load(f)
@@ -185,40 +186,41 @@ def load_bot():
     else:
         print("Missing bot token file: " + bot_config_path)
         exit(1)
-        
 
-#####################
-#   I START HERE    #
-#####################
+    # check the credentials
+    real_debrid.check_credentials()
 
-load_bot()
+    # add the commands handler
+    token_handler = CommandHandler('token', token)
+    dispatcher.add_handler(token_handler)
 
-real_debrid.check_credentials()
+    login_handler = CommandHandler('login', login)
+    dispatcher.add_handler(login_handler)
 
-token_handler = CommandHandler('token', token)
-dispatcher.add_handler(token_handler)
+    api_user_handler = CommandHandler('user', user)
+    dispatcher.add_handler(api_user_handler)
 
-login_handler = CommandHandler('login', login)
-dispatcher.add_handler(login_handler)
+    api_file_check = CommandHandler('check', check_file, (Filters.text & Filters.entity(MessageEntity.URL)))
+    dispatcher.add_handler(api_file_check)
 
-api_user_handler = CommandHandler('user', user)
-dispatcher.add_handler(api_user_handler)
+    api_file_unrestrict = CommandHandler('unrestrict', unrestrict_file,
+                                         (Filters.text & Filters.entity(MessageEntity.URL)))
+    dispatcher.add_handler(api_file_unrestrict)
 
-api_file_check = CommandHandler('check', check_file, (Filters.text & Filters.entity(MessageEntity.URL)))
-dispatcher.add_handler(api_file_check)
+    api_downloads_list = CommandHandler('downloads', downloads_list)
+    dispatcher.add_handler(api_downloads_list)
 
-api_file_unrestrict = CommandHandler('unrestrict', unrestrict_file, (Filters.text & Filters.entity(MessageEntity.URL)))
-dispatcher.add_handler(api_file_unrestrict)
+    api_torrents_list = CommandHandler('torrents', torrents_list)
+    dispatcher.add_handler(api_torrents_list)
 
-api_downloads_list = CommandHandler('downloads', downloads_list)
-dispatcher.add_handler(api_downloads_list)
+    # This handler must be added last.
+    # If you added it sooner, it would be triggered before the CommandHandlers had a chance to look at the update
+    unknown_handler = MessageHandler(Filters.command, unknown)
+    dispatcher.add_handler(unknown_handler)
 
-api_torrents_list = CommandHandler('torrents', torrents_list)
-dispatcher.add_handler(api_torrents_list)
+    # Start the Bot
+    updater.start_polling()
 
-# This handler must be added last.
-# If you added it sooner, it would be triggered before the CommandHandlers had a chance to look at the update
-unknown_handler = MessageHandler(Filters.command, unknown)
-dispatcher.add_handler(unknown_handler)
 
-updater.start_polling()
+if __name__ == '__main__':
+    main()
