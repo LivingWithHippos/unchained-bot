@@ -210,16 +210,18 @@ def check_token_call():
     return token_check_and_update(result)
 
 
-# return true if the token has been updated
+# return true if the token was valid or false if it has been updated
 def token_check_and_update(response):
     if "error_code" in response.json():
         if response.json()["error_code"] == error_code_bad_token:
             updated_token = refresh_current_token()
             if updated_token:
-                return True
+                return False
+            else:
+                print("Error while updating the token")
     else:
-        return False
-    return False
+        return True
+    return True
 
 
 #################
@@ -313,7 +315,7 @@ def api_unrestrict_link(link, password=None, remote=None):
         headers=headers
     )
 
-    if token_check_and_update(result):
+    if not token_check_and_update(result):
         headers = {"Authorization": "Bearer {}".format(last_credentials["access_token"])}
         result = requests.post(
             unrestrict_url + "link",
@@ -364,7 +366,7 @@ def api_downloads_list(offset=None, page=None, limit=3):
         headers=headers
     )
 
-    if token_check_and_update(result):
+    if not token_check_and_update(result):
         headers = {"Authorization": "Bearer {}".format(last_credentials["access_token"])}
         result = requests.get(
             unrestrict_url + "link",
@@ -406,7 +408,7 @@ def api_torrents_list(offset=0, page=None, limit=3, _filter=None):
         headers=headers
     )
 
-    if token_check_and_update(result):
+    if not token_check_and_update(result):
         headers = {"Authorization": "Bearer {}".format(last_credentials["access_token"])}
         result = requests.get(
             unrestrict_url + "link",
