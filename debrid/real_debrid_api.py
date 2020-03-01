@@ -283,6 +283,9 @@ def api_unrestrict_check(link, password=None):
 
     pretty_data = prettify_json(data)
 
+    if "error_code" in data:
+        return pretty_data
+
     if data["supported"] == 1:
         response = "File is available for download with command /unrestrict [{}]({})\n".\
             format(data["link"], data["link"])
@@ -323,12 +326,17 @@ def api_unrestrict_link(link, password=None, remote=None):
             headers=headers
         )
 
+    pretty_data = prettify_json(data)
+
+    if "error_code" in data:
+        return pretty_data
+
     if "download" in result.json():
         output = "[Download link](" + result.json()["download"] + ")\n"
-        output += prettify_json(result.json())
+        pretty_data += output
         return output
 
-    return prettify_json(result.json())
+    return pretty_data
 
 
 #######################
