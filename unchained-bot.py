@@ -194,9 +194,6 @@ load_bot()
 
 real_debrid.check_credentials()
 
-unknown_handler = MessageHandler(Filters.command, unknown)
-dispatcher.add_handler(unknown_handler)
-
 token_handler = CommandHandler('token', token)
 dispatcher.add_handler(token_handler)
 
@@ -217,5 +214,10 @@ dispatcher.add_handler(api_downloads_list)
 
 api_torrents_list = CommandHandler('torrents', torrents_list)
 dispatcher.add_handler(api_torrents_list)
+
+# This handler must be added last.
+# If you added it sooner, it would be triggered before the CommandHandlers had a chance to look at the update
+unknown_handler = MessageHandler(Filters.command, unknown)
+dispatcher.add_handler(unknown_handler)
 
 updater.start_polling()
