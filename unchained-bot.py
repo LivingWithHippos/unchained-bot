@@ -211,7 +211,7 @@ def unrestrict_folder(update, context):
 
 
 def downloads_list(update, context):
-    dlist = real_debrid.api_downloads_list(offset=0)
+    dlist = real_debrid.api_downloads_list()
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text=dlist,
                              parse_mode=telegram.ParseMode.MARKDOWN)

@@ -209,7 +209,9 @@ def check_token_call():
 
 
 # request.get() call helper
-def make_get(endpoint, params, retry=True, use_headers=True):
+def make_get(endpoint, params=None, retry=True, use_headers=True):
+    if params is None:
+        params = {}
     if use_headers:
         result = requests.get(
             endpoint,
@@ -285,12 +287,7 @@ user_url = base_url + user_endpoint
 
 
 def api_user_get():
-    global last_credentials
-    headers = {"Authorization": "Bearer {}".format(last_credentials["access_token"])}
-    result = requests.get(
-        user_url,
-        headers=headers
-    )
+    result = make_get(user_url)
     data = result.json()
     return prettify_json(data, _description="Avatar", _link=data["avatar"])
 
@@ -404,11 +401,8 @@ downloads_url = base_url + downloads_endpoint
 
 
 # Get user downloads list
-def api_downloads_list(offset=None, page=None, limit=3):
-    global last_credentials
-
+def api_downloads_list(offset=None, page=1, limit=3):
     endpoint = downloads_url
-    headers = {"Authorization": "Bearer {}".format(last_credentials["access_token"])}
 
     data = {}
     if offset is not None:
@@ -419,24 +413,13 @@ def api_downloads_list(offset=None, page=None, limit=3):
     else:
         data["offset"] = 0
 
-    if page is not None:
-        data["page"] = page
-
+    data["page"] = page
     data["limit"] = limit
 
-    result = requests.get(
+    result = make_get(
         endpoint,
-        data=data,
-        headers=headers
+        params=data
     )
-
-    if not token_check_and_update(result):
-        headers = {"Authorization": "Bearer {}".format(last_credentials["access_token"])}
-        result = requests.get(
-            unrestrict_url + "link",
-            data=data,
-            headers=headers
-        )
 
     return prettify_json(result.json())
 
@@ -470,15 +453,9 @@ def api_torrents_list(offset=None, page=1, limit=3, _filter=None):
 
 # Get available hosts to upload the torrent to.
 def api_get_hosts():
-    global last_credentials
     endpoint = torrents_url + "/availableHosts"
 
-    headers = {"Authorization": "Bearer {}".format(last_credentials["access_token"])}
-
-    result = requests.get(
-        endpoint,
-        headers=headers
-    )
+    result = make_get(endpoint)
 
     if result.status_code != 200:
         print(result.json())
