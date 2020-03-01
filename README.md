@@ -106,6 +106,11 @@ The plan is to implement all the APIs available [here](https://api.real-debrid.c
 | `/login`  | Start the login flow  | Usually needed only once, at the start  |
 | `/user`  | Gives information about the user  |   |
 |  `/unrestrict link` | Unrestrict the `link`  |   |
+|  `/check link` | Check if the `link` is available on the hoster.  |   |
+|  `/folder folder_link` | Returns all the files in the folder `folder_link`.  |   |
+|  `/downloads` | Returns the last three downloads.  |   |
+|  `/torrents` | Returns the last three torrents.  |   |
+|  `/magnet magnet_link` | Add `magnet_link` to the torrents.  |   |
 
 ## Development
 
