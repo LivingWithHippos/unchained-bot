@@ -210,7 +210,7 @@ def token_check_and_update(response):
 
 def make_post(endpoint, data, retry=True, use_headers=True):
     if use_headers:
-        headers = {"Authorization": "Bearer {}".format(last_credentials["access_token"])}
+        headers = get_headers()
         result = requests.post(
             endpoint,
             data=data,
@@ -226,7 +226,7 @@ def make_post(endpoint, data, retry=True, use_headers=True):
         if result.status_code < 200 or result.status_code > 299:
             if use_headers:
                 if not token_check_and_update(result):
-                    headers = {"Authorization": "Bearer {}".format(last_credentials["access_token"])}
+                    headers = get_headers()
                     result = requests.post(
                         unrestrict_url + "link",
                         data=data,
