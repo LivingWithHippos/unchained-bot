@@ -1,10 +1,15 @@
+# python bot telegram imports
 import logging
 import telegram
 from telegram import MessageEntity
+from telegram import ChatAction
 from telegram.ext import Updater
 from telegram.ext import Filters
 from telegram.ext import CommandHandler, MessageHandler
+from functools import wraps
+# unchained imports
 import debrid.real_debrid_api as real_debrid
+# python imports
 import time
 from pathlib import Path
 import json
@@ -14,6 +19,23 @@ rd = real_debrid.DebridApi
 sleep_time = 5
 
 bot_config_path = "config.json"
+
+
+def send_action(action):
+    """Sends `action` while processing func command."""
+
+    def decorator(func):
+        @wraps(func)
+        def command_func(update, context, *args, **kwargs):
+            context.bot.send_chat_action(chat_id=update.effective_message.chat_id, action=action)
+            return func(update, context, *args, **kwargs)
+
+        return command_func
+
+    return decorator
+
+
+send_typing_action = send_action(ChatAction.TYPING)
 
 
 def unknown(update, context):
