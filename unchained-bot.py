@@ -173,6 +173,13 @@ def downloads_list(update, context):
                              parse_mode=telegram.ParseMode.MARKDOWN)
 
 
+def torrents_list(update, context):
+    tlist = real_debrid.api_torrents_list()
+    context.bot.send_message(chat_id=update.effective_chat.id,
+                             text=tlist,
+                             parse_mode=telegram.ParseMode.MARKDOWN)
+
+
 #####################
 #   I START HERE    #
 #####################
@@ -198,5 +205,8 @@ dispatcher.add_handler(api_file_unrestrict)
 
 api_downloads_list = CommandHandler('downloads', downloads_list)
 dispatcher.add_handler(api_downloads_list)
+
+api_torrents_list = CommandHandler('torrents', torrents_list)
+dispatcher.add_handler(api_torrents_list)
 
 updater.start_polling()

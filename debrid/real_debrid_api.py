@@ -360,21 +360,21 @@ torrents_url = base_url + downloads_endpoint
 
 
 # Get user downloads list
-def api_torrents_list(offset="", page=None, limit=3, filter="active"):
+def api_torrents_list(offset=0, page=None, limit=3, _filter=None):
     global last_credentials
 
     endpoint = torrents_url
     headers = {"Authorization": "Bearer {}".format(last_credentials["access_token"])}
 
-    if offset.isdigit():
-        data = {"offset": offset}
-    else:
-        data = {"offset": 0}
-
+    data = {"offset": offset}
+    # You can not use both offset and page at the same time, page is prioritzed in case it happens.
     if page is not None:
         data["page"] = page
 
     data["limit"] = limit
+    # "active", list active torrents first
+    if _filter is not None:
+        data["filter"] = _filter
 
     result = requests.get(
         endpoint,
