@@ -35,26 +35,46 @@ def token(update, context):
                              text="Insert your personal Real-Debrid API token from https://real-debrid.com/apitoken")
 
 
-def login(update, context):
-    if real_debrid.check_credentials():
+# step 3 of the login procedure
+def save_credentials(update, context, device_code, verification_result):
+    # Using the value of device_code, your application makes a direct POST request to the token endpoint,
+    # with the following parameters:
+    #
+    #     client_id: the value of client_id provided by the call to the credentials endpoint
+    #     client_secret: the value of client_secret provided by the call to the credentials endpoint
+    #     code: the value of device_code
+    #     grant_type: use the value "http://oauth.net/grant_type/device/1.0"
+
+    client_id = verification_result.json()["client_id"]
+    client_secret = verification_result.json()["client_secret"]
+
+    result = real_debrid.get_token(client_id,
+                                   client_secret,
+                                   device_code)
+
+    if result.status_code != 200:
         context.bot.send_message(chat_id=update.effective_chat.id,
-                                 text="Credentials correctly loaded")
+                                 text="Error loading token")
+        print(result.json())
         return
 
-    # using open source token
-    result = real_debrid.get_auth()
-    device_code = result.json()["device_code"]
+    refresh_token = result.json()["refresh_token"]
+    real_debrid.save_refresh_token(client_id, client_secret, refresh_token)
 
-    # Your application asks the user to go to the verification endpoint (provided by verification_url) and to type
-    # the code provided by user_code.
+    # The answer will be a JSON object with the following properties:
+    #
+    #     access_token
+    #     expires_in: token validity period, in seconds
+    #     token_type: "Bearer"
+    #     refresh_token: token that only expires when your application rights are revoked by user
 
+    real_debrid.save_token_response(result.json())
     context.bot.send_message(chat_id=update.effective_chat.id,
-                             text="Go to " +
-                                  result.json()["verification_url"] +
-                                  " and paste the code")
-    context.bot.send_message(chat_id=update.effective_chat.id,
-                             text=result.json()["user_code"])
+                             text="Token obtained and saved")
 
+
+# step 2 of the login procedure
+def wait_confirmation(update, context, device_code):
     time.sleep(sleep_time * 2)
     counter = 0
 
@@ -91,41 +111,31 @@ def login(update, context):
         # Your application stores these values and will use them for later requests.
 
         verification_result = real_debrid.get_verification(device_code)
+    # Go to step 3
+    save_credentials(update, context, device_code, verification_result)
 
-    # Using the value of device_code, your application makes a direct POST request to the token endpoint,
-    # with the following parameters:
-    #
-    #     client_id: the value of client_id provided by the call to the credentials endpoint
-    #     client_secret: the value of client_secret provided by the call to the credentials endpoint
-    #     code: the value of device_code
-    #     grant_type: use the value "http://oauth.net/grant_type/device/1.0"
 
-    client_id = verification_result.json()["client_id"]
-    client_secret = verification_result.json()["client_secret"]
-
-    result = real_debrid.get_token(client_id,
-                                   client_secret,
-                                   device_code)
-
-    if result.status_code != 200:
+# step 1 of the login procedure
+def login(update, context):
+    if real_debrid.check_credentials():
         context.bot.send_message(chat_id=update.effective_chat.id,
-                                 text="Error loading token")
-        print(result.json())
+                                 text="Credentials correctly loaded")
         return
 
-    refresh_token = result.json()["refresh_token"]
-    real_debrid.save_refresh_token(client_id, client_secret, refresh_token)
+    # using open source token
+    result = real_debrid.get_auth()
+    device_code = result.json()["device_code"]
 
-    # The answer will be a JSON object with the following properties:
-    #
-    #     access_token
-    #     expires_in: token validity period, in seconds
-    #     token_type: "Bearer"
-    #     refresh_token: token that only expires when your application rights are revoked by user
+    # Your application asks the user to go to the verification endpoint (provided by verification_url) and to type
+    # the code provided by user_code.
 
-    real_debrid.save_token_response(result.json())
     context.bot.send_message(chat_id=update.effective_chat.id,
-                             text="Token obtained and saved")
+                             text="Go to " +
+                                  result.json()["verification_url"] +
+                                  " and paste the code")
+    context.bot.send_message(chat_id=update.effective_chat.id,
+                             text=result.json()["user_code"])
+    wait_confirmation(update, context, device_code)
 
 
 def user(update, context):
