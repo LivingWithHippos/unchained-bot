@@ -224,6 +224,13 @@ def torrents_list(update, context):
                              parse_mode=telegram.ParseMode.MARKDOWN)
 
 
+def add_magnet(update, context):
+    response = real_debrid.api_add_magnet(context.args[0])
+    context.bot.send_message(chat_id=update.effective_chat.id,
+                             text=response,
+                             parse_mode=telegram.ParseMode.MARKDOWN)
+
+
 #####################
 #   I START HERE    #
 #####################
@@ -279,6 +286,9 @@ def main():
 
     api_torrents_list = CommandHandler('torrents', torrents_list)
     dispatcher.add_handler(api_torrents_list)
+
+    api_add_magnet = CommandHandler('magnet', add_magnet)
+    dispatcher.add_handler(api_add_magnet)
 
     # This handler must be added last.
     # If you added it sooner, it would be triggered before the CommandHandlers had a chance to look at the update

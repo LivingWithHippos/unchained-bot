@@ -29,6 +29,8 @@ client_secret = "client_secret"
 grant_type = "grant_type"
 new_credentials = "new_credentials"
 refresh_token = "refresh_token"
+magnet = "magnet"
+host = "host"
 
 sleep_time = 5
 open_source_client_id = "X245A4XAIBGVM"
@@ -48,30 +50,6 @@ def get_verification(device_code, cid=open_source_client_id):
     link = credential_url + "?" + client_id_param.format(cid) + "&" + code_param.format(device_code)
     result = requests.get(link)
     return result
-
-
-def add_magnet(magnet, headers):
-    data = {"magnet": magnet, "host": "real-debrid.com"}
-    result = requests.post(base_url + "torrents/addMagnet", headers=headers, data=data)
-    if result.status_code == 400:
-        print("Failed adding magnet to RD")
-        return False
-    elif result.status_code == 401:
-        print("Failed adding magnet to RD: Invalid token, to enter authToken, use --token <value>")
-        return False
-    elif result.status_code == 402:
-        print("Failed adding magnet to RD: User not premium")
-        return False
-    elif result.status_code == 503:
-        print("Failed adding magnet to RD: Service not available")
-        return False
-    else:
-        real_id = result.json()["id"]
-        select_data = {"files": "all"}
-        select_url = base_url + "torrents/selectFiles/" + real_id
-        select_result = requests.post(select_url, headers=headers, data=select_data)
-        print("Added magnet to Real-Debrid.")
-        return True
 
 
 def get_auth(cid=open_source_client_id):
@@ -336,7 +314,6 @@ def api_unrestrict_check(link, password=None):
 
 # Unrestrict a hoster link and get a new unrestricted link
 def api_unrestrict_link(link, password=None, remote=None):
-
     if link is None or len(link) < 5:
         return "Command syntax is `/unrestrict  www.your_link.com`, please retry"
 
@@ -366,7 +343,6 @@ def api_unrestrict_link(link, password=None, remote=None):
 
 # Unrestrict a hoster folder link and get individual links, returns an empty array if no links found.
 def api_unrestrict_folder(link):
-
     if link is None or len(link) < 5:
         return "Command syntax is `/unrestrict  www.your_link.com`, please retry"
 
@@ -471,6 +447,55 @@ def api_torrents_list(offset=0, page=None, limit=3, _filter=None):
         )
 
     return prettify_json(result.json())
+
+
+# Get available hosts to upload the torrent to.
+def api_get_hosts():
+    global last_credentials
+    endpoint = torrents_url + "/availableHosts"
+
+    headers = {"Authorization": "Bearer {}".format(last_credentials["access_token"])}
+
+    result = requests.get(
+        endpoint,
+        headers=headers
+    )
+
+    if result.status_code != 200:
+        print(result.json())
+        return []
+
+    return result.json()
+
+
+# Add a magnet link to download, return a 201 HTTP code.
+def api_add_magnet(_magnet):
+    endpoint = torrents_url + "/addMagnet"
+    available_hosts = api_get_hosts()
+    if not available_hosts:
+        return "Error checking available hosts. Check logs and/or retry."
+    data = {magnet: _magnet, host: available_hosts[0][host]}
+
+    result = make_post(endpoint, data)
+
+    if result.status_code != 201:
+        return prettify_json(result.json())
+
+    # starts the torrent with all the files
+    add_result = api_select_files(result.json()["id"])
+    if add_result.status_code == 204:
+        return "Magnet Successfully Added."
+    else:
+        return "Issue with magnet, http status code {}.".format(add_result.status_code)
+
+
+# Select files of a torrent to start it, do not return anything with a 204 HTTP code.
+def api_select_files(_id, select="all"):
+    endpoint = torrents_url + "/selectFiles/{}".format(_id)
+    data = {"files": select}
+    result = make_post(endpoint, data)
+
+    return result
 
 
 #####################
