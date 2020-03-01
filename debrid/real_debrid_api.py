@@ -450,35 +450,20 @@ torrents_url = base_url + torrents_endpoint
 
 
 # Get user downloads list
-def api_torrents_list(offset=0, page=None, limit=3, _filter=None):
-    global last_credentials
-
+def api_torrents_list(offset=None, page=1, limit=3, _filter=None):
     endpoint = torrents_url
-    headers = {"Authorization": "Bearer {}".format(last_credentials["access_token"])}
 
-    data = {"offset": offset}
+    params = {"page": page}
     # You can not use both offset and page at the same time, page is prioritzed in case it happens.
-    if page is not None:
-        data["page"] = page
+    if offset is not None:
+        params["offset"] = offset
 
-    data["limit"] = limit
+    params["limit"] = limit
     # "active", list active torrents first
     if _filter is not None:
-        data["filter"] = _filter
+        params["filter"] = _filter
 
-    result = requests.get(
-        endpoint,
-        data=data,
-        headers=headers
-    )
-
-    if not token_check_and_update(result):
-        headers = {"Authorization": "Bearer {}".format(last_credentials["access_token"])}
-        result = requests.get(
-            unrestrict_url + "link",
-            data=data,
-            headers=headers
-        )
+    result = make_get(endpoint, params)
 
     return prettify_json(result.json())
 
