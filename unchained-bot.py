@@ -3,7 +3,7 @@ import telegram
 from telegram import MessageEntity
 from telegram.ext import Updater
 from telegram.ext import Filters
-from telegram.ext import CommandHandler
+from telegram.ext import CommandHandler, MessageHandler
 import debrid.real_debrid_api as real_debrid
 import time
 from pathlib import Path
@@ -37,6 +37,10 @@ def load_bot():
     else:
         print("Missing bot token file: " + bot_config_path)
         exit(1)
+
+
+def unknown(update, context):
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Sorry, I didn't understand that command.")
 
 
 def echo(update, context):
@@ -189,6 +193,9 @@ def torrents_list(update, context):
 load_bot()
 
 real_debrid.check_credentials()
+
+unknown_handler = MessageHandler(Filters.command, unknown)
+dispatcher.add_handler(unknown_handler)
 
 token_handler = CommandHandler('token', token)
 dispatcher.add_handler(token_handler)
