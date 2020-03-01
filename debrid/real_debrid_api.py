@@ -299,7 +299,7 @@ def api_unrestrict_check(link, password=None):
         data=data
     )
 
-    data = result.json()
+    check = result.json()
 
     # if the token has been updated I make the call again
     # todo: as an alternative I call this function again and I return that
@@ -313,14 +313,14 @@ def api_unrestrict_check(link, password=None):
     # else:
     #    return "Error : \n" + result.json()
 
-    pretty_data = prettify_json(data)
+    pretty_data = prettify_json(check)
 
-    if "error_code" in data:
+    if "error_code" in check:
         return pretty_data
 
-    if data["supported"] == 1:
+    if check["supported"] == 1:
         response = "File is available for download with command /unrestrict [{}]({})\n". \
-            format(data["link"], data["link"])
+            format(check["link"], check["link"])
     else:
         response = "File not available on hoster\n"
 
