@@ -130,6 +130,4 @@ dmypy.json
 
 # Custom file/folders
 .idea/
-user_data/refresh_token.json
-user_data/credentials.json
 /config.json
