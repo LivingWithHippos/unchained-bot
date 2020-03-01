@@ -251,6 +251,10 @@ unrestrict_url = base_url + unrestrict_endpoint
 
 # Check if a file is downloadable on the concerned hoster. This request is not requiring authentication.
 def api_unrestrict_check(link, password=None):
+
+    if link is None or len(link)<5:
+        return "Command syntax is `/unrestrict  www.your_link.com, please retry"
+
     endpoint = unrestrict_url + "check"
     data = {"link": link}
     if password is not None:
@@ -260,6 +264,8 @@ def api_unrestrict_check(link, password=None):
         endpoint,
         data=data
     )
+
+    data = result.json()
 
     # if the token has been updated I make the call again
     # todo: as an alternative I call this function again and I return that
@@ -273,12 +279,24 @@ def api_unrestrict_check(link, password=None):
     # else:
     #    return "Error : \n" + result.json()
 
-    return prettify_json(result.json())
+    pretty_data = prettify_json(data)
+    response = ""
+
+    if data["supported"] == 1:
+        response = "File is available for download with command /unrestrict [{}]({})\n".\
+            format(data["link"], data["link"])
+    else:
+        response = "File not available on hoster\n"
+
+    return response + pretty_data
 
 
 # Unrestrict a hoster link and get a new unrestricted link
 def api_unrestrict_link(link, password=None, remote=None):
     global last_credentials
+
+    if link is None or len(link)<5:
+        return "Command syntax is `/unrestrict  www.your_link.com`, please retry"
 
     endpoint = unrestrict_url + "link"
     headers = {"Authorization": "Bearer {}".format(last_credentials["access_token"])}
