@@ -183,17 +183,6 @@ def get_headers():
     return headers
 
 
-# checks the current token using a call to /user
-def check_token_call():
-    global last_credentials
-    headers = {"Authorization": "Bearer {}".format(last_credentials["access_token"])}
-    result = requests.get(
-        user_url,
-        headers=headers
-    )
-    return token_check_and_update(result)
-
-
 # return true if the token was valid or false if it has been updated
 def token_check_and_update(response):
     if "error_code" in response.json():
@@ -208,6 +197,51 @@ def token_check_and_update(response):
     return True
 
 
+# checks the current token using a call to /user
+def check_token_call():
+    global last_credentials
+    headers = {"Authorization": "Bearer {}".format(last_credentials["access_token"])}
+    result = requests.get(
+        user_url,
+        headers=headers
+    )
+    return token_check_and_update(result)
+
+
+# request.get() call helper
+def make_get(endpoint, params, retry=True, use_headers=True):
+    if use_headers:
+        result = requests.get(
+            endpoint,
+            params=params,
+            headers=get_headers()
+        )
+    else:
+        result = requests.get(
+            endpoint,
+            params=params
+        )
+
+    if retry:
+        if result.status_code < 200 or result.status_code > 299:
+            if use_headers:
+                if not token_check_and_update(result):
+                    result = requests.get(
+                        unrestrict_url + "link",
+                        params=params,
+                        headers=get_headers()
+                    )
+            else:
+                if not token_check_and_update(result):
+                    result = requests.get(
+                        unrestrict_url + "link",
+                        params=params
+                    )
+
+    return result
+
+
+# request.post() call helper
 def make_post(endpoint, data, retry=True, use_headers=True):
     if use_headers:
         headers = get_headers()
