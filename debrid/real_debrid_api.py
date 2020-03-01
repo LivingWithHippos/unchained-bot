@@ -240,7 +240,7 @@ def api_user_get():
         headers=headers
     )
     data = result.json()
-    return prettify_json(data,_description="Avatar", _link=data["avatar"])
+    return prettify_json(data, _description="Avatar", _link=data["avatar"])
 
 
 #######################
@@ -253,8 +253,7 @@ unrestrict_url = base_url + unrestrict_endpoint
 
 # Check if a file is downloadable on the concerned hoster. This request is not requiring authentication.
 def api_unrestrict_check(link, password=None):
-
-    if link is None or len(link)<5:
+    if link is None or len(link) < 5:
         return "Command syntax is `/unrestrict  www.your_link.com, please retry"
 
     endpoint = unrestrict_url + "check"
@@ -287,7 +286,7 @@ def api_unrestrict_check(link, password=None):
         return pretty_data
 
     if data["supported"] == 1:
-        response = "File is available for download with command /unrestrict [{}]({})\n".\
+        response = "File is available for download with command /unrestrict [{}]({})\n". \
             format(data["link"], data["link"])
     else:
         response = "File not available on hoster\n"
@@ -299,7 +298,7 @@ def api_unrestrict_check(link, password=None):
 def api_unrestrict_link(link, password=None, remote=None):
     global last_credentials
 
-    if link is None or len(link)<5:
+    if link is None or len(link) < 5:
         return "Command syntax is `/unrestrict  www.your_link.com`, please retry"
 
     endpoint = unrestrict_url + "link"
