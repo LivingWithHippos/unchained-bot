@@ -329,7 +329,6 @@ def api_unrestrict_check(link, password=None):
 
 # Unrestrict a hoster link and get a new unrestricted link
 def api_unrestrict_link(link, password=None, remote=None):
-    global last_credentials
 
     if link is None or len(link) < 5:
         return "Command syntax is `/unrestrict  www.your_link.com`, please retry"
@@ -360,7 +359,6 @@ def api_unrestrict_link(link, password=None, remote=None):
 
 # Unrestrict a hoster folder link and get individual links, returns an empty array if no links found.
 def api_unrestrict_folder(link):
-    global last_credentials
 
     if link is None or len(link) < 5:
         return "Command syntax is `/unrestrict  www.your_link.com`, please retry"
