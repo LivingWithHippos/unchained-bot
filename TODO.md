@@ -6,3 +6,5 @@
 - [] add commands description from the bot (maybe with command /help)
 - [] copy download links outside of json tag to make them click-able
 - [] add field "show json" in config.json to let the user decide if he wants only the essential info or also the complete json response 
+- [] add checks for web link validity (via regex)
+- [] add arguments to api (as of now only the link is used)
