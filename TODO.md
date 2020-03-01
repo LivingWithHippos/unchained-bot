@@ -8,3 +8,5 @@
 - [] add field "show json" in config.json to let the user decide if he wants only the essential info or also the complete json response 
 - [x] add checks for web link validity
 - [] add arguments to api (as of now only the link is used)
+- [] add a custom [keyboard](https://github.com/python-telegram-bot/python-telegram-bot/wiki/Code-snippets#custom-keyboards)
+- [] make bot [persistent?](https://github.com/python-telegram-bot/python-telegram-bot/wiki/Making-your-bot-persistent)
