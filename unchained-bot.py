@@ -181,6 +181,35 @@ def unrestrict_file(update, context):
                              parse_mode=telegram.ParseMode.MARKDOWN)
 
 
+# todo: check if it is normal that a list of restricted link is returned
+#  optionally directly pass the links to the unrestrict function
+def unrestrict_folder(update, context):
+    folder_data = real_debrid.api_unrestrict_folder(context.args[0])
+
+    # for long lists of links the message may be too long
+    if isinstance(folder_data, list):
+        messages = []
+        link_list = ""
+        for link in folder_data:
+            markdown_link = "[{}]({})\n".format(link, link)
+            if len(link_list) + len(markdown_link) >= telegram.constants.MAX_MESSAGE_LENGTH:
+                _length = len(markdown_link)
+                messages.append(link_list)
+                link_list = markdown_link
+            else:
+                link_list += markdown_link
+        # should have at least one here
+        messages.append(link_list)
+        for message in messages:
+            context.bot.send_message(chat_id=update.effective_chat.id,
+                                     text=message,
+                                     parse_mode=telegram.ParseMode.MARKDOWN)
+    else:
+        context.bot.send_message(chat_id=update.effective_chat.id,
+                                 text=folder_data,
+                                 parse_mode=telegram.ParseMode.MARKDOWN)
+
+
 def downloads_list(update, context):
     dlist = real_debrid.api_downloads_list(offset=0)
     context.bot.send_message(chat_id=update.effective_chat.id,
@@ -240,6 +269,10 @@ def main():
     api_file_unrestrict = CommandHandler('unrestrict', unrestrict_file,
                                          (Filters.text & Filters.entity(MessageEntity.URL)))
     dispatcher.add_handler(api_file_unrestrict)
+
+    api_folder_unrestrict = CommandHandler('folder', unrestrict_folder,
+                                           (Filters.text & Filters.entity(MessageEntity.URL)))
+    dispatcher.add_handler(api_folder_unrestrict)
 
     api_downloads_list = CommandHandler('downloads', downloads_list)
     dispatcher.add_handler(api_downloads_list)

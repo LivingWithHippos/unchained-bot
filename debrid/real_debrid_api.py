@@ -338,6 +338,41 @@ def api_unrestrict_link(link, password=None, remote=None):
     return pretty_data
 
 
+# Unrestrict a hoster folder link and get individual links, returns an empty array if no links found.
+def api_unrestrict_folder(link):
+    global last_credentials
+
+    if link is None or len(link) < 5:
+        return "Command syntax is `/unrestrict  www.your_link.com`, please retry"
+
+    endpoint = unrestrict_url + "folder"
+    headers = {"Authorization": "Bearer {}".format(last_credentials["access_token"])}
+
+    data = {"link": link}
+
+    result = requests.post(
+        endpoint,
+        data=data,
+        headers=headers
+    )
+
+    if not token_check_and_update(result):
+        headers = {"Authorization": "Bearer {}".format(last_credentials["access_token"])}
+        result = requests.post(
+            unrestrict_url + "link",
+            data=data,
+            headers=headers
+        )
+
+    if "error_code" in result.json():
+        return result.json()
+
+    if not result.json():
+        return "The folder was empty"
+
+    return result.json()
+
+
 #######################
 #    DOWNLOADS API    #
 #######################
