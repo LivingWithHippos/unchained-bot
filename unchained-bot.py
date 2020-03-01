@@ -153,17 +153,27 @@ def user(update, context):
 
 
 def check_file(update, context):
-    file_status = real_debrid.api_unrestrict_check(context.args[0])
-    context.bot.send_message(chat_id=update.effective_chat.id,
-                             text=file_status,
-                             parse_mode=telegram.ParseMode.MARKDOWN)
+    if not context.args:
+        context.bot.send_message(chat_id=update.effective_chat.id,
+                                 text="Command syntax is `/check link`. Please retry",
+                                 parse_mode=telegram.ParseMode.MARKDOWN)
+    else:
+        file_status = real_debrid.api_unrestrict_check(context.args[0])
+        context.bot.send_message(chat_id=update.effective_chat.id,
+                                 text=file_status,
+                                 parse_mode=telegram.ParseMode.MARKDOWN)
 
 
 def unrestrict_file(update, context):
-    file_data = real_debrid.api_unrestrict_link(context.args[0])
-    context.bot.send_message(chat_id=update.effective_chat.id,
-                             text=file_data,
-                             parse_mode=telegram.ParseMode.MARKDOWN)
+    if not context.args:
+        context.bot.send_message(chat_id=update.effective_chat.id,
+                                 text="Command syntax is `/unrestrict link`. Please retry",
+                                 parse_mode=telegram.ParseMode.MARKDOWN)
+    else:
+        file_data = real_debrid.api_unrestrict_link(context.args[0])
+        context.bot.send_message(chat_id=update.effective_chat.id,
+                                 text=file_data,
+                                 parse_mode=telegram.ParseMode.MARKDOWN)
 
 
 def downloads_list(update, context):
