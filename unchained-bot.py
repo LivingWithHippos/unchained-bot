@@ -1,6 +1,8 @@
 import logging
 import telegram
+from telegram import MessageEntity
 from telegram.ext import Updater
+from telegram.ext import Filters
 from telegram.ext import CommandHandler
 import debrid.real_debrid_api as real_debrid
 import time
@@ -153,27 +155,17 @@ def user(update, context):
 
 
 def check_file(update, context):
-    if not context.args:
-        context.bot.send_message(chat_id=update.effective_chat.id,
-                                 text="Command syntax is `/check link`. Please retry",
-                                 parse_mode=telegram.ParseMode.MARKDOWN)
-    else:
-        file_status = real_debrid.api_unrestrict_check(context.args[0])
-        context.bot.send_message(chat_id=update.effective_chat.id,
-                                 text=file_status,
-                                 parse_mode=telegram.ParseMode.MARKDOWN)
+    file_status = real_debrid.api_unrestrict_check(context.args[0])
+    context.bot.send_message(chat_id=update.effective_chat.id,
+                             text=file_status,
+                             parse_mode=telegram.ParseMode.MARKDOWN)
 
 
 def unrestrict_file(update, context):
-    if not context.args:
-        context.bot.send_message(chat_id=update.effective_chat.id,
-                                 text="Command syntax is `/unrestrict link`. Please retry",
-                                 parse_mode=telegram.ParseMode.MARKDOWN)
-    else:
-        file_data = real_debrid.api_unrestrict_link(context.args[0])
-        context.bot.send_message(chat_id=update.effective_chat.id,
-                                 text=file_data,
-                                 parse_mode=telegram.ParseMode.MARKDOWN)
+    file_data = real_debrid.api_unrestrict_link(context.args[0])
+    context.bot.send_message(chat_id=update.effective_chat.id,
+                             text=file_data,
+                             parse_mode=telegram.ParseMode.MARKDOWN)
 
 
 def downloads_list(update, context):
@@ -207,10 +199,10 @@ dispatcher.add_handler(login_handler)
 api_user_handler = CommandHandler('user', user)
 dispatcher.add_handler(api_user_handler)
 
-api_file_check = CommandHandler('check', check_file)
+api_file_check = CommandHandler('check', check_file, (Filters.text & Filters.entity(MessageEntity.URL)))
 dispatcher.add_handler(api_file_check)
 
-api_file_unrestrict = CommandHandler('unrestrict', unrestrict_file)
+api_file_unrestrict = CommandHandler('unrestrict', unrestrict_file, (Filters.text & Filters.entity(MessageEntity.URL)))
 dispatcher.add_handler(api_file_unrestrict)
 
 api_downloads_list = CommandHandler('downloads', downloads_list)
