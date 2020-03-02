@@ -11,3 +11,4 @@
 - [] add a custom [keyboard](https://github.com/python-telegram-bot/python-telegram-bot/wiki/Code-snippets#custom-keyboards)
 - [] make bot [persistent?](https://github.com/python-telegram-bot/python-telegram-bot/wiki/Making-your-bot-persistent)
 - [] if receiving a link -> unrestrict automatically?
+- [] add typing
