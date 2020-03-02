@@ -3,7 +3,7 @@ import requests
 import re
 import json
 
-parsed_file_path = "/parsed/parsed_api.json"
+parsed_file_path = "parsed/parsed_api.json"
 api_url = "https://api.real-debrid.com/"
 
 
