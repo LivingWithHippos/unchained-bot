@@ -1,14 +1,129 @@
 import json
 from pathlib import Path
 import requests
+import sqlite3
 
 from debrid.constants import open_source_client_id, client_id_param, credential_url, device_url, new_credentials, \
     client_id, client_secret, code, grant_type, token_url, credentials_file_name, code_param, refresh_token_file_name, \
-    refresh_token, grant_type_url
+    refresh_token, grant_type_url, db_path, credentials_scheme
 
 from debrid.real_debrid_api import error_code_bad_token, user_url
 
 last_credentials = {}
+
+chain_db = sqlite3.connect(db_path)
+
+if not Path(db_path).is_file():
+    creation_cursor = chain_db.cursor()
+    creation_cursor.execute(credentials_scheme)
+    creation_cursor.close()
+
+
+#################
+#   DATABASE    #
+#################
+
+def save_credentials(cs, dc, rt, ci=open_source_client_id):
+    if not disable_old_credentials():
+        return False
+
+    cursor = chain_db.cursor()
+
+    insert_query = "INSERT INTO credentials(client_id, client_secret, device_code, refresh_token) VALUES(?,?,?,?)"
+    errors = False
+    try:
+        cursor.execute(insert_query, (ci, cs, dc, rt))
+        chain_db.commit()
+    except Exception as e:
+        print("Error inserting credentials: {e}")
+        errors = True
+        chain_db.rollback()
+        raise e
+    finally:
+        cursor.close()
+        return errors
+
+
+def update_token(token):
+    cursor = chain_db.cursor()
+
+    update_query = "UPDATE credentials SET refresh_token = ? WHERE active = 1"
+    errors = False
+    try:
+        cursor.execute(update_query, token)
+        chain_db.commit()
+    except Exception as e:
+        print("Error inserting credentials: {e}")
+        errors = True
+        chain_db.rollback()
+        raise e
+    finally:
+        cursor.close()
+        return errors
+
+
+def disable_old_credentials():
+    cursor = chain_db.cursor()
+    errors = False
+    disable_query = "UPDATE credentials SET active = 0"
+    try:
+        cursor.execute(disable_query)
+        chain_db.commit()
+    except Exception as e:
+        print("Error while disabling old credentials: {e}")
+        errors = True
+        chain_db.rollback()
+        raise e
+    finally:
+        cursor.close()
+        return errors
+
+
+def disable_credentials(ci):
+    cursor = chain_db.cursor()
+    errors = False
+    disable_query = "UPDATE credentials SET active = 0 WHERE client_id = ?"
+    try:
+        cursor.execute(disable_query, ci)
+        chain_db.commit()
+    except Exception as e:
+        print("Error while disabling credentials for client_id {ci}: {e}")
+        errors = True
+        chain_db.rollback()
+        raise e
+    finally:
+        cursor.close()
+        return errors
+
+
+def get_credentials():
+    cursor = chain_db.cursor()
+    select_query = "SELECT client_id, client_secret, device_code, refresh_token FROM credentials SET WHERE active = 1"
+    credentials = None
+    try:
+        cursor.execute(select_query)
+        result = cursor.fetchone()
+        credentials = {
+            client_id: result[0],
+            client_secret: result[1],
+            code: result[2],
+            refresh_token: result[3]
+        }
+    except Exception as e:
+        print("Error while recovering credentials: {e}")
+        raise e
+    finally:
+        cursor.close()
+        return credentials
+
+
+def close_db():
+    if chain_db is not None:
+        chain_db.close()
+
+#############
+#   LOGIN   #
+#############
 
 
 def get_verification(device_code, cid=open_source_client_id):

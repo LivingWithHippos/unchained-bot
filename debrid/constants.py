@@ -19,14 +19,24 @@ client_secret_param = "client_secret={}"
 grant_type_param = "grant_type={}"
 new_credentials_param = "new_credentials=yes"
 
-client_id = "client_id"
-code = "code"
-client_secret = "client_secret"
-grant_type = "grant_type"
 new_credentials = "new_credentials"
-refresh_token = "refresh_token"
 magnet = "magnet"
 host = "host"
 
 sleep_time = 5
 open_source_client_id = "X245A4XAIBGVM"
+
+access_token = "access_token"
+expires_in = "expires_in"
+refresh_token = "refresh_token"
+token_type = "token_type"
+
+client_id = "client_id"
+client_secret = "client_secret"
+code = "code"
+device_code = "device_code"
+grant_type = "grant_type"
+
+db_path = "user_data/unchaindb"
+credentials_scheme = "CREATE TABLE credentials(client_id TEXT PRIMARY KEY, client_secret TEXT, device_code TEXT" \
+                     ", refresh_token TEXT, active NUMERIC DEFAULT 1 ) "
