@@ -20,6 +20,7 @@ sleep_time = 5
 
 bot_config_path = "config.json"
 
+json_markdown_formatting = "```json\n{}\n```"
 
 def send_action(action):
     """Sends `action` while processing func command."""
@@ -218,7 +219,32 @@ def downloads_list(update, context):
 
 
 def torrents_list(update, context):
+    # return a list of this json:
+    # {
+    #         "id": "string",
+    #         "filename": "string",
+    #         "hash": "string", // SHA1 Hash of the torrent
+    #         "bytes": int, // Size of selected files only
+    #         "host": "string", // Host main domain
+    #         "split": int, // Split size of links
+    #         "progress": int, // Possible values: 0 to 100
+    # // Current status of the torrent: magnet_error, magnet_conversion, waiting_files_selection,
+    # queued, downloading, downloaded, error, virus, compressing, uploading, dead
+    #         "status": "downloaded"
+    #         "added": "string", // jsonDate
+    #         "links": [
+    #             "string" // Host URL
+    #         ],
+    #         "ended": "string", // !! Only present when finished, jsonDate
+    #         "speed": int, // !! Only present in "downloading", "compressing", "uploading" status
+    #         "seeders": int // !! Only present in "downloading", "magnet_conversion" status
+    #     }
+    links = []
     tlist = real_debrid.api_torrents_list()
+    for torrent in tlist:
+        if torrent["status"] == "downloaded":
+            links.append(torrent["id"])
+
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text=tlist,
                              parse_mode=telegram.ParseMode.MARKDOWN)
