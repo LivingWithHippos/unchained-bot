@@ -1,9 +1,6 @@
 import json
 import requests
 
-from debrid.credentials import token_check_and_update
-from debrid.real_debrid_api import unrestrict_url
-
 
 def prettify_json(data, _description=None, _link=None):
     pretty_data = ""
@@ -19,16 +16,15 @@ def prettify_json(data, _description=None, _link=None):
     return pretty_data
 
 
-def get_headers():
-    global last_credentials
-    headers = {"Authorization": "Bearer {}".format(last_credentials["access_token"])}
+def get_headers(access_token):
+    headers = {"Authorization": "Bearer {}".format(access_token)}
     return headers
 
 
 # request.post() call helper
-def make_post(endpoint, data, retry=True, use_headers=True):
+def make_post(endpoint, data, retry=True, use_headers=True, access_token=None):
     if use_headers:
-        headers = get_headers()
+        headers = get_headers(access_token)
         result = requests.post(
             endpoint,
             data=data,
@@ -42,33 +38,21 @@ def make_post(endpoint, data, retry=True, use_headers=True):
 
     if retry:
         if result.status_code < 200 or result.status_code > 299:
-            if use_headers:
-                if not token_check_and_update(result):
-                    headers = get_headers()
-                    result = requests.post(
-                        unrestrict_url + "link",
-                        data=data,
-                        headers=headers
-                    )
-            else:
-                if not token_check_and_update(result):
-                    result = requests.post(
-                        unrestrict_url + "link",
-                        data=data
-                    )
+            result = make_post(endpoint, data, False, use_headers, access_token)
 
     return result
 
 
 # request.get() call helper
-def make_get(endpoint, params=None, retry=True, use_headers=True):
+def make_get(endpoint, params=None, retry=True, use_headers=True, access_token=None):
     if params is None:
         params = {}
     if use_headers:
+        headers=get_headers(access_token)
         result = requests.get(
             endpoint,
             params=params,
-            headers=get_headers()
+            headers=headers
         )
     else:
         result = requests.get(
@@ -78,18 +62,6 @@ def make_get(endpoint, params=None, retry=True, use_headers=True):
 
     if retry:
         if result.status_code < 200 or result.status_code > 299:
-            if use_headers:
-                if not token_check_and_update(result):
-                    result = requests.get(
-                        unrestrict_url + "link",
-                        params=params,
-                        headers=get_headers()
-                    )
-            else:
-                if not token_check_and_update(result):
-                    result = requests.get(
-                        unrestrict_url + "link",
-                        params=params
-                    )
+            result = make_get(endpoint, params, False, use_headers, access_token)
 
     return result
