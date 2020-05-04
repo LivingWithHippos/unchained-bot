@@ -22,10 +22,10 @@ if not Path(db_path).is_file():
 #################
 #   DATABASE    #
 #################
-
+# todo: invert return boolean logic
 def save_credentials(cs, dc, rt, ci=open_source_client_id):
     if not disable_old_credentials():
-        return False
+        return True
 
     cursor = chain_db.cursor()
 
