@@ -22,6 +22,7 @@ def get_headers(access_token):
 
 
 # request.post() call helper
+# we should just check if access_token is None instead of using use_headers
 def make_post(endpoint, data, retry=True, use_headers=True, access_token=None):
     if use_headers:
         headers = get_headers(access_token)
@@ -44,6 +45,7 @@ def make_post(endpoint, data, retry=True, use_headers=True, access_token=None):
 
 
 # request.get() call helper
+# todo: check if headers is correct
 def make_get(endpoint, params=None, retry=True, use_headers=True, access_token=None):
     if params is None:
         params = {}
