@@ -1,18 +1,16 @@
 import json
-from pathlib import Path
-import requests
 import sqlite3
 
-from debrid.constants import open_source_client_id, client_id_param, credential_url, device_url, new_credentials, \
-    client_id, client_secret, code, grant_type, token_url, credentials_file_name, code_param, refresh_token_file_name, \
-    refresh_token, grant_type_url, db_path, credentials_scheme, access_token, grant_type_oauth, error_code_bad_token, \
+from debrid.constants import open_source_client_id, credential_url, device_url, new_credentials, \
+    client_id, client_secret, code, grant_type, token_url, refresh_token, grant_type_url, db_path, access_token, \
+    grant_type_oauth, error_code_bad_token, \
     base_url, user_endpoint, device_code_param
-
-from utilities.util import make_get, prettify_json, make_post
+from utilities.util import make_get, make_post
 
 last_credentials = {}
 
 chain_db = sqlite3.connect(db_path)
+
 
 #################
 #   DATABASE    #
@@ -179,10 +177,10 @@ def refresh_current_token():
     credentials = get_credentials()
     result = make_post(token_url,
                        data={
-                           client_id : credentials[client_id],
-                           client_secret : credentials[client_secret],
-                           code : credentials[refresh_token],
-                           grant_type : grant_type_oauth,
+                           client_id: credentials[client_id],
+                           client_secret: credentials[client_secret],
+                           code: credentials[refresh_token],
+                           grant_type: grant_type_oauth,
                        })
 
     if result.status_code != 200:

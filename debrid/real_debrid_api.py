@@ -1,12 +1,12 @@
 import json
-import requests
 from pathlib import Path
 
-from debrid.constants import base_url, magnet, host, credentials_file_name, access_token, user_endpoint
-from utilities.util import make_get, prettify_json, make_post
+import requests
 
 # unchained imports
 import debrid.credentials as credentials
+from debrid.constants import base_url, magnet, host, credentials_file_name, access_token, user_endpoint
+from utilities.util import make_get, prettify_json, make_post
 
 user_credentials = credentials.get_credentials()
 
@@ -15,6 +15,7 @@ user_credentials = credentials.get_credentials()
 #################
 
 user_url = base_url + user_endpoint
+
 
 def api_user_get():
     result = make_get(user_url, access_token=user_credentials[access_token])

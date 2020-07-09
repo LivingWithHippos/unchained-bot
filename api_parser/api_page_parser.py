@@ -1,7 +1,8 @@
-from bs4 import BeautifulSoup
-import requests
-import re
 import json
+import re
+
+import requests
+from bs4 import BeautifulSoup
 
 parsed_file_path = "parsed/parsed_api.json"
 api_url = "https://api.real-debrid.com/"

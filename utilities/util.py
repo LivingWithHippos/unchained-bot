@@ -1,4 +1,5 @@
 import json
+
 import requests
 
 
@@ -55,7 +56,7 @@ def make_get(endpoint, params=None, retry=True, use_headers=True, access_token=N
     if params is None:
         params = {}
     if use_headers:
-        headers=get_headers(access_token)
+        headers = get_headers(access_token)
         result = requests.get(
             endpoint,
             params=params,

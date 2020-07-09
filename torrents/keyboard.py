@@ -1,4 +1,5 @@
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton as Button
+
 from torrents.constants import UNRESTRICT_TORRENT
 
 
@@ -22,7 +23,7 @@ def torrent_keyboard(torrent):
     buttons = [
         Button(torrent["filename"])
     ]
-    
+
     if torrent["status"] == "downloaded":
         butt = [
             Button("Status: Ready"),
@@ -37,4 +38,3 @@ def torrent_keyboard(torrent):
     buttons.append(butt)
 
     return InlineKeyboardMarkup(buttons)
-

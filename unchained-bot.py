@@ -1,22 +1,22 @@
 # python bot telegram imports
+import json
 import logging
 import sqlite3
-
-import telegram
-from telegram import MessageEntity
-from telegram import ChatAction
-from telegram.ext import Updater
-from telegram.ext import Filters
-from telegram.ext import CommandHandler, MessageHandler
-from functools import wraps
-# unchained imports
-import debrid.real_debrid_api as real_debrid
-import debrid.credentials as credentials
 # python imports
 import time
+from functools import wraps
 from pathlib import Path
-import json
 
+import telegram
+from telegram import ChatAction
+from telegram import MessageEntity
+from telegram.ext import CommandHandler, MessageHandler
+from telegram.ext import Filters
+from telegram.ext import Updater
+
+import debrid.credentials as credentials
+# unchained imports
+import debrid.real_debrid_api as real_debrid
 from debrid.constants import db_path, credentials_scheme
 
 sleep_time = 5
@@ -84,7 +84,8 @@ def save_credentials(update, context, device_code, verification_result):
 
     refresh_json = result.json()
 
-    credentials.save_credentials(client_id, client_secret, device_code, refresh_json["access_token"], refresh_json["refresh_token"])
+    credentials.save_credentials(client_id, client_secret, device_code, refresh_json["access_token"],
+                                 refresh_json["refresh_token"])
 
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text="Token obtained and saved")
