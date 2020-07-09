@@ -9,14 +9,13 @@ from debrid.constants import open_source_client_id, credential_url, device_url, 
     base_url, user_endpoint, device_code_param, credentials_scheme
 from utilities.util import make_get, make_post
 
-last_credentials = {}
-
 # create database if missing
 if not Path(db_path).is_file():
     with sqlite3.connect(db_path) as my_db:
         creation_cursor = my_db.cursor()
         creation_cursor.execute(credentials_scheme)
         creation_cursor.close()
+
 
 #################
 #   DATABASE    #
@@ -180,7 +179,6 @@ def get_token(my_client_id, my_client_secret, device_code, my_grant_type=grant_t
 
 # return true if the token has been updated
 def refresh_current_token():
-    global last_credentials
     credentials = get_credentials()
     result = make_post(token_url,
                        data={
@@ -194,14 +192,12 @@ def refresh_current_token():
         print("Error refreshing token, status code ", result.status_code)
         return False
     result_json = result.json()
-    last_credentials = json
     update_token(result_json[access_token], result_json[refresh_token])
     return True
 
 
 # return true if the token was valid or false if it has been updated
 def token_check_and_update(response):
-    global last_credentials
     if "error_code" in response.json():
         if response.json()["error_code"] == error_code_bad_token:
             updated_token = refresh_current_token()
@@ -210,7 +206,6 @@ def token_check_and_update(response):
             else:
                 print("Error while updating the token")
     else:
-        last_credentials = response.json()
         return True
     return True
 
