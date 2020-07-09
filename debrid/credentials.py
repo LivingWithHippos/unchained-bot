@@ -153,7 +153,7 @@ def get_auth(cid=open_source_client_id):
 def get_verification(device_code, cid=open_source_client_id):
     result = make_get(credential_url,
                       params={client_id: cid,
-                              device_code_param: device_code},
+                              code: device_code},
                       use_headers=False)
     return result
 
