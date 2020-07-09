@@ -289,9 +289,9 @@ def torrents_list(update, context):
 
     tlist = None
     if len(context.args) > 0 and context.args[0].isnumeric():
-        tlist = real_debrid.api_downloads_list(limit=context.args[0])
+        tlist = real_debrid.api_torrents_list(limit=context.args[0])
     else:
-        tlist = real_debrid.api_downloads_list()
+        tlist = real_debrid.api_torrents_list()
     # credentials error
     if tlist is None:
         missing_credentials(context, update)
