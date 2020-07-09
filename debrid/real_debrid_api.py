@@ -57,9 +57,9 @@ def api_unrestrict_check(link, password=None):
     if password is not None:
         data["password"] = password
 
-    result = requests.post(
+    result = make_post(
         endpoint,
-        data=data,
+        data,
         use_headers=False)
 
     check = result.json()
