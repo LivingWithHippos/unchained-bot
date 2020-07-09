@@ -157,7 +157,7 @@ downloads_url = base_url + downloads_endpoint
 
 
 # Get user downloads list
-def api_downloads_list(offset=None, page=1, limit=3):
+def api_downloads_list(offset=None, page=1, limit=5):
     endpoint = downloads_url
 
     data = {}
