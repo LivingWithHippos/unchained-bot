@@ -26,7 +26,7 @@ def save_credentials(ci, cs, dc, at, rt):
     with sqlite3.connect(db_path) as chain_db:
         cursor = chain_db.cursor()
 
-        insert_query = "INSERT INTO credentials(client_id, client_secret, device_code, access_token, refresh_token) " \
+        insert_query = "INSERT OR REPLACE INTO credentials(client_id, client_secret, device_code, access_token, refresh_token) " \
                        "VALUES(?,?,?,?,?) "
         errors = False
         try:
