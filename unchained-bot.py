@@ -16,7 +16,6 @@ import time
 from pathlib import Path
 import json
 
-rd = real_debrid.DebridApi
 from debrid.constants import db_path, credentials_scheme
 
 sleep_time = 5
@@ -46,20 +45,10 @@ def unknown(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="Sorry, I didn't understand that command.")
 
 
-def echo(update, context):
-    context.bot.send_message(chat_id=update.effective_chat.id, text=update.message.text)
-
-
-def caps(update, context):
-    text_caps = ' '.join(context.args).upper()
-    context.bot.send_message(chat_id=update.effective_chat.id, text=text_caps)
-
-
-def token(update, context):
-    rd.save_token(context.args)
-    context.bot.send_message(chat_id=update.effective_chat.id,
-                             text="Insert your personal Real-Debrid API token from https://real-debrid.com/apitoken")
-
+# def token(update, context):
+#    save the personal token and add it to all the calls
+#    context.bot.send_message(chat_id=update.effective_chat.id,
+#                             text="Insert your personal Real-Debrid API token from https://real-debrid.com/apitoken")
 
 # step 3 of the login procedure
 def save_credentials(update, context, device_code, verification_result):
