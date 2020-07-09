@@ -11,16 +11,12 @@ from utilities.util import make_get, make_post
 
 last_credentials = {}
 
-chain_db = None
-
 # create database if missing
 if not Path(db_path).is_file():
-    chain_db = sqlite3.connect(db_path)
-    creation_cursor = chain_db.cursor()
-    creation_cursor.execute(credentials_scheme)
-    creation_cursor.close()
-else:
-    chain_db = sqlite3.connect(db_path)
+    with sqlite3.connect(db_path) as my_db:
+        creation_cursor = my_db.cursor()
+        creation_cursor.execute(credentials_scheme)
+        creation_cursor.close()
 
 #################
 #   DATABASE    #
@@ -31,104 +27,104 @@ def save_credentials(ci, cs, dc, at, rt):
     if not disable_old_credentials():
         return True
 
-    cursor = chain_db.cursor()
+    with sqlite3.connect(db_path) as chain_db:
+        cursor = chain_db.cursor()
 
-    insert_query = "INSERT INTO credentials(client_id, client_secret, device_code, access_token, refresh_token) " \
-                   "VALUES(?,?,?,?,?) "
-    errors = False
-    try:
-        cursor.execute(insert_query, (ci, cs, dc, at, rt))
-        chain_db.commit()
-    except Exception as e:
-        print("Error inserting credentials: {e}")
-        errors = True
-        chain_db.rollback()
-        raise e
-    finally:
-        cursor.close()
-        return errors
+        insert_query = "INSERT INTO credentials(client_id, client_secret, device_code, access_token, refresh_token) " \
+                       "VALUES(?,?,?,?,?) "
+        errors = False
+        try:
+            cursor.execute(insert_query, (ci, cs, dc, at, rt))
+            chain_db.commit()
+        except Exception as e:
+            print("Error inserting credentials: {e}")
+            errors = True
+            chain_db.rollback()
+            raise e
+        finally:
+            cursor.close()
+            return errors
 
 
 def update_token(a_token, r_token):
-    cursor = chain_db.cursor()
+    with sqlite3.connect(db_path) as chain_db:
+        cursor = chain_db.cursor()
 
-    update_query = "UPDATE credentials SET access_token = ?, refresh_token = ? WHERE active = 1"
-    errors = False
-    try:
-        cursor.execute(update_query, (a_token, r_token))
-        chain_db.commit()
-    except Exception as e:
-        print("Error inserting tokens: {e}")
-        errors = True
-        chain_db.rollback()
-        raise e
-    finally:
-        cursor.close()
-        return errors
+        update_query = "UPDATE credentials SET access_token = ?, refresh_token = ? WHERE active = 1"
+        errors = False
+        try:
+            cursor.execute(update_query, (a_token, r_token))
+            chain_db.commit()
+        except Exception as e:
+            print("Error inserting tokens: {e}")
+            errors = True
+            chain_db.rollback()
+            raise e
+        finally:
+            cursor.close()
+            return errors
 
 
 def disable_old_credentials():
-    cursor = chain_db.cursor()
-    errors = False
-    disable_query = "UPDATE credentials SET active = 0"
-    try:
-        cursor.execute(disable_query)
-        chain_db.commit()
-    except Exception as e:
-        print("Error while disabling old credentials: {e}")
-        errors = True
-        chain_db.rollback()
-        raise e
-    finally:
-        cursor.close()
-        return errors
+    with sqlite3.connect(db_path) as chain_db:
+        cursor = chain_db.cursor()
+        errors = False
+        disable_query = "UPDATE credentials SET active = 0"
+        try:
+            cursor.execute(disable_query)
+            chain_db.commit()
+        except Exception as e:
+            print("Error while disabling old credentials: {e}")
+            errors = True
+            chain_db.rollback()
+            raise e
+        finally:
+            cursor.close()
+            return errors
 
 
 def disable_credentials(ci):
-    cursor = chain_db.cursor()
-    errors = False
-    disable_query = "UPDATE credentials SET active = 0 WHERE client_id = ?"
-    try:
-        cursor.execute(disable_query, ci)
-        chain_db.commit()
-    except Exception as e:
-        print("Error while disabling credentials for client_id {ci}: {e}")
-        errors = True
-        chain_db.rollback()
-        raise e
-    finally:
-        cursor.close()
-        return errors
+    with sqlite3.connect(db_path) as chain_db:
+        cursor = chain_db.cursor()
+        errors = False
+        disable_query = "UPDATE credentials SET active = 0 WHERE client_id = ?"
+        try:
+            cursor.execute(disable_query, ci)
+            chain_db.commit()
+        except Exception as e:
+            print("Error while disabling credentials for client_id {ci}: {e}")
+            errors = True
+            chain_db.rollback()
+            raise e
+        finally:
+            cursor.close()
+            return errors
 
 
 def get_credentials():
-    cursor = chain_db.cursor()
-    select_query = "SELECT client_id, client_secret, device_code, access_token, refresh_token FROM credentials " \
-                   "WHERE active = 1 "
-    credentials = None
-    try:
-        cursor.execute(select_query)
-        result = cursor.fetchone()
-        # if it's the first launch we have no results
-        if result is not None:
-            credentials = {
-                client_id: result[0],
-                client_secret: result[1],
-                code: result[2],
-                access_token: result[3],
-                refresh_token: result[4]
-            }
-    except Exception as e:
-        print("Error while recovering credentials from database: ", e)
-        raise e
-    finally:
-        cursor.close()
-        return credentials
-
-
-def close_db():
-    if chain_db is not None:
-        chain_db.close()
+    with sqlite3.connect(db_path) as chain_db:
+        cursor = chain_db.cursor()
+        select_query = "SELECT client_id, client_secret, device_code, access_token, refresh_token FROM credentials " \
+                       "WHERE active = 1 "
+        credentials = None
+        try:
+            cursor.execute(select_query)
+            result = cursor.fetchone()
+            # if it's the first launch we have no results
+            if result is not None:
+                credentials = {
+                    client_id: result[0],
+                    client_secret: result[1],
+                    code: result[2],
+                    access_token: result[3],
+                    refresh_token: result[4]
+                }
+        except Exception as e:
+            print("Error while recovering credentials from database: ", e)
+            raise e
+        finally:
+            cursor.close()
+            return credentials
 
 
 #############
