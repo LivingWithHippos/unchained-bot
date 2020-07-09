@@ -1,7 +1,6 @@
 # python bot telegram imports
 import json
 import logging
-
 # python imports
 import time
 from functools import wraps

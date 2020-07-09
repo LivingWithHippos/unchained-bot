@@ -1,8 +1,6 @@
 import json
 from pathlib import Path
 
-import requests
-
 # unchained imports
 import debrid.credentials as credentials
 from debrid.constants import base_url, magnet, host, credentials_file_name, access_token, user_endpoint

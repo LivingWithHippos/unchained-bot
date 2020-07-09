@@ -1,12 +1,10 @@
-import json
 import sqlite3
-
 from pathlib import Path
 
 from debrid.constants import open_source_client_id, credential_url, device_url, new_credentials, \
     client_id, client_secret, code, grant_type, token_url, refresh_token, grant_type_url, db_path, access_token, \
     grant_type_oauth, error_code_bad_token, \
-    base_url, user_endpoint, device_code_param, credentials_scheme
+    base_url, user_endpoint, credentials_scheme
 from utilities.util import make_get, make_post
 
 # create database if missing
