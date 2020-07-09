@@ -9,6 +9,7 @@ from telegram.ext import CommandHandler, MessageHandler
 from functools import wraps
 # unchained imports
 import debrid.real_debrid_api as real_debrid
+import debrid.credentials as credentials
 # python imports
 import time
 from pathlib import Path
@@ -71,7 +72,7 @@ def save_credentials(update, context, device_code, verification_result):
     client_id = verification_result.json()["client_id"]
     client_secret = verification_result.json()["client_secret"]
 
-    result = real_debrid.get_token(client_id,
+    result = credentials.get_token(client_id,
                                    client_secret,
                                    device_code)
 
@@ -82,7 +83,7 @@ def save_credentials(update, context, device_code, verification_result):
         return
 
     refresh_token = result.json()["refresh_token"]
-    real_debrid.save_refresh_token(client_id, client_secret, refresh_token)
+    credentials.save_refresh_token(client_id, client_secret, refresh_token)
 
     # The answer will be a JSON object with the following properties:
     #
@@ -91,7 +92,7 @@ def save_credentials(update, context, device_code, verification_result):
     #     token_type: "Bearer"
     #     refresh_token: token that only expires when your application rights are revoked by user
 
-    real_debrid.save_token_response(result.json())
+    credentials.save_token_response(result.json())
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text="Token obtained and saved")
 
@@ -114,7 +115,7 @@ def wait_confirmation(update, context, device_code):
 
     # The user chooses to authorize your application, and can then close the browser window.
 
-    verification_result = real_debrid.get_verification(device_code)
+    verification_result = credentials.get_verification(device_code)
 
     while verification_result.status_code != 200:
         counter += 1
@@ -133,20 +134,20 @@ def wait_confirmation(update, context, device_code):
         #
         # Your application stores these values and will use them for later requests.
 
-        verification_result = real_debrid.get_verification(device_code)
+        verification_result = credentials.get_verification(device_code)
     # Go to step 3
     save_credentials(update, context, device_code, verification_result)
 
 
 # step 1 of the login procedure
 def login(update, context):
-    if real_debrid.check_credentials():
+    if credentials.check_credentials():
         context.bot.send_message(chat_id=update.effective_chat.id,
                                  text="Credentials correctly loaded")
         return
 
     # using open source token
-    result = real_debrid.get_auth()
+    result = credentials.get_auth()
     device_code = result.json()["device_code"]
 
     # Your application asks the user to go to the verification endpoint (provided by verification_url) and to type
@@ -282,7 +283,7 @@ def main():
         exit(1)
 
     # check the credentials
-    real_debrid.check_credentials()
+    credentials.check_credentials()
 
     # add the commands handler
     token_handler = CommandHandler('token', token)
