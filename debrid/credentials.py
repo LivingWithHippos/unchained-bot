@@ -1,16 +1,26 @@
 import json
 import sqlite3
 
+from pathlib import Path
+
 from debrid.constants import open_source_client_id, credential_url, device_url, new_credentials, \
     client_id, client_secret, code, grant_type, token_url, refresh_token, grant_type_url, db_path, access_token, \
     grant_type_oauth, error_code_bad_token, \
-    base_url, user_endpoint, device_code_param
+    base_url, user_endpoint, device_code_param, credentials_scheme
 from utilities.util import make_get, make_post
 
 last_credentials = {}
 
-chain_db = sqlite3.connect(db_path)
+chain_db = None
 
+# create database if missing
+if not Path(db_path).is_file():
+    chain_db = sqlite3.connect(db_path)
+    creation_cursor = chain_db.cursor()
+    creation_cursor.execute(credentials_scheme)
+    creation_cursor.close()
+else:
+    chain_db = sqlite3.connect(db_path)
 
 #################
 #   DATABASE    #

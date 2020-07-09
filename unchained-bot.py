@@ -1,7 +1,7 @@
 # python bot telegram imports
 import json
 import logging
-import sqlite3
+
 # python imports
 import time
 from functools import wraps
@@ -17,7 +17,6 @@ from telegram.ext import Updater
 import debrid.credentials as credentials
 # unchained imports
 import debrid.real_debrid_api as real_debrid
-from debrid.constants import db_path, credentials_scheme
 
 sleep_time = 5
 
@@ -282,13 +281,8 @@ def main():
         print("Missing bot token file: " + bot_config_path)
         exit(1)
 
-    # create database if missing
-    if not Path(db_path).is_file():
-        chain_db = sqlite3.connect(db_path)
-        creation_cursor = chain_db.cursor()
-        creation_cursor.execute(credentials_scheme)
-        creation_cursor.close()
-        chain_db.close()
+
+
 
     # check the credentials
     credentials.check_credentials()
