@@ -33,7 +33,7 @@ def save_credentials(ci, cs, dc, at, rt):
             cursor.execute(insert_query, (ci, cs, dc, at, rt))
             chain_db.commit()
         except Exception as e:
-            print("Error inserting credentials: {e}")
+            print("Error inserting credentials: ", e)
             errors = True
             chain_db.rollback()
             raise e
