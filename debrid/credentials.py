@@ -108,6 +108,11 @@ def get_credentials():
         try:
             cursor.execute(select_query)
             result = cursor.fetchone()
+        except Exception as e:
+            print("Error while recovering credentials from database: ", e)
+            raise e
+        finally:
+            cursor.close()
             # if it's the first launch we have no results
             if result is not None:
                 credentials = {
@@ -117,11 +122,6 @@ def get_credentials():
                     access_token: result[3],
                     refresh_token: result[4]
                 }
-        except Exception as e:
-            print("Error while recovering credentials from database: ", e)
-            raise e
-        finally:
-            cursor.close()
             return credentials
 
 
