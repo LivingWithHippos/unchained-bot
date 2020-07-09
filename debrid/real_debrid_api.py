@@ -190,7 +190,7 @@ torrents_endpoint = "torrents"
 torrents_url = base_url + torrents_endpoint
 
 
-# Get user downloads list
+# Get user torrents list
 def api_torrents_list(offset=None, page=1, limit=3, _filter=None):
     endpoint = torrents_url
 
@@ -211,12 +211,26 @@ def api_torrents_list(offset=None, page=1, limit=3, _filter=None):
     result = make_get(endpoint, params, access_token=user_credentials[access_token])
 
     torrent_json = result.json()
-    links = []
-    for torrent in torrent_json:
-        if torrent["status"] == "downloaded":
-            links.append(torrent["id"])
 
-    return prettify_json(torrent_json)
+    markdown = ""
+    for torrent in torrent_json:
+        if "filename" in torrent:
+            markdown += "File: **" + torrent["filename"] + "**\n"
+        if "bytes" in torrent:
+            markdown += "Size: " + str('%.3f' % (torrent["bytes"] / (1024 * 1024))) + " MB\n"
+        if "progress" in torrent:
+            if torrent["progress"] != 100:
+                markdown += "Progress: " + str(torrent["progress"]) + "%\n"
+        if "links" in torrent:
+            if len(torrent["links"]) > 0:
+                markdown += "Download Links (unrestrict these first):\n"
+                for link in torrent["links"]:
+                    markdown += link + "\n"
+
+    if len(markdown) > 1:
+        return markdown
+    else:
+        return prettify_json(torrent_json)
 
 
 # Get available hosts to upload the torrent to.
