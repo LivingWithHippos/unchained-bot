@@ -17,16 +17,18 @@ chain_db = sqlite3.connect(db_path)
 #   DATABASE    #
 #################
 # todo: invert return boolean logic
-def save_credentials(cs, dc, rt, ci=open_source_client_id):
+def save_credentials(ci, cs, dc, at, rt):
+    # disable old credentials
     if not disable_old_credentials():
         return True
 
     cursor = chain_db.cursor()
 
-    insert_query = "INSERT INTO credentials(client_id, client_secret, device_code, refresh_token) VALUES(?,?,?,?)"
+    insert_query = "INSERT INTO credentials(client_id, client_secret, device_code, access_token, refresh_token) " \
+                   "VALUES(?,?,?,?,?) "
     errors = False
     try:
-        cursor.execute(insert_query, (ci, cs, dc, rt))
+        cursor.execute(insert_query, (ci, cs, dc, at, rt))
         chain_db.commit()
     except Exception as e:
         print("Error inserting credentials: {e}")
