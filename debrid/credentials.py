@@ -207,7 +207,6 @@ def token_check_and_update(response):
                 print("Error while updating the token")
     else:
         return True
-    return True
 
 
 def check_credentials():
