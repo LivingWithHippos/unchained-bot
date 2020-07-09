@@ -18,6 +18,9 @@ def get_credentials():
     return user_credentials
 
 
+# todo: refactor the api calls, maybe with the class, so that the credentials recovery and check doesn't need to be
+#  added to every api call function
+
 #################
 #   USER API    #
 #################
@@ -28,6 +31,9 @@ user_url = base_url + user_endpoint
 def api_user_get():
     # todo: this method is used to check for status so we initialize user_credentials here
     user_credentials = get_credentials()
+    if user_credentials is None:
+        print("No credentials were loaded, check if the user has gone through the authentication procedure")
+        return None
     result = make_get(user_url, access_token=user_credentials[access_token])
     data = result.json()
     return prettify_json(data, _description="Avatar", _link=data["avatar"])
@@ -99,6 +105,9 @@ def api_unrestrict_link(link, password=None, remote=None):
         data["remote"] = remote
 
     user_credentials = get_credentials()
+    if user_credentials is None:
+        print("No credentials were loaded, check if the user has gone through the authentication procedure")
+        return None
     result = make_post(endpoint, data, access_token=user_credentials[access_token])
 
     pretty_data = prettify_json(data)
@@ -124,6 +133,9 @@ def api_unrestrict_folder(link):
     data = {"link": link}
 
     user_credentials = get_credentials()
+    if user_credentials is None:
+        print("No credentials were loaded, check if the user has gone through the authentication procedure")
+        return None
     result = make_post(endpoint, data, access_token=user_credentials[access_token])
 
     if "error_code" in result.json():
@@ -160,6 +172,9 @@ def api_downloads_list(offset=None, page=1, limit=3):
     data["limit"] = limit
 
     user_credentials = get_credentials()
+    if user_credentials is None:
+        print("No credentials were loaded, check if the user has gone through the authentication procedure")
+        return None
     result = make_get(
         endpoint,
         params=data,
@@ -181,7 +196,7 @@ def api_torrents_list(offset=None, page=1, limit=3, _filter=None):
     endpoint = torrents_url
 
     params = {"page": page}
-    # You can not use both offset and page at the same time, page is prioritzed in case it happens.
+    # You can not use both offset and page at the same time, page is prioritized in case it happens.
     if offset is not None:
         params["offset"] = offset
 
@@ -191,6 +206,9 @@ def api_torrents_list(offset=None, page=1, limit=3, _filter=None):
         params["filter"] = _filter
 
     user_credentials = get_credentials()
+    if user_credentials is None:
+        print("No credentials were loaded, check if the user has gone through the authentication procedure")
+        return None
     result = make_get(endpoint, params, access_token=user_credentials[access_token])
 
     return result.json()
@@ -218,6 +236,10 @@ def api_add_magnet(_magnet):
     data = {magnet: _magnet, host: available_hosts[0][host]}
 
     user_credentials = get_credentials()
+    if user_credentials is None:
+        print("No credentials were loaded, check if the user has gone through the authentication procedure")
+        return None
+
     result = make_post(endpoint, data, access_token=user_credentials[access_token])
 
     if result.status_code != 201:

@@ -24,6 +24,7 @@ bot_config_path = "config.json"
 
 json_markdown_formatting = "```json\n{}\n```"
 
+credentials_missing_message = "No credentials found, please go through the authentication process using the /login command"
 
 def send_action(action):
     """Sends `action` while processing func command."""
@@ -170,6 +171,10 @@ def login(update, context):
 
 def user(update, context):
     user_info = real_debrid.api_user_get()
+    # credentials error
+    if user_info is None:
+        missing_credentials(context, update)
+        return
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text=user_info,
                              parse_mode=telegram.ParseMode.MARKDOWN)
@@ -184,6 +189,10 @@ def check_file(update, context):
 
 def unrestrict_file(update, context):
     file_data = real_debrid.api_unrestrict_link(context.args[0])
+    # credentials error
+    if file_data is None:
+        missing_credentials(context, update)
+        return
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text=file_data,
                              parse_mode=telegram.ParseMode.MARKDOWN)
@@ -193,6 +202,10 @@ def unrestrict_file(update, context):
 #  optionally directly pass the links to the unrestrict function
 def unrestrict_folder(update, context):
     folder_data = real_debrid.api_unrestrict_folder(context.args[0])
+    # credentials error
+    if folder_data is None:
+        missing_credentials(context, update)
+        return
 
     # for long lists of links the message may be too long
     if isinstance(folder_data, list):
@@ -220,6 +233,10 @@ def unrestrict_folder(update, context):
 
 def downloads_list(update, context):
     dlist = real_debrid.api_downloads_list()
+    # credentials error
+    if dlist is None:
+        missing_credentials(context, update)
+        return
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text=dlist,
                              parse_mode=telegram.ParseMode.MARKDOWN)
@@ -248,6 +265,11 @@ def torrents_list(update, context):
     #     }
     links = []
     tlist = real_debrid.api_torrents_list()
+    # credentials error
+    if tlist is None:
+        missing_credentials(context, update)
+        return
+
     for torrent in tlist:
         if torrent["status"] == "downloaded":
             links.append(torrent["id"])
@@ -259,10 +281,19 @@ def torrents_list(update, context):
 
 def add_magnet(update, context):
     response = real_debrid.api_add_magnet(context.args[0])
+    # credentials error
+    if response is None:
+        missing_credentials(context, update)
+        return
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text=response,
                              parse_mode=telegram.ParseMode.MARKDOWN)
 
+
+def missing_credentials(context, update):
+    context.bot.send_message(chat_id=update.effective_chat.id,
+                             text=credentials_missing_message,
+                             parse_mode=telegram.ParseMode.MARKDOWN)
 
 #####################
 #   I START HERE    #
@@ -289,7 +320,7 @@ def main():
         exit(1)
 
     # check the credentials
-    # todo: remove if this value is not useful, there's no point anymore in checking immediately after the db refactor
+    # todo: remove if this value is not useful, there's no point anymore in checking immediately with the db refactor
     credentials_found = credentials.check_credentials()
 
     # add the commands handlers
