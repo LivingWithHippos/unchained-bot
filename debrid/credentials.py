@@ -8,6 +8,7 @@ from debrid.constants import open_source_client_id, client_id_param, credential_
     refresh_token, grant_type_url, db_path, credentials_scheme, access_token, grant_type_oauth, error_code_bad_token, \
     base_url, user_endpoint, device_code_param
 
+from utilities.util import make_get, prettify_json, make_post
 
 last_credentials = {}
 
@@ -124,13 +125,6 @@ def close_db():
 #   LOGIN   #
 #############
 
-
-def get_verification(device_code, cid=open_source_client_id):
-    link = credential_url + "?" + client_id_param.format(cid) + "&" + code_param.format(device_code)
-    result = requests.get(link)
-    return result
-
-
 def get_auth(cid=open_source_client_id):
     # Your application makes a direct request to the device endpoint, with the query string parameters client_id and
     # new_credentials=yes, and obtains a JSON object with authentication data that will be used for the rest of the
@@ -138,17 +132,24 @@ def get_auth(cid=open_source_client_id):
 
     # link = device_url + "?" + client_id_param.format(temp_client_id) + "&" + new_credentials_param
     # result = requests.get(link)
-
-    result = requests.get(
-        device_url,
-        params={client_id: cid,
-                new_credentials: "yes"})
+    result = make_get(device_url,
+                      params={client_id: cid,
+                              new_credentials: "yes"},
+                      use_headers=False)
 
     if result.status_code != 200:
         print("Error logging in, status code ", result.status_code)
         exit(1)
     else:
         return result
+
+
+def get_verification(device_code, cid=open_source_client_id):
+    result = make_get(credential_url,
+                      params={client_id: cid,
+                              device_code_param: device_code},
+                      use_headers=False)
+    return result
 
 
 def get_token(my_client_id, my_client_secret, device_code, my_grant_type=grant_type_url):
@@ -167,7 +168,7 @@ def get_token(my_client_id, my_client_secret, device_code, my_grant_type=grant_t
         grant_type: my_grant_type
     }
 
-    result = requests.post(token_url, data=data)
+    result = make_post(token_url, data=data)
 
     return result
 
