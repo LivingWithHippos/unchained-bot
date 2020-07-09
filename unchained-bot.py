@@ -1,6 +1,7 @@
 # python bot telegram imports
 import logging
 import sqlite3
+
 import telegram
 from telegram import MessageEntity
 from telegram import ChatAction
@@ -23,6 +24,7 @@ sleep_time = 5
 bot_config_path = "config.json"
 
 json_markdown_formatting = "```json\n{}\n```"
+
 
 def send_action(action):
     """Sends `action` while processing func command."""
@@ -132,17 +134,20 @@ def wait_confirmation(update, context, device_code):
 
 # step 1 of the login procedure
 def login(update, context):
+    # credentials are working and loaded. Should also refresh token if necessary
     if credentials.check_credentials():
         context.bot.send_message(chat_id=update.effective_chat.id,
                                  text="Credentials correctly loaded")
         return
 
-    # using open source token
+    # credentials missing, start the authentication process
+
+    # first step, ask for new credentials
     result = credentials.get_auth()
     device_code = result.json()["device_code"]
 
-    # Your application asks the user to go to the verification endpoint (provided by verification_url) and to type
-    # the code provided by user_code.
+    # Second step, your application asks the user to go to the verification endpoint (provided by verification_url)
+    # and to type the code provided by user_code.
 
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text="Go to " +
