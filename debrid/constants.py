@@ -39,4 +39,4 @@ grant_type = "grant_type"
 
 db_path = "user_data/unchaindb"
 credentials_scheme = "CREATE TABLE credentials(client_id TEXT PRIMARY KEY, client_secret TEXT, device_code TEXT" \
-                     ", refresh_token TEXT, active NUMERIC DEFAULT 1 ) "
+                     ", access_token TEXT, refresh_token TEXT, active NUMERIC DEFAULT 1 ) "
