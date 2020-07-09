@@ -104,15 +104,18 @@ IMPORTANT: If this your first time running it, talk to the bot (search for it us
 ## Available Commands
 The plan is to implement all the APIs available [here](https://api.real-debrid.com/).
 
+Parameters between [square brackets] are optional.
+
 | Command  | Action  | Notes   |
 |:---:|:---:|:---:|
 | `/login`  | Start the login flow  | Usually needed only once, at the start  |
+| `/help`  | Shows a message similar to this table  |  |
 | `/user`  | Gives information about the user  |   |
 |  `/unrestrict link` | Unrestrict the `link`  |   |
-|  `/check link` | Check if the `link` is available on the hoster.  |   |
+|  `/check link` | Check if the `link` is available on the hoster.  | Apparently this API does not work |
 |  `/folder folder_link` | Returns all the files in the folder `folder_link`.  |   |
-|  `/downloads` | Returns the last three downloads.  |   |
-|  `/torrents` | Returns the last three torrents.  |   |
+|  `/downloads [number]` | Returns the last five or [number] downloads.  |   |
+|  `/torrents [number]` | Returns the last five or [number] torrents.  |   |
 |  `/magnet magnet_link` | Add `magnet_link` to the torrents.  |   |
 
 ## Development
