@@ -50,8 +50,8 @@ def help_command(update, context):
              " these are the available commands, and these [parameters] are optional:\n "
              "/login - to start the authentication process\n"
              "/help - to see the available commands\n"
-             "/check URL - to see if a file is available on the hoster (has issues)\n"
-             "/unrestrict URL -  to unrestrict a download link\n"
+             "/check URL [password] - to see if a file is available on the hoster (has issues)\n"
+             "/unrestrict URL [password] -  to unrestrict a download link\n"
              "/magnet URL - to unrestrict a magnet\n"
              "/torrents [number] - returns the last five or [number] torrents\n"
              "/downloads [number] - returns the last five or [number] downloads\n"
@@ -192,14 +192,22 @@ def user(update, context):
 
 
 def check_file(update, context):
-    file_status = real_debrid.api_unrestrict_check(context.args[0])
+    file_status = None
+    if len(context.args) < 2:
+        file_status = real_debrid.api_unrestrict_check(context.args[0])
+    else:
+        file_status = real_debrid.api_unrestrict_check(context.args[0], password=context.args[1])
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text=file_status,
                              parse_mode=telegram.ParseMode.MARKDOWN_V2)
 
 
 def unrestrict_file(update, context):
-    file_data = real_debrid.api_unrestrict_link(context.args[0])
+    file_data = None
+    if len(context.args) < 2:
+        file_data = real_debrid.api_unrestrict_link(context.args[0])
+    else:
+        file_data = real_debrid.api_unrestrict_link(context.args[0], password=context.args[1])
     # credentials error
     if file_data is None:
         missing_credentials(context, update)
