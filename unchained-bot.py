@@ -273,12 +273,12 @@ def torrents_list(update, context):
     #         "speed": int, // !! Only present in "downloading", "compressing", "uploading" status
     #         "seeders": int // !! Only present in "downloading", "magnet_conversion" status
     #     }
-    retrieved_links = context.args[0]
+
     tlist = None
-    if retrieved_links.isnumeric():
-        tlist = real_debrid.api_torrents_list(limit=retrieved_links)
+    if len(context.args) > 0 and context.args[0].isnumeric():
+        tlist = real_debrid.api_downloads_list(limit=context.args[0])
     else:
-        tlist = real_debrid.api_torrents_list()
+        tlist = real_debrid.api_downloads_list()
     # credentials error
     if tlist is None:
         missing_credentials(context, update)
