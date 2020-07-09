@@ -5,9 +5,9 @@ import sqlite3
 
 from debrid.constants import open_source_client_id, client_id_param, credential_url, device_url, new_credentials, \
     client_id, client_secret, code, grant_type, token_url, credentials_file_name, code_param, refresh_token_file_name, \
-    refresh_token, grant_type_url, db_path, credentials_scheme
+    refresh_token, grant_type_url, db_path, credentials_scheme, access_token, grant_type_oauth, error_code_bad_token, \
+    base_url, user_endpoint, device_code_param
 
-from debrid.real_debrid_api import error_code_bad_token, user_url
 
 last_credentials = {}
 

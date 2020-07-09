@@ -2,17 +2,15 @@ import json
 import requests
 from pathlib import Path
 
-from debrid.constants import base_url, magnet, host, credentials_file_name
+from debrid.constants import base_url, magnet, host, credentials_file_name, access_token, user_endpoint
 from utilities.util import make_get, prettify_json, make_post
 
-error_code_bad_token = 8
 
 
 #################
 #   USER API    #
 #################
 
-user_endpoint = "user"
 user_url = base_url + user_endpoint
 
 

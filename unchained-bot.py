@@ -1,5 +1,6 @@
 # python bot telegram imports
 import logging
+import sqlite3
 import telegram
 from telegram import MessageEntity
 from telegram import ChatAction
@@ -16,6 +17,7 @@ from pathlib import Path
 import json
 
 rd = real_debrid.DebridApi
+from debrid.constants import db_path, credentials_scheme
 
 sleep_time = 5
 
