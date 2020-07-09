@@ -176,26 +176,22 @@ def get_token(my_client_id, my_client_secret, device_code, my_grant_type=grant_t
 # return true if the token has been updated
 def refresh_current_token():
     global last_credentials
-    refresh = None
-    if Path(refresh_token_file_name).is_file():
-        with open(refresh_token_file_name, 'r') as f:
-            refresh = json.load(f)
-        if refresh is not None:
-            result = requests.post(token_url, data=refresh)
-            if result.status_code != 200:
-                print("Error refreshing token, status code ", result.status_code)
-                return False
-            last_credentials = result.json()
-            write_credentials()
+    credentials = get_credentials()
+    result = make_post(token_url,
+                       data={
+                           client_id : credentials[client_id],
+                           client_secret : credentials[client_secret],
+                           code : credentials[refresh_token],
+                           grant_type : grant_type_oauth,
+                       })
 
-            refresh[code] = last_credentials[refresh_token]
-            write_refresh_token(refresh)
-
-            return True
-
-    else:
-        print("Refresh Token file missing")
+    if result.status_code != 200:
+        print("Error refreshing token, status code ", result.status_code)
         return False
+    result_json = result.json()
+    last_credentials = json
+    update_token(result_json[access_token], result_json[refresh_token])
+    return True
 
 
 # return true if the token was valid or false if it has been updated
