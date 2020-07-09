@@ -21,11 +21,10 @@ if not Path(db_path).is_file():
 #################
 #   DATABASE    #
 #################
-# todo: invert return boolean logic
+
 def save_credentials(ci, cs, dc, at, rt):
     # disable old credentials
-    if not disable_old_credentials():
-        return True
+    disable_old_credentials()
 
     with sqlite3.connect(db_path) as chain_db:
         cursor = chain_db.cursor()
