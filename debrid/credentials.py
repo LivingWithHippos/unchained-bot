@@ -210,38 +210,19 @@ def token_check_and_update(response):
     return True
 
 
+def check_credentials():
+    credentials = get_credentials()
+    if credentials is None:
+        return False
+    if "access_token" not in credentials:
+        return False
+
+    # data was not null, check if token is valid
+    return check_token_call(credentials)
+
+
 # checks the current token using a call to /user
-def check_token_call():
-    global last_credentials
-    headers = {"Authorization": "Bearer {}".format(last_credentials["access_token"])}
-    result = requests.get(
-        user_url,
-        headers=headers
-    )
+def check_token_call(credentials):
+    user_url = base_url + user_endpoint
+    result = make_get(user_url, access_token=credentials["access_token"])
     return token_check_and_update(result)
-
-
-def save_token_response(token):
-    global last_credentials
-    last_credentials = token
-    write_credentials()
-
-
-def write_credentials():
-    with open(credentials_file_name, 'w') as f:
-        json.dump(last_credentials, f, indent=4)
-
-
-def save_refresh_token(my_client_id, my_client_secret, my_refresh_token, my_grant_type=grant_type_url):
-    refresh = {
-        client_id: my_client_id,
-        client_secret: my_client_secret,
-        code: my_refresh_token,
-        grant_type: my_grant_type
-    }
-    write_refresh_token(refresh)
-
-
-def write_refresh_token(refresh):
-    with open(refresh_token_file_name, 'w') as f:
-        json.dump(refresh, f, indent=4)
