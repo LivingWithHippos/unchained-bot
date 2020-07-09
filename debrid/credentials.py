@@ -94,7 +94,8 @@ def disable_credentials(ci):
 
 def get_credentials():
     cursor = chain_db.cursor()
-    select_query = "SELECT client_id, client_secret, device_code, refresh_token FROM credentials SET WHERE active = 1"
+    select_query = "SELECT client_id, client_secret, device_code, access_token, refresh_token FROM credentials " \
+                   "WHERE active = 1 "
     credentials = None
     try:
         cursor.execute(select_query)
@@ -103,10 +104,11 @@ def get_credentials():
             client_id: result[0],
             client_secret: result[1],
             code: result[2],
-            refresh_token: result[3]
+            access_token: result[3],
+            refresh_token: result[4]
         }
     except Exception as e:
-        print("Error while recovering credentials: {e}")
+        print("Error while recovering credentials from database: ", e)
         raise e
     finally:
         cursor.close()
@@ -116,6 +118,7 @@ def get_credentials():
 def close_db():
     if chain_db is not None:
         chain_db.close()
+
 
 #############
 #   LOGIN   #
