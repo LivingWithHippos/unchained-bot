@@ -10,10 +10,11 @@ UnchainedBot is a [Telegram Bot](https://core.telegram.org/bots) that allows you
       - [1. Create your telegram bot](#1-create-your-telegram-bot)
       - [2. Get the repository](#2-get-the-repository)
       - [3. Save your bot's token](#3-save-your-bot-s-token)
-      - [4. Run the software](#4-run-the-software)
+      - [4. Install the software](#4-install-the-software)
         * [Automatic install with pipenv (recomended)](#automatic-install-with-pipenv--recomended-)
         * [Automatic install with setup.py](#automatic-install-with-setuppy)
         * [Manual install](#manual-install)
+      - [5. Talking with the bot](#5-talking-with-the-bot)
   * [Available Commands](#available-commands)
   * [Development](#development)
     + [API Parser](#api-parser)
@@ -46,7 +47,7 @@ Don't use git:
 ```
 You can alternatively copy and paste the file `templates/config.json` and edit its content.
 
-####  4. Run the software
+####  4. Install the software
 
 This part will assume you have python > 3.4 installed.
 
@@ -96,7 +97,9 @@ requests
 python3 unchained-bot.py
 ```
 
-__IMPORTANT: If this your first time running it, talk to the bot (search for it using the username you chose in [step 1](#1-create-your-telegram-bot)) and use `/login` to start the login procedure, which will populate credentials.json).__
+####  5. Talking with the bot
+
+IMPORTANT: If this your first time running it, talk to the bot (search for it using the username you chose in [step 1](#1-create-your-telegram-bot)) and use `/login` to start the login procedure, which will populate credentials.json).
 
 ## Available Commands
 The plan is to implement all the APIs available [here](https://api.real-debrid.com/).
