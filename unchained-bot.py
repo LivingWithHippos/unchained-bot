@@ -59,22 +59,13 @@ def save_credentials(update, context, device_code, verification_result):
     #     client_secret: the value of client_secret provided by the call to the credentials endpoint
     #     code: the value of device_code
     #     grant_type: use the value "http://oauth.net/grant_type/device/1.0"
-
-    client_id = verification_result.json()["client_id"]
-    client_secret = verification_result.json()["client_secret"]
+    verification_json = verification_result.json()
+    client_id = verification_json["client_id"]
+    client_secret = verification_json["client_secret"]
 
     result = credentials.get_token(client_id,
                                    client_secret,
                                    device_code)
-
-    if result.status_code != 200:
-        context.bot.send_message(chat_id=update.effective_chat.id,
-                                 text="Error loading token")
-        print(result.json())
-        return
-
-    refresh_token = result.json()["refresh_token"]
-    credentials.save_refresh_token(client_id, client_secret, refresh_token)
 
     # The answer will be a JSON object with the following properties:
     #
@@ -83,7 +74,16 @@ def save_credentials(update, context, device_code, verification_result):
     #     token_type: "Bearer"
     #     refresh_token: token that only expires when your application rights are revoked by user
 
-    credentials.save_token_response(result.json())
+    if result.status_code != 200:
+        context.bot.send_message(chat_id=update.effective_chat.id,
+                                 text="Error loading token")
+        print(result.json())
+        return
+
+    refresh_json = result.json()
+
+    credentials.save_credentials(client_id, client_secret, device_code, refresh_json["access_token"], refresh_json["refresh_token"])
+
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text="Token obtained and saved")
 
@@ -112,7 +112,7 @@ def wait_confirmation(update, context, device_code):
         counter += 1
         if counter > 30:
             context.bot.send_message(chat_id=update.effective_chat.id,
-                                     text="Wait too long. Restart the login.")
+                                     text="Waited too long. Restart the login procedure.")
             print(verification_result.json())
             return
 
