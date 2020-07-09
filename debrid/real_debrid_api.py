@@ -13,7 +13,7 @@ def get_credentials():
     user_credentials = None
     user_credentials = credentials.get_credentials()
     if user_credentials is None:
-        print("Couldn't load credentials from db, maybe the user skipped the login procedure? Add a check.")
+        print("Couldn't load credentials from db, maybe the user skipped the login procedure?")
 
     return user_credentials
 
