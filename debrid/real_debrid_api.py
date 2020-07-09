@@ -217,7 +217,12 @@ def api_torrents_list(offset=None, page=1, limit=3, _filter=None):
 def api_get_hosts():
     endpoint = torrents_url + "/availableHosts"
 
-    result = make_get(endpoint, use_headers=False)
+    user_credentials = get_credentials()
+    if user_credentials is None:
+        print("No credentials were loaded, check if the user has gone through the authentication procedure")
+        return None
+
+    result = make_get(endpoint, access_token=user_credentials[access_token])
 
     if result.status_code != 200:
         print(result.json())
