@@ -16,9 +16,8 @@ user_credentials = credentials.get_credentials()
 
 user_url = base_url + user_endpoint
 
-
 def api_user_get():
-    result = make_get(user_url)
+    result = make_get(user_url, access_token=user_credentials[access_token])
     data = result.json()
     return prettify_json(data, _description="Avatar", _link=data["avatar"])
 
@@ -43,8 +42,8 @@ def api_unrestrict_check(link, password=None):
 
     result = requests.post(
         endpoint,
-        data=data
-    )
+        data=data,
+        use_headers=False)
 
     check = result.json()
 
@@ -88,7 +87,7 @@ def api_unrestrict_link(link, password=None, remote=None):
     if remote is not None:
         data["remote"] = remote
 
-    result = make_post(endpoint, data)
+    result = make_post(endpoint, data, access_token=user_credentials[access_token])
 
     pretty_data = prettify_json(data)
 
@@ -112,7 +111,7 @@ def api_unrestrict_folder(link):
 
     data = {"link": link}
 
-    result = make_post(endpoint, data)
+    result = make_post(endpoint, data, access_token=user_credentials[access_token])
 
     if "error_code" in result.json():
         return result.json()
@@ -149,8 +148,8 @@ def api_downloads_list(offset=None, page=1, limit=3):
 
     result = make_get(
         endpoint,
-        params=data
-    )
+        params=data,
+        access_token=user_credentials[access_token])
 
     return prettify_json(result.json())
 
@@ -177,7 +176,7 @@ def api_torrents_list(offset=None, page=1, limit=3, _filter=None):
     if _filter is not None:
         params["filter"] = _filter
 
-    result = make_get(endpoint, params)
+    result = make_get(endpoint, params, access_token=user_credentials[access_token])
 
     return result.json()
 
@@ -186,7 +185,7 @@ def api_torrents_list(offset=None, page=1, limit=3, _filter=None):
 def api_get_hosts():
     endpoint = torrents_url + "/availableHosts"
 
-    result = make_get(endpoint)
+    result = make_get(endpoint, use_headers=False)
 
     if result.status_code != 200:
         print(result.json())
@@ -203,7 +202,7 @@ def api_add_magnet(_magnet):
         return "Error checking available hosts. Check logs and/or retry."
     data = {magnet: _magnet, host: available_hosts[0][host]}
 
-    result = make_post(endpoint, data)
+    result = make_post(endpoint, data, access_token=user_credentials[access_token])
 
     if result.status_code != 201:
         return prettify_json(result.json())
@@ -220,7 +219,7 @@ def api_add_magnet(_magnet):
 def api_select_files(_id, select="all"):
     endpoint = torrents_url + "/selectFiles/{}".format(_id)
     data = {"files": select}
-    result = make_post(endpoint, data)
+    result = make_post(endpoint, data, access_token=user_credentials[access_token])
 
     return result
 
