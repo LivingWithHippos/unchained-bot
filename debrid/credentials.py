@@ -184,7 +184,8 @@ def refresh_current_token():
                            client_secret: credentials[client_secret],
                            code: credentials[refresh_token],
                            grant_type: grant_type_oauth,
-                       })
+                       },
+                       use_headers=False)
 
     if result.status_code != 200:
         print("Error refreshing token, status code ", result.status_code)
