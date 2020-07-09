@@ -40,16 +40,16 @@ def save_credentials(ci, cs, dc, at, rt):
         return errors
 
 
-def update_token(token):
+def update_token(a_token, r_token):
     cursor = chain_db.cursor()
 
-    update_query = "UPDATE credentials SET refresh_token = ? WHERE active = 1"
+    update_query = "UPDATE credentials SET access_token = ?, refresh_token = ? WHERE active = 1"
     errors = False
     try:
-        cursor.execute(update_query, token)
+        cursor.execute(update_query, (a_token, r_token))
         chain_db.commit()
     except Exception as e:
-        print("Error inserting credentials: {e}")
+        print("Error inserting tokens: {e}")
         errors = True
         chain_db.rollback()
         raise e
