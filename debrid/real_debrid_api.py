@@ -181,7 +181,29 @@ def api_downloads_list(offset=None, page=1, limit=3):
         params=data,
         access_token=user_credentials[access_token])
 
-    return prettify_json(result.json())
+    download_json = result.json()
+    markdown = ""
+
+    for download in download_json:
+        if "filename" in download:
+            markdown += "*" + escape_markdown(download["filename"], version=2) + "*\n"
+        if "filesize" in download:
+            markdown += "Size: " + escape_markdown(str('%.2f' % (download["filesize"] / (1024 * 1024))),
+                                                   version=2) + " MB\n"
+        if "download" in download:
+            markdown += escape_markdown("Download Link:\n"+download["download"] + "\n", version=2)
+        if "streamable" in download:
+            streamable = "No"
+            if download["streamable"] == 1:
+                streamable = "Yes"
+            markdown += escape_markdown("Streamable: "+streamable + "\n", version=2)
+
+        markdown += "\n"
+
+    if len(markdown) > 5:
+        return markdown
+    else:
+        return prettify_json(download_json)
 
 
 ######################
