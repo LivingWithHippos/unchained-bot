@@ -42,8 +42,14 @@ def send_action(action):
 send_typing_action = send_action(ChatAction.TYPING)
 
 
+def help(update, context):
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Welcome to the unchained-bot, these are the available commands:\n"
+                                                                    "/login to start the authentication process\n"
+                                                                    "/user to get information about yourself")
+
+
 def unknown(update, context):
-    context.bot.send_message(chat_id=update.effective_chat.id, text="Sorry, I didn't understand that command.")
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Sorry, I didn't understand that command. Use /help to see a list of possible commands.")
 
 
 # def token(update, context):
@@ -292,6 +298,9 @@ def main():
     # todo: add support for personal real debrid token
     # token_handler = CommandHandler('token', token)
     # dispatcher.add_handler(token_handler)
+
+    help_handler = CommandHandler('help', help)
+    dispatcher.add_handler(help_handler)
 
     login_handler = CommandHandler('login', login)
     dispatcher.add_handler(login_handler)
