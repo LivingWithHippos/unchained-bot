@@ -210,7 +210,13 @@ def api_torrents_list(offset=None, page=1, limit=3, _filter=None):
         return None
     result = make_get(endpoint, params, access_token=user_credentials[access_token])
 
-    return result.json()
+    torrent_json = result.json()
+    links = []
+    for torrent in torrent_json:
+        if torrent["status"] == "downloaded":
+            links.append(torrent["id"])
+
+    return prettify_json(torrent_json)
 
 
 # Get available hosts to upload the torrent to.

@@ -272,16 +272,12 @@ def torrents_list(update, context):
     #         "speed": int, // !! Only present in "downloading", "compressing", "uploading" status
     #         "seeders": int // !! Only present in "downloading", "magnet_conversion" status
     #     }
-    links = []
+
     tlist = real_debrid.api_torrents_list()
     # credentials error
     if tlist is None:
         missing_credentials(context, update)
         return
-
-    for torrent in tlist:
-        if torrent["status"] == "downloaded":
-            links.append(torrent["id"])
 
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text=tlist,
