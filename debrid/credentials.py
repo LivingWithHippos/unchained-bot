@@ -173,22 +173,7 @@ def get_token(my_client_id, my_client_secret, device_code, my_grant_type=grant_t
     return result
 
 
-def check_credentials():
-    global last_credentials
-    if Path(credentials_file_name).is_file():
-        with open(credentials_file_name, 'r') as f:
-            data = json.load(f)
-            last_credentials = data
-
-        if "access_token" not in last_credentials:
-            return False
-        # refresh the token if present
-        return check_token_call()
-
-    else:
-        return False
-
-
+# return true if the token has been updated
 def refresh_current_token():
     global last_credentials
     refresh = None
