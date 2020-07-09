@@ -319,10 +319,6 @@ def main():
         print("Missing bot token file: " + bot_config_path)
         exit(1)
 
-    # check the credentials
-    # todo: remove if this value is not useful, there's no point anymore in checking immediately with the db refactor
-    credentials_found = credentials.check_credentials()
-
     # add the commands handlers
 
     # todo: add support for personal real debrid token
