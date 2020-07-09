@@ -96,7 +96,7 @@ requests
 python3 unchained-bot.py
 ```
 
-If this your first time running it, talk to the bot (search for it using the username you chose in [step 1](#1-create-your-telegram-bot)) and use `/login` to start the login procedure.
+__IMPORTANT: If this your first time running it, talk to the bot (search for it using the username you chose in [step 1](#1-create-your-telegram-bot)) and use `/login` to start the login procedure, which will populate credentials.json).__
 
 ## Available Commands
 The plan is to implement all the APIs available [here](https://api.real-debrid.com/).
