@@ -289,9 +289,11 @@ def main():
     # check the credentials
     credentials.check_credentials()
 
-    # add the commands handler
-    token_handler = CommandHandler('token', token)
-    dispatcher.add_handler(token_handler)
+    # add the commands handlers
+
+    # todo: add support for personal real debrid token
+    # token_handler = CommandHandler('token', token)
+    # dispatcher.add_handler(token_handler)
 
     login_handler = CommandHandler('login', login)
     dispatcher.add_handler(login_handler)
