@@ -25,6 +25,7 @@ json_markdown_formatting = "```json\n{}\n```"
 
 credentials_missing_message = "No credentials found, please go through the authentication process using the /login command"
 
+
 def send_action(action):
     """Sends `action` while processing func command."""
 
@@ -43,19 +44,22 @@ send_typing_action = send_action(ChatAction.TYPING)
 
 
 def help_command(update, context):
-    context.bot.send_message(chat_id=update.effective_chat.id, text="Welcome to the unchained-bot, these are the available commands:\n"
-                                                                    "/login - to start the authentication process\n"
-                                                                    "/help - to see the available commands\n"
-                                                                    "/check URL - to see if a file is available on the hoster\n"
-                                                                    "/unrestrict URL -  unrestrict a download link\n"
-                                                                    "/magnet URL - to unrestrict a magnet\n"
-                                                                    "/torrents - to see the torrents list\n"
-                                                                    "/downloads - to see the downloads list\n"
+    context.bot.send_message(chat_id=update.effective_chat.id,
+                             text="Welcome to the unchained-bot, these are the available commands:\n "
+                                  "/login - to start the authentication process\n"
+                                  "/help - to see the available commands\n"
+                                  "/check URL - to see if a file is available on the hoster (has issues)\n"
+                                  "/unrestrict URL -  to unrestrict a download link\n"
+                                  "/magnet URL - to unrestrict a magnet\n"
+                                  "/torrents - to see the torrents list\n"
+                                  "/downloads - to see the downloads list\n"
                              )
 
 
 def unknown(update, context):
-    context.bot.send_message(chat_id=update.effective_chat.id, text="Sorry, I didn't understand that command. Use /help to see a list of possible commands.")
+    context.bot.send_message(chat_id=update.effective_chat.id,
+                             text="Sorry, I didn't understand that command. Use /help to see a list of possible "
+                                  "commands.")
 
 
 # def token(update, context):
@@ -299,6 +303,7 @@ def missing_credentials(context, update):
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text=credentials_missing_message,
                              parse_mode=telegram.ParseMode.MARKDOWN)
+
 
 #####################
 #   I START HERE    #
