@@ -111,17 +111,29 @@ def api_unrestrict_link(link, password=None, remote=None):
         return None
     result = make_post(endpoint, data, access_token=user_credentials[access_token])
 
-    pretty_data = prettify_json(data)
+    download = result.json()
 
-    if "error_code" in data:
-        return pretty_data
+    if "error_code" in download:
+        return prettify_json(download)
 
-    if "download" in result.json():
-        output = "[Download link](" + result.json()["download"] + ")\n"
-        pretty_data += output
-        return output
+    markdown = ""
+    if "filename" in download:
+        markdown += "*" + escape_markdown(download["filename"], version=2) + "*\n"
+    if "filesize" in download:
+        markdown += "Size: " + escape_markdown(str('%.2f' % (download["filesize"] / (1024 * 1024))),
+                                                   version=2) + " MB\n"
+    if "download" in download:
+        markdown += escape_markdown("Download Link:\n"+download["download"] + "\n", version=2)
+    if "streamable" in download:
+        streamable = "No"
+        if download["streamable"] == 1:
+            streamable = "Yes"
+        markdown += escape_markdown("Streamable: "+streamable + "\n", version=2)
 
-    return pretty_data
+    if len(markdown) > 5:
+        return markdown
+    else:
+        return prettify_json(download)
 
 
 # Unrestrict a hoster folder link and get individual links, returns an empty array if no links found.
