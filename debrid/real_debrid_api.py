@@ -2,6 +2,8 @@ import json
 from pathlib import Path
 
 # unchained imports
+from telegram.utils.helpers import escape_markdown
+
 import debrid.credentials as credentials
 from debrid.constants import base_url, magnet, host, credentials_file_name, access_token, user_endpoint
 from utilities.util import make_get, prettify_json, make_post
@@ -191,7 +193,7 @@ torrents_url = base_url + torrents_endpoint
 
 
 # Get user torrents list
-def api_torrents_list(offset=None, page=1, limit=3, _filter=None):
+def api_torrents_list(offset=None, page=1, limit=5, _filter=None):
     endpoint = torrents_url
 
     params = {"page": page}
@@ -215,19 +217,21 @@ def api_torrents_list(offset=None, page=1, limit=3, _filter=None):
     markdown = ""
     for torrent in torrent_json:
         if "filename" in torrent:
-            markdown += "File: **" + torrent["filename"] + "**\n"
+            markdown += "*" + escape_markdown(torrent["filename"], version=2) + "*\n"
         if "bytes" in torrent:
-            markdown += "Size: " + str('%.3f' % (torrent["bytes"] / (1024 * 1024))) + " MB\n"
+            markdown += "Size: " + escape_markdown(str('%.2f' % (torrent["bytes"] / (1024 * 1024))),
+                                                   version=2) + " MB\n"
         if "progress" in torrent:
             if torrent["progress"] != 100:
-                markdown += "Progress: " + str(torrent["progress"]) + "%\n"
+                markdown += escape_markdown("Progress: " + str(torrent["progress"]) + "%\n", version=2)
         if "links" in torrent:
             if len(torrent["links"]) > 0:
-                markdown += "Download Links (unrestrict these first):\n"
+                markdown += escape_markdown("Download Links (unrestrict these first):\n", version=2)
                 for link in torrent["links"]:
-                    markdown += link + "\n"
+                    markdown += escape_markdown(link + "\n", version=2)
+        markdown += "\n"
 
-    if len(markdown) > 1:
+    if len(markdown) > 5:
         return markdown
     else:
         return prettify_json(torrent_json)
