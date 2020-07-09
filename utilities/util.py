@@ -24,13 +24,18 @@ def get_headers(access_token):
 # request.post() call helper
 # we should just check if access_token is None instead of using use_headers
 def make_post(endpoint, data, retry=True, use_headers=True, access_token=None):
+    result = None
     if use_headers:
-        headers = get_headers(access_token)
-        result = requests.post(
-            endpoint,
-            data=data,
-            headers=headers
-        )
+        if access_token is not None:
+            headers = get_headers(access_token)
+            result = requests.post(
+                endpoint,
+                data=data,
+                headers=headers
+            )
+        else:
+            print("ERROR: Headers were requested but access_token was None")
+            return None
     else:
         result = requests.post(
             endpoint,
@@ -39,7 +44,7 @@ def make_post(endpoint, data, retry=True, use_headers=True, access_token=None):
 
     if retry:
         if result.status_code < 200 or result.status_code > 299:
-            result = make_post(endpoint, data, False, use_headers, access_token)
+            result = make_post(endpoint, data, retry=False, use_headers=use_headers, access_token=access_token)
 
     return result
 
