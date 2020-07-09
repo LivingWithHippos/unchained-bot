@@ -155,6 +155,9 @@ def login(update, context):
                                   " and paste the code")
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text=result.json()["user_code"])
+    context.bot.send_message(chat_id=update.effective_chat.id,
+                             text="Or directly visit " +
+                                  result.json()["direct_verification_url"])
     wait_confirmation(update, context, device_code)
 
 
