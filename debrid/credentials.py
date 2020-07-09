@@ -13,12 +13,6 @@ last_credentials = {}
 
 chain_db = sqlite3.connect(db_path)
 
-if not Path(db_path).is_file():
-    creation_cursor = chain_db.cursor()
-    creation_cursor.execute(credentials_scheme)
-    creation_cursor.close()
-
-
 #################
 #   DATABASE    #
 #################
