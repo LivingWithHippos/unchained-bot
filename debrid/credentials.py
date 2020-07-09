@@ -196,6 +196,7 @@ def refresh_current_token():
 
 # return true if the token was valid or false if it has been updated
 def token_check_and_update(response):
+    global last_credentials
     if "error_code" in response.json():
         if response.json()["error_code"] == error_code_bad_token:
             updated_token = refresh_current_token()
@@ -204,6 +205,7 @@ def token_check_and_update(response):
             else:
                 print("Error while updating the token")
     else:
+        last_credentials = response.json()
         return True
     return True
 
