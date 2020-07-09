@@ -5,7 +5,10 @@ from pathlib import Path
 from debrid.constants import base_url, magnet, host, credentials_file_name, access_token, user_endpoint
 from utilities.util import make_get, prettify_json, make_post
 
+# unchained imports
+import debrid.credentials as credentials
 
+user_credentials = credentials.get_credentials()
 
 #################
 #   USER API    #
