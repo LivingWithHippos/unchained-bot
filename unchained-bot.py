@@ -43,7 +43,7 @@ def send_action(action):
 send_typing_action = send_action(ChatAction.TYPING)
 
 
-def help(update, context):
+def help_command(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="Welcome to the unchained-bot, these are the available commands:\n"
                                                                     "/login to start the authentication process\n"
                                                                     "/user to get information about yourself")
@@ -329,7 +329,7 @@ def main():
     # token_handler = CommandHandler('token', token)
     # dispatcher.add_handler(token_handler)
 
-    help_handler = CommandHandler('help', help)
+    help_handler = CommandHandler('help', help_command)
     dispatcher.add_handler(help_handler)
 
     login_handler = CommandHandler('login', login)
