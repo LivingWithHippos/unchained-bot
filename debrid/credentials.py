@@ -99,13 +99,15 @@ def get_credentials():
     try:
         cursor.execute(select_query)
         result = cursor.fetchone()
-        credentials = {
-            client_id: result[0],
-            client_secret: result[1],
-            code: result[2],
-            access_token: result[3],
-            refresh_token: result[4]
-        }
+        # if it's the first launch we have no results
+        if result is not None:
+            credentials = {
+                client_id: result[0],
+                client_secret: result[1],
+                code: result[2],
+                access_token: result[3],
+                refresh_token: result[4]
+            }
     except Exception as e:
         print("Error while recovering credentials from database: ", e)
         raise e
