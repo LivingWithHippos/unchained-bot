@@ -186,14 +186,14 @@ def user(update, context):
         return
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text=user_info,
-                             parse_mode=telegram.ParseMode.MARKDOWN)
+                             parse_mode=telegram.ParseMode.MARKDOWN_V2)
 
 
 def check_file(update, context):
     file_status = real_debrid.api_unrestrict_check(context.args[0])
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text=file_status,
-                             parse_mode=telegram.ParseMode.MARKDOWN)
+                             parse_mode=telegram.ParseMode.MARKDOWN_V2)
 
 
 def unrestrict_file(update, context):
@@ -204,7 +204,7 @@ def unrestrict_file(update, context):
         return
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text=file_data,
-                             parse_mode=telegram.ParseMode.MARKDOWN)
+                             parse_mode=telegram.ParseMode.MARKDOWN_V2)
 
 
 # todo: check if it is normal that a list of restricted link is returned
@@ -233,11 +233,11 @@ def unrestrict_folder(update, context):
         for message in messages:
             context.bot.send_message(chat_id=update.effective_chat.id,
                                      text=message,
-                                     parse_mode=telegram.ParseMode.MARKDOWN)
+                                     parse_mode=telegram.ParseMode.MARKDOWN_V2)
     else:
         context.bot.send_message(chat_id=update.effective_chat.id,
                                  text=folder_data,
-                                 parse_mode=telegram.ParseMode.MARKDOWN)
+                                 parse_mode=telegram.ParseMode.MARKDOWN_V2)
 
 
 def downloads_list(update, context):
@@ -248,7 +248,7 @@ def downloads_list(update, context):
         return
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text=dlist,
-                             parse_mode=telegram.ParseMode.MARKDOWN)
+                             parse_mode=telegram.ParseMode.MARKDOWN_V2)
 
 
 def torrents_list(update, context):
@@ -281,7 +281,7 @@ def torrents_list(update, context):
 
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text=tlist,
-                             parse_mode=telegram.ParseMode.MARKDOWN)
+                             parse_mode=telegram.ParseMode.MARKDOWN_V2)
 
 
 def add_magnet(update, context):
@@ -292,13 +292,13 @@ def add_magnet(update, context):
         return
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text=response,
-                             parse_mode=telegram.ParseMode.MARKDOWN)
+                             parse_mode=telegram.ParseMode.MARKDOWN_V2)
 
 
 def missing_credentials(context, update):
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text=credentials_missing_message,
-                             parse_mode=telegram.ParseMode.MARKDOWN)
+                             parse_mode=telegram.ParseMode.MARKDOWN_V2)
 
 
 #####################
