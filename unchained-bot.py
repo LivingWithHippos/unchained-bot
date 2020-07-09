@@ -44,17 +44,18 @@ send_typing_action = send_action(ChatAction.TYPING)
 
 
 def help_command(update, context):
-    context.bot.send_message(chat_id=update.effective_chat.id,
-                             text="Welcome to the unchained-bot.\n"
-                                  " these are the available commands, and these [parameters] are optional:\n "
-                                  "/login - to start the authentication process\n"
-                                  "/help - to see the available commands\n"
-                                  "/check URL - to see if a file is available on the hoster (has issues)\n"
-                                  "/unrestrict URL -  to unrestrict a download link\n"
-                                  "/magnet URL - to unrestrict a magnet\n"
-                                  "/torrents [links_number]- gets [links_number] torrents from the list (default 5)\n"
-                                  "/downloads - to see the downloads list\n"
-                             )
+    context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text="Welcome to the unchained-bot.\n"
+             " these are the available commands, and these [parameters] are optional:\n "
+             "/login - to start the authentication process\n"
+             "/help - to see the available commands\n"
+             "/check URL - to see if a file is available on the hoster (has issues)\n"
+             "/unrestrict URL -  to unrestrict a download link\n"
+             "/magnet URL - to unrestrict a magnet\n"
+             "/torrents [number] - returns the last five or [number] torrents\n"
+             "/downloads [number] - returns the last five or [number] downloads\n"
+    )
 
 
 def unknown(update, context):
@@ -242,7 +243,11 @@ def unrestrict_folder(update, context):
 
 
 def downloads_list(update, context):
-    dlist = real_debrid.api_downloads_list()
+    dlist = None
+    if len(context.args) > 0 and context.args[0].isnumeric():
+        dlist = real_debrid.api_downloads_list(limit=context.args[0])
+    else:
+        dlist = real_debrid.api_downloads_list()
     # credentials error
     if dlist is None:
         missing_credentials(context, update)
