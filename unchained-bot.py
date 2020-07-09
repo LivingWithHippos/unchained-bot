@@ -99,7 +99,7 @@ def save_credentials(update, context, device_code, verification_result):
 
 # step 2 of the login procedure
 def wait_confirmation(update, context, device_code):
-    time.sleep(sleep_time * 2)
+    time.sleep(sleep_time)
     counter = 0
 
     # Using the value of device_code, every 5 seconds your application starts making direct requests to the
@@ -119,7 +119,7 @@ def wait_confirmation(update, context, device_code):
 
     while verification_result.status_code != 200:
         counter += 1
-        if counter > 30:
+        if counter > 60:
             context.bot.send_message(chat_id=update.effective_chat.id,
                                      text="Waited too long. Restart the login procedure.")
             print(verification_result.json())
