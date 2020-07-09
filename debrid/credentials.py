@@ -174,7 +174,7 @@ def get_token(my_client_id, my_client_secret, device_code, my_grant_type=grant_t
         grant_type: my_grant_type
     }
 
-    result = make_post(token_url, data=data)
+    result = make_post(token_url, data=data, use_headers=False)
 
     return result
 
