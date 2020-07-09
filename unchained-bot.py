@@ -57,6 +57,7 @@ def unknown(update, context):
 #    context.bot.send_message(chat_id=update.effective_chat.id,
 #                             text="Insert your personal Real-Debrid API token from https://real-debrid.com/apitoken")
 
+# todo: change method name to avoid confusion with credentials.save_credentials
 # step 3 of the login procedure
 def save_credentials(update, context, device_code, verification_result):
     # Using the value of device_code, your application makes a direct POST request to the token endpoint,
@@ -287,11 +288,9 @@ def main():
         print("Missing bot token file: " + bot_config_path)
         exit(1)
 
-
-
-
     # check the credentials
-    credentials.check_credentials()
+    # todo: remove if this value is not useful, there's no point anymore in checking immediately after the db refactor
+    credentials_found = credentials.check_credentials()
 
     # add the commands handlers
 
