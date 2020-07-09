@@ -46,6 +46,7 @@ unrestrict_url = base_url + unrestrict_endpoint
 
 
 # Check if a file is downloadable on the concerned hoster. This request is not requiring authentication.
+# fixme: this returns always file_unavailable even when it's available. Error on their side?
 def api_unrestrict_check(link, password=None):
     if link is None or len(link) < 5:
         return "Command syntax is `/unrestrict  www.your_link.com, please retry"
