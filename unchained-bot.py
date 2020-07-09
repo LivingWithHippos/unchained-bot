@@ -45,13 +45,14 @@ send_typing_action = send_action(ChatAction.TYPING)
 
 def help_command(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id,
-                             text="Welcome to the unchained-bot, these are the available commands:\n "
+                             text="Welcome to the unchained-bot.\n"
+                                  " these are the available commands, and these [parameters] are optional:\n "
                                   "/login - to start the authentication process\n"
                                   "/help - to see the available commands\n"
                                   "/check URL - to see if a file is available on the hoster (has issues)\n"
                                   "/unrestrict URL -  to unrestrict a download link\n"
                                   "/magnet URL - to unrestrict a magnet\n"
-                                  "/torrents - to see the torrents list\n"
+                                  "/torrents [links_number]- gets [links_number] torrents from the list (default 5)\n"
                                   "/downloads - to see the downloads list\n"
                              )
 
@@ -272,8 +273,12 @@ def torrents_list(update, context):
     #         "speed": int, // !! Only present in "downloading", "compressing", "uploading" status
     #         "seeders": int // !! Only present in "downloading", "magnet_conversion" status
     #     }
-
-    tlist = real_debrid.api_torrents_list()
+    retrieved_links = context.args[0]
+    tlist = None
+    if retrieved_links.isnumeric():
+        tlist = real_debrid.api_torrents_list(limit=retrieved_links)
+    else:
+        tlist = real_debrid.api_torrents_list()
     # credentials error
     if tlist is None:
         missing_credentials(context, update)
