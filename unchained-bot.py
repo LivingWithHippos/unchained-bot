@@ -16,6 +16,7 @@ from telegram.ext import Updater
 import debrid.credentials as credentials
 # unchained imports
 import debrid.real_debrid_api as real_debrid
+from debrid.constants import credentials_mode_private
 
 sleep_time = 5
 
@@ -339,6 +340,32 @@ def add_magnet(update, context):
                              parse_mode=telegram.ParseMode.MARKDOWN_V2)
 
 
+def set_private_token(update, context):
+    if len(context.args) < 1:
+        context.bot.send_message(chat_id=update.effective_chat.id,
+                                 text="Please add the token after the command -> /set_token TOKEN",
+                                 parse_mode=telegram.ParseMode.MARKDOWN_V2)
+        return
+
+    token_updated = credentials.set_private_token(context.args[0])
+    if token_updated:
+        setting_updated = credentials.update_credentials_mode(credentials_mode_private)
+        if setting_updated:
+            context.bot.send_message(chat_id=update.effective_chat.id,
+                                     text="Token added, api mode set to private token. Use /set_credentials_mode MODE to switch mode.",
+                                     parse_mode=telegram.ParseMode.MARKDOWN_V2)
+        else:
+            context.bot.send_message(chat_id=update.effective_chat.id,
+                                     text="Token added, couldn't set mode to private_token_api. Check logs.",
+                                     parse_mode=telegram.ParseMode.MARKDOWN_V2)
+    else:
+        context.bot.send_message(chat_id=update.effective_chat.id,
+                                 text="Couldn't add token to db. Check logs.",
+                                 parse_mode=telegram.ParseMode.MARKDOWN_V2)
+
+
+
+
 def missing_credentials(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text=credentials_missing_message,
@@ -385,6 +412,9 @@ def main():
 
     api_user_handler = CommandHandler('user', user)
     dispatcher.add_handler(api_user_handler)
+
+    api_set_token_handler = CommandHandler('set_token', set_private_token)
+    dispatcher.add_handler(api_set_token_handler)
 
     # todo: add support for personal real debrid token
     # token_handler = CommandHandler('token', token)
