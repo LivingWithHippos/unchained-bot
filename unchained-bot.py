@@ -16,7 +16,7 @@ from telegram.ext import Updater
 import debrid.credentials as credentials
 # unchained imports
 import debrid.real_debrid_api as real_debrid
-from debrid.constants import credentials_mode_private
+from debrid.constants import credentials_mode_private, credentials_mode_open
 
 sleep_time = 5
 
@@ -364,6 +364,35 @@ def set_private_token(update, context):
                                  parse_mode=telegram.ParseMode.MARKDOWN_V2)
 
 
+def set_credentials_mode(update, context):
+    if len(context.args) < 1:
+        context.bot.send_message(chat_id=update.effective_chat.id,
+                                 text="Please add either private or open after the command -> /set_credentials_mode [open|private]",
+                                 parse_mode=telegram.ParseMode.MARKDOWN_V2)
+        return
+
+    if str(context.args[0]).find("private") >= 0:
+        setting_updated = credentials.update_credentials_mode(credentials_mode_private)
+        if setting_updated:
+            context.bot.send_message(chat_id=update.effective_chat.id,
+                                     text="Api Mode set to private token.",
+                                     parse_mode=telegram.ParseMode.MARKDOWN_V2)
+        else:
+            context.bot.send_message(chat_id=update.effective_chat.id,
+                                     text="Error setting Api Mode to private token. Check the logs",
+                                     parse_mode=telegram.ParseMode.MARKDOWN_V2)
+        return
+
+    if str(context.args[0]).find("open") >= 0:
+        setting_updated = credentials.update_credentials_mode(credentials_mode_open)
+        if setting_updated:
+            context.bot.send_message(chat_id=update.effective_chat.id,
+                                     text="Api Mode set to open token.",
+                                     parse_mode=telegram.ParseMode.MARKDOWN_V2)
+        else:
+            context.bot.send_message(chat_id=update.effective_chat.id,
+                                     text="Error setting Api Mode to open source. Check the logs",
+                                     parse_mode=telegram.ParseMode.MARKDOWN_V2)
 
 
 def missing_credentials(update, context):
@@ -415,6 +444,9 @@ def main():
 
     api_set_token_handler = CommandHandler('set_token', set_private_token)
     dispatcher.add_handler(api_set_token_handler)
+
+    api_set_credentials_mode_handler = CommandHandler('set_credentials_mode', set_credentials_mode)
+    dispatcher.add_handler(api_set_credentials_mode_handler)
 
     # todo: add support for personal real debrid token
     # token_handler = CommandHandler('token', token)
