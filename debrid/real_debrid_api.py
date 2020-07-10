@@ -1,4 +1,5 @@
 import json
+import re
 from pathlib import Path
 
 # unchained imports
@@ -121,14 +122,14 @@ def api_unrestrict_link(link, password=None, remote=None):
         markdown += "*" + escape_markdown(download["filename"], version=2) + "*\n"
     if "filesize" in download:
         markdown += "Size: " + escape_markdown(str('%.2f' % (download["filesize"] / (1024 * 1024))),
-                                                   version=2) + " MB\n"
+                                               version=2) + " MB\n"
     if "download" in download:
-        markdown += escape_markdown("Download Link:\n"+download["download"] + "\n", version=2)
+        markdown += escape_markdown("Download Link:\n" + download["download"] + "\n", version=2)
     if "streamable" in download:
         streamable = "No"
         if download["streamable"] == 1:
             streamable = "Yes"
-        markdown += escape_markdown("Streamable: "+streamable + "\n", version=2)
+        markdown += escape_markdown("Streamable: " + streamable + "\n", version=2)
 
     if len(markdown) > 5:
         return markdown
@@ -158,6 +159,46 @@ def api_unrestrict_folder(link):
         return "The folder was empty"
 
     return result.json()
+
+
+#######################
+#    STREAMING API    #
+#######################
+
+# todo: this endpoint isn't supported without a personal api key. Open source client_id is not allowed
+
+streaming_endpoint = "streaming/"
+streaming_url = base_url + streaming_endpoint
+rd_id_pattern = "https://real-debrid.com/d/([\w]+)"
+
+# Get streaming links from a streamable source
+def api_streaming_transcode(link):
+    user_credentials = get_credentials()
+    if user_credentials is None:
+        print("No credentials were loaded, check if the user has gone through the authentication procedure")
+        return None
+
+    rd_id = re.search(rd_id_pattern, link).group(1)
+    endpoint = streaming_url + rd_id
+    # 'https://real-debrid.com/d/ABFKRBVB5B6YI'
+
+    result = make_get(
+        endpoint,
+        access_token=user_credentials[access_token])
+
+    streaming_json = result.json()
+    markdown = ""
+
+    # todo: complete markdown when you have the personal api key
+    if "apple" in streaming_json:
+        markdown += "*" + escape_markdown(streaming_json["apple"], version=2) + "*\n"
+
+    markdown += "\n"
+
+    if len(markdown) > 5:
+        return markdown
+    else:
+        return prettify_json(streaming_json)
 
 
 #######################
@@ -203,12 +244,12 @@ def api_downloads_list(offset=None, page=1, limit=5):
             markdown += "Size: " + escape_markdown(str('%.2f' % (download["filesize"] / (1024 * 1024))),
                                                    version=2) + " MB\n"
         if "download" in download:
-            markdown += escape_markdown("Download Link:\n"+download["download"] + "\n", version=2)
+            markdown += escape_markdown("Download Link:\n" + download["download"] + "\n", version=2)
         if "streamable" in download:
             streamable = "No"
             if download["streamable"] == 1:
                 streamable = "Yes"
-            markdown += escape_markdown("Streamable: "+streamable + "\n", version=2)
+            markdown += escape_markdown("Streamable: " + streamable + "\n", version=2)
 
         markdown += "\n"
 

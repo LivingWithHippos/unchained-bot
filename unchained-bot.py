@@ -211,6 +211,24 @@ def check_file(update, context):
                              parse_mode=telegram.ParseMode.MARKDOWN_V2)
 
 
+def stream_file(update, context):
+    # todo: add this check to others handlers
+    if len(context.args) < 1:
+        # todo: swap the parameters in these methods
+        missing_parameter(context, update)
+        return
+
+    file_stream = real_debrid.api_streaming_transcode(context.args[0])
+
+    if file_stream is None:
+        missing_credentials(context, update)
+        return
+
+    context.bot.send_message(chat_id=update.effective_chat.id,
+                             text=file_stream,
+                             parse_mode=telegram.ParseMode.MARKDOWN_V2)
+
+
 def unrestrict_file(update, context):
     file_data = None
     if len(context.args) < 2:
@@ -360,10 +378,6 @@ def main():
 
     # add the commands handlers
 
-    # todo: add support for personal real debrid token
-    # token_handler = CommandHandler('token', token)
-    # dispatcher.add_handler(token_handler)
-
     help_handler = CommandHandler('help', help_command)
     dispatcher.add_handler(help_handler)
 
@@ -372,6 +386,12 @@ def main():
 
     api_user_handler = CommandHandler('user', user)
     dispatcher.add_handler(api_user_handler)
+
+    # todo: add support for personal real debrid token
+    # token_handler = CommandHandler('token', token)
+    # dispatcher.add_handler(token_handler)
+    # api_stream_transcode = CommandHandler('stream', stream_file, (Filters.text & Filters.entity(MessageEntity.URL)))
+    # dispatcher.add_handler(api_stream_transcode)
 
     # note: maybe if I add the same command without filters after this I could catch the /check
     # command written the wrong way and advise the user
