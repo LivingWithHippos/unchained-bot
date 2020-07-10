@@ -195,6 +195,24 @@ def get_private_token():
             return token
 
 
+def disable_old_private_tokens():
+    with sqlite3.connect(db_path) as chain_db:
+        cursor = chain_db.cursor()
+        errors = False
+        disable_query = "UPDATE private_token SET active = 0"
+        try:
+            cursor.execute(disable_query)
+            chain_db.commit()
+        except Exception as e:
+            print("Error while disabling old token: ", e)
+            errors = True
+            chain_db.rollback()
+            raise e
+        finally:
+            cursor.close()
+            return errors
+
+
 #############
 #   LOGIN   #
 #############
