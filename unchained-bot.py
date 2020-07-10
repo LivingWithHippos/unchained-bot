@@ -24,7 +24,8 @@ bot_config_path = "config.json"
 
 json_markdown_formatting = "```json\n{}\n```"
 
-credentials_missing_message = "No credentials found, please go through the authentication process using the /login command"
+credentials_missing_message = "No credentials found, please go through the authentication process using the /login " \
+                              "or /set_token TOKEN command"
 parameter_missing_message = "One or more parameters are missing. Use /help to check the correct command syntax."
 
 custom_keyboard = [['/help', '/login'],
@@ -54,7 +55,7 @@ def help_command(update, context):
     context.bot.send_message(
         chat_id=update.effective_chat.id,
         text="Welcome to the unchained-bot ⛓🔨️💥\n"
-             " these are the available commands, and these [parameters] are optional:\n "
+             "Available commands ([parameters] are optional):\n "
              "/help - to see the available commands\n"
              "/login - to start the authentication process\n"
              "/set_token TOKEN - to set the private api token (check the bot instructions)\n"
