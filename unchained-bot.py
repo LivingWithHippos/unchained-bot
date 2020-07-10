@@ -225,7 +225,11 @@ def stream_file(update, context):
     file_stream = real_debrid.api_streaming_transcode(context.args[0])
 
     if file_stream is None:
-        missing_credentials(update, context)
+        context.bot.send_message(chat_id=update.effective_chat.id,
+                                 text="Missing private token or wrong mode set.\n"
+                                      "Use /set_token TOKEN to set the token or"
+                                      "/set_credentials_mode private if it's "
+                                      "already been saved.")
         return
 
     context.bot.send_message(chat_id=update.effective_chat.id,
