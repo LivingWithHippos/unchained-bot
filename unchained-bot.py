@@ -193,7 +193,7 @@ def user(update, context):
     user_info = real_debrid.api_user_get()
     # credentials error
     if user_info is None:
-        missing_credentials(context, update)
+        missing_credentials(update, context)
         return
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text=user_info,
@@ -214,14 +214,13 @@ def check_file(update, context):
 def stream_file(update, context):
     # todo: add this check to others handlers
     if len(context.args) < 1:
-        # todo: swap the parameters in these methods
-        missing_parameter(context, update)
+        missing_parameter(update, context)
         return
 
     file_stream = real_debrid.api_streaming_transcode(context.args[0])
 
     if file_stream is None:
-        missing_credentials(context, update)
+        missing_credentials(update, context)
         return
 
     context.bot.send_message(chat_id=update.effective_chat.id,
@@ -237,7 +236,7 @@ def unrestrict_file(update, context):
         file_data = real_debrid.api_unrestrict_link(context.args[0], password=context.args[1])
     # credentials error
     if file_data is None:
-        missing_credentials(context, update)
+        missing_credentials(update, context)
         return
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text=file_data,
@@ -250,7 +249,7 @@ def unrestrict_folder(update, context):
     folder_data = real_debrid.api_unrestrict_folder(context.args[0])
     # credentials error
     if folder_data is None:
-        missing_credentials(context, update)
+        missing_credentials(update, context)
         return
 
     # for long lists of links the message may be too long
@@ -285,7 +284,7 @@ def downloads_list(update, context):
         dlist = real_debrid.api_downloads_list()
     # credentials error
     if dlist is None:
-        missing_credentials(context, update)
+        missing_credentials(update, context)
         return
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text=dlist,
@@ -321,7 +320,7 @@ def torrents_list(update, context):
         tlist = real_debrid.api_torrents_list()
     # credentials error
     if tlist is None:
-        missing_credentials(context, update)
+        missing_credentials(update, context)
         return
 
     context.bot.send_message(chat_id=update.effective_chat.id,
@@ -333,20 +332,20 @@ def add_magnet(update, context):
     response = real_debrid.api_add_magnet(context.args[0])
     # credentials error
     if response is None:
-        missing_credentials(context, update)
+        missing_credentials(update, context)
         return
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text=response,
                              parse_mode=telegram.ParseMode.MARKDOWN_V2)
 
 
-def missing_credentials(context, update):
+def missing_credentials(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text=credentials_missing_message,
                              parse_mode=telegram.ParseMode.MARKDOWN_V2)
 
 
-def missing_parameter(context, update):
+def missing_parameter(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text=parameter_missing_message,
                              parse_mode=telegram.ParseMode.MARKDOWN_V2)
