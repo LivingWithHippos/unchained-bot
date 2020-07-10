@@ -432,6 +432,8 @@ def main():
 
     help_handler = CommandHandler('help', help_command)
     dispatcher.add_handler(help_handler)
+    start_handler = CommandHandler('start', help_command)
+    dispatcher.add_handler(start_handler)
 
     login_handler = CommandHandler('login', login)
     dispatcher.add_handler(login_handler)
