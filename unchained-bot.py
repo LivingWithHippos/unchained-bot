@@ -51,7 +51,7 @@ send_typing_action = send_action(ChatAction.TYPING)
 def help_command(update, context):
     context.bot.send_message(
         chat_id=update.effective_chat.id,
-        text="Welcome to the unchained-bot.\n"
+        text="Welcome to the unchained-bot ⛓🔨️💥\n"
              " these are the available commands, and these [parameters] are optional:\n "
              "/login - to start the authentication process\n"
              "/help - to see the available commands\n"
