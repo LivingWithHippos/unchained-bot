@@ -65,7 +65,8 @@ def help_command(update, context):
              "/downloads [number] - returns the last five or [number] downloads\n"
              "/stream ID - returns the streaming links from a file ID (not a URL)\n"
              "/set_credentials_mode MODE - to set the use of the private or public token. MODE = open or private\n"
-             "/check URL [password] - to see if a file is available on the hoster (has issues)\n"
+             "/check URL [password] - to see if a file is available on the hoster (has issues)\n",
+        reply_markup=reply_markup
     )
 
 
