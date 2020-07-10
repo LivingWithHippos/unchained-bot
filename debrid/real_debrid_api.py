@@ -2,20 +2,36 @@ import json
 import re
 from pathlib import Path
 
-# unchained imports
 from telegram.utils.helpers import escape_markdown
 
+# unchained imports
 import debrid.credentials as credentials
-from debrid.constants import base_url, magnet, host, credentials_file_name, access_token, user_endpoint
+from debrid.constants import base_url, magnet, host, credentials_file_name, access_token, user_endpoint, \
+    credentials_mode, credentials_mode_open
 from utilities.util import make_get, prettify_json, make_post
 
 
 def get_credentials():
-    user_credentials = credentials.get_credentials()
-    if user_credentials is None:
-        print("Couldn't load credentials from db, maybe the user skipped the login procedure?")
+    settings = credentials.get_settings()
+    if settings is None:
+        credentials.insert_settings()
+        settings = credentials.get_settings()
+        if settings is None:
+            print("Couldn't initialize settings file")
+            return
+    if settings[credentials_mode] == credentials_mode_open:
+        user_credentials = credentials.get_credentials()
+        if user_credentials is None:
+            print("Couldn't load credentials from db, maybe the user skipped the login procedure?")
+        return user_credentials
+    # mode is private
+    else:
+        token = credentials.get_private_token()
+        if token is None:
+            print("Couldn't load the private token from db, maybe the user didn't set the /private_token")
+        return token
 
-    return user_credentials
+
 
 
 # todo: refactor the api calls, maybe with the class, so that the credentials recovery and check doesn't need to be
