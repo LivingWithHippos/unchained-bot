@@ -203,9 +203,14 @@ def api_streaming_transcode(link):
     streaming_json = result.json()
     markdown = ""
 
-    # todo: complete markdown when you have the personal api key
     if "apple" in streaming_json:
-        markdown += "*" + escape_markdown(streaming_json["apple"], version=2) + "*\n"
+        markdown += "Apple:\n" + escape_markdown(streaming_json["apple"]["full"], version=2) + "\n"
+    if "dash" in streaming_json:
+        markdown += "dash:\n" + escape_markdown(streaming_json["dash"]["full"], version=2) + "\n"
+    if "liveMP4" in streaming_json:
+        markdown += "liveMP4:\n" + escape_markdown(streaming_json["liveMP4"]["full"], version=2) + "\n"
+    if "h264WebM" in streaming_json:
+        markdown += "h264WebM:\n" + escape_markdown(streaming_json["h264WebM"]["full"], version=2) + "\n"
 
     markdown += "\n"
 
