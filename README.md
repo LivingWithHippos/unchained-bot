@@ -108,10 +108,13 @@ Parameters between [square brackets] are optional.
 
 | Command  | Action  | Notes   |
 |:---:|:---:|:---:|
-| `/login`  | Start the login flow  | Usually needed only once, at the start  |
 | `/help`  | Shows a message similar to this table  |  |
+| `/login`  | Start the login flow  | Usually needed only once, at the start  |
+| `/set_token`  | Set the private api token  | with /login the app is allowed only on the following scopes: unrestrict, torrents, downloads, user |
+| `/set_credentials_mode  mode`  | Set if the app should use the private or public token  | mode = `open` or `private` automatically switched with `/set_token` or completing `/login` |
 | `/user`  | Gives information about the user  |   |
 |  `/unrestrict link` [password] | Unrestrict the `link`  |   |
+|  `/stream id` | Return the streaming options for `id`  | `id` is a field shown when a link is streamable. Unrestrict it first.  |
 |  `/check link` [password] | Check if the `link` is available on the hoster.  | Apparently this API does not work |
 |  `/folder folder_link` | Returns all the files in the folder `folder_link`.  |   |
 |  `/downloads [number]` | Returns the last five or [number] downloads.  |   |
