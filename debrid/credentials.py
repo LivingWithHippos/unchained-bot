@@ -4,14 +4,17 @@ from pathlib import Path
 from debrid.constants import open_source_client_id, credential_url, device_url, new_credentials, \
     client_id, client_secret, code, grant_type, token_url, refresh_token, grant_type_url, db_path, access_token, \
     grant_type_oauth, error_code_bad_token, \
-    base_url, user_endpoint, credentials_scheme, user_id, credentials_mode, credentials_mode_open
+    base_url, user_endpoint, user_id, credentials_mode, credentials_mode_open, table_private_token_scheme, \
+    table_settings_scheme, table_credentials_scheme
 from utilities.util import make_get, make_post
 
 # create database if missing
 if not Path(db_path).is_file():
     with sqlite3.connect(db_path) as my_db:
         creation_cursor = my_db.cursor()
-        creation_cursor.execute(credentials_scheme)
+        creation_cursor.execute(table_credentials_scheme)
+        creation_cursor.execute(table_settings_scheme)
+        creation_cursor.execute(table_private_token_scheme)
         creation_cursor.close()
 
 
