@@ -111,8 +111,8 @@ Parameters between [square brackets] are optional.
 | `/login`  | Start the login flow  | Usually needed only once, at the start  |
 | `/help`  | Shows a message similar to this table  |  |
 | `/user`  | Gives information about the user  |   |
-|  `/unrestrict link` | Unrestrict the `link`  |   |
-|  `/check link` | Check if the `link` is available on the hoster.  | Apparently this API does not work |
+|  `/unrestrict link` [password] | Unrestrict the `link`  |   |
+|  `/check link` [password] | Check if the `link` is available on the hoster.  | Apparently this API does not work |
 |  `/folder folder_link` | Returns all the files in the folder `folder_link`.  |   |
 |  `/downloads [number]` | Returns the last five or [number] downloads.  |   |
 |  `/torrents [number]` | Returns the last five or [number] torrents.  |   |
