@@ -445,11 +445,8 @@ def main():
     api_set_credentials_mode_handler = CommandHandler('set_credentials_mode', set_credentials_mode)
     dispatcher.add_handler(api_set_credentials_mode_handler)
 
-    # todo: add support for personal real debrid token
-    # token_handler = CommandHandler('token', token)
-    # dispatcher.add_handler(token_handler)
-    # api_stream_transcode = CommandHandler('stream', stream_file, (Filters.text & Filters.entity(MessageEntity.URL)))
-    # dispatcher.add_handler(api_stream_transcode)
+    api_stream_transcode = CommandHandler('stream', stream_file, Filters.text)
+    dispatcher.add_handler(api_stream_transcode)
 
     # note: maybe if I add the same command without filters after this I could catch the /check
     # command written the wrong way and advise the user
