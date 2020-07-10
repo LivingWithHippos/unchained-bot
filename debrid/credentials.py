@@ -162,18 +162,18 @@ def insert_settings(_id=0, _credentials_mode=credentials_mode_open, _user_id=Non
                        "credentials_mode," \
                        "user_id) " \
                        "VALUES(?,?,?) "
-        errors = False
+        inserted = True
         try:
             cursor.execute(insert_query, (_id, _credentials_mode, _user_id))
             chain_db.commit()
         except Exception as e:
             print("Error while inserting settings into database: ", e)
-            errors = True
+            inserted = False
             raise e
         finally:
             # todo: check if this is now unnecessary because of with sqlite...
             cursor.close()
-            return errors
+            return inserted
 
 
 def update_credentials_mode(_credentials_mode, _id=0):
@@ -184,17 +184,17 @@ def update_credentials_mode(_credentials_mode, _id=0):
         cursor = chain_db.cursor()
         update_query = "UPDATE settings SET credentials_mode = ? WHERE id = ?"
 
-        errors = False
+        updated = True
         try:
             cursor.execute(update_query, (_credentials_mode, _id))
             chain_db.commit()
         except Exception as e:
             print("Error while updating mode in settings table: ", e)
-            errors = True
+            updated = False
             raise e
         finally:
             cursor.close()
-            return errors
+            return updated
 
 
 #   PRIVATE TOKEN   #
@@ -229,34 +229,35 @@ def set_private_token(_token):
                        "access_token," \
                        "active) " \
                        "VALUES(?,?) "
-        errors = False
+        inserted = True
         try:
             cursor.execute(insert_query, (_token, 1))
             chain_db.commit()
         except Exception as e:
             print("Error while setting private token into database: ", e)
+            inserted = False
             raise e
         finally:
             cursor.close()
-            return errors
+            return inserted
 
 
 def disable_old_private_tokens():
     with sqlite3.connect(db_path) as chain_db:
         cursor = chain_db.cursor()
-        errors = False
+        updated = True
         disable_query = "UPDATE private_token SET active = 0"
         try:
             cursor.execute(disable_query)
             chain_db.commit()
         except Exception as e:
             print("Error while disabling old token: ", e)
-            errors = True
+            updated = False
             chain_db.rollback()
             raise e
         finally:
             cursor.close()
-            return errors
+            return updated
 
 
 #############
