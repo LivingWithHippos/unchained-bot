@@ -24,6 +24,7 @@ bot_config_path = "config.json"
 json_markdown_formatting = "```json\n{}\n```"
 
 credentials_missing_message = "No credentials found, please go through the authentication process using the /login command"
+parameter_missing_message = "One or more parameters are missing. Use /help to check the correct command syntax."
 
 custom_keyboard = [['/help', '/login'],
                    ['/user', '/downloads'],
@@ -324,6 +325,12 @@ def add_magnet(update, context):
 def missing_credentials(context, update):
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text=credentials_missing_message,
+                             parse_mode=telegram.ParseMode.MARKDOWN_V2)
+
+
+def missing_parameter(context, update):
+    context.bot.send_message(chat_id=update.effective_chat.id,
+                             text=parameter_missing_message,
                              parse_mode=telegram.ParseMode.MARKDOWN_V2)
 
 
