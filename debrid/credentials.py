@@ -4,7 +4,7 @@ from pathlib import Path
 from debrid.constants import open_source_client_id, credential_url, device_url, new_credentials, \
     client_id, client_secret, code, grant_type, token_url, refresh_token, grant_type_url, db_path, access_token, \
     grant_type_oauth, error_code_bad_token, \
-    base_url, user_endpoint, credentials_scheme
+    base_url, user_endpoint, credentials_scheme, user_id, credentials_mode
 from utilities.util import make_get, make_post
 
 # create database if missing
@@ -15,9 +15,12 @@ if not Path(db_path).is_file():
         creation_cursor.close()
 
 
-#################
-#   DATABASE    #
-#################
+################
+#   DATABASE   #
+################
+
+
+#   CREDENTIALS   #
 
 def save_credentials(ci, cs, dc, at, rt):
     # disable old credentials
@@ -121,6 +124,55 @@ def get_credentials():
                     refresh_token: result[4]
                 }
             return credentials
+
+
+#   SETTINGS   #
+
+def get_settings(settings_id=0):
+    with sqlite3.connect(db_path) as chain_db:
+        cursor = chain_db.cursor()
+        select_query = "SELECT credentials_mode, user_id FROM settings WHERE id = ?"
+
+        settings = None
+        try:
+            # todo: test settings_id
+            cursor.execute(select_query, str(settings_id))
+            result = cursor.fetchone()
+        except Exception as e:
+            print("Error while recovering credentials from database: ", e)
+            raise e
+        finally:
+            cursor.close()
+            if result is not None:
+                settings = {
+                    credentials_mode: result[0],
+                    user_id: result[1],
+                }
+            return settings
+
+
+#   PRIVATE TOKEN   #
+
+def get_private_token():
+    with sqlite3.connect(db_path) as chain_db:
+        cursor = chain_db.cursor()
+        select_query = "SELECT access_token FROM private_token WHERE active = 1"
+
+        token = None
+        try:
+            # todo: test settings_id
+            cursor.execute(select_query)
+            result = cursor.fetchone()
+        except Exception as e:
+            print("Error while recovering credentials from database: ", e)
+            raise e
+        finally:
+            cursor.close()
+            if result is not None:
+                token = {
+                    access_token: result[0]
+                }
+            return token
 
 
 #############
