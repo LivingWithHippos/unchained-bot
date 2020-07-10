@@ -165,6 +165,26 @@ def insert_settings(_id=0, _credentials_mode=credentials_mode_open, _user_id=Non
             chain_db.commit()
         except Exception as e:
             print("Error while inserting settings into database: ", e)
+            errors = True
+            raise e
+        finally:
+            # todo: check if this is now unnecessary because of with sqlite...
+            cursor.close()
+            return errors
+
+
+def update_credentials_mode(_credentials_mode, _id=0):
+    with sqlite3.connect(db_path) as chain_db:
+        cursor = chain_db.cursor()
+        update_query = "UPDATE settings SET credentials_mode = ? WHERE id = ?"
+
+        errors = False
+        try:
+            cursor.execute(update_query, (_credentials_mode, _id))
+            chain_db.commit()
+        except Exception as e:
+            print("Error while updating mode in settings table: ", e)
+            errors = True
             raise e
         finally:
             cursor.close()
