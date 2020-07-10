@@ -25,6 +25,10 @@ json_markdown_formatting = "```json\n{}\n```"
 
 credentials_missing_message = "No credentials found, please go through the authentication process using the /login command"
 
+custom_keyboard = [['/help', '/login'],
+                   ['/user', '/downloads'],
+                   ['/torrents']]
+
 
 def send_action(action):
     """Sends `action` while processing func command."""
@@ -59,6 +63,11 @@ def help_command(update, context):
 
 
 def unknown(update, context):
+    reply_markup = telegram.ReplyKeyboardMarkup(custom_keyboard)
+    context.bot.send_message(chat_id=update.effective_chat.id,
+                             text="Basic Commands Keyboard",
+                             reply_markup=reply_markup)
+
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text="Sorry, I didn't understand that command. Use /help to see a list of possible "
                                   "commands.")
@@ -153,6 +162,11 @@ def wait_confirmation(update, context, device_code):
 
 # step 1 of the login procedure
 def login(update, context):
+    reply_markup = telegram.ReplyKeyboardMarkup(custom_keyboard)
+    context.bot.send_message(chat_id=update.effective_chat.id,
+                             text="Basic Commands Keyboard",
+                             reply_markup=reply_markup)
+
     # credentials are working and loaded. Should also refresh token if necessary
     if credentials.check_credentials():
         context.bot.send_message(chat_id=update.effective_chat.id,
