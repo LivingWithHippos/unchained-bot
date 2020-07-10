@@ -28,6 +28,7 @@ credentials_missing_message = "No credentials found, please go through the authe
 custom_keyboard = [['/help', '/login'],
                    ['/user', '/downloads'],
                    ['/torrents']]
+reply_markup = telegram.ReplyKeyboardMarkup(custom_keyboard)
 
 
 def send_action(action):
@@ -63,14 +64,10 @@ def help_command(update, context):
 
 
 def unknown(update, context):
-    reply_markup = telegram.ReplyKeyboardMarkup(custom_keyboard)
-    context.bot.send_message(chat_id=update.effective_chat.id,
-                             text="Basic Commands Keyboard",
-                             reply_markup=reply_markup)
-
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text="Sorry, I didn't understand that command. Use /help to see a list of possible "
-                                  "commands.")
+                                  "commands.",
+                             reply_markup=reply_markup)
 
 
 # def token(update, context):
@@ -115,7 +112,8 @@ def save_credentials(update, context, device_code, verification_result):
                                  refresh_json["refresh_token"])
 
     context.bot.send_message(chat_id=update.effective_chat.id,
-                             text="Token obtained and saved")
+                             text="Token obtained and saved",
+                             reply_markup=reply_markup)
 
 
 # step 2 of the login procedure
@@ -162,15 +160,11 @@ def wait_confirmation(update, context, device_code):
 
 # step 1 of the login procedure
 def login(update, context):
-    reply_markup = telegram.ReplyKeyboardMarkup(custom_keyboard)
-    context.bot.send_message(chat_id=update.effective_chat.id,
-                             text="Basic Commands Keyboard",
-                             reply_markup=reply_markup)
-
     # credentials are working and loaded. Should also refresh token if necessary
     if credentials.check_credentials():
         context.bot.send_message(chat_id=update.effective_chat.id,
-                                 text="Credentials correctly loaded")
+                                 text="Credentials correctly loaded",
+                                 reply_markup=reply_markup)
         return
 
     # credentials missing, start the authentication process
