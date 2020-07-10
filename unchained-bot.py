@@ -344,8 +344,7 @@ def add_magnet(update, context):
 def set_private_token(update, context):
     if len(context.args) < 1:
         context.bot.send_message(chat_id=update.effective_chat.id,
-                                 text="Please add the token after the command -> /set_token TOKEN",
-                                 parse_mode=telegram.ParseMode.MARKDOWN_V2)
+                                 text="Please add the token after the command -> /set_token TOKEN")
         return
 
     token_updated = credentials.set_private_token(context.args[0])
@@ -353,59 +352,49 @@ def set_private_token(update, context):
         setting_updated = credentials.update_credentials_mode(credentials_mode_private)
         if setting_updated:
             context.bot.send_message(chat_id=update.effective_chat.id,
-                                     text="Token added, api mode set to private token. Use /set_credentials_mode MODE to switch mode.",
-                                     parse_mode=telegram.ParseMode.MARKDOWN_V2)
+                                     text="Token added, api mode set to private token. Use /set_credentials_mode MODE to switch mode.")
         else:
             context.bot.send_message(chat_id=update.effective_chat.id,
-                                     text="Token added, couldn't set mode to private_token_api. Check logs.",
-                                     parse_mode=telegram.ParseMode.MARKDOWN_V2)
+                                     text="Token added, couldn't set mode to private_token_api. Check logs.")
     else:
         context.bot.send_message(chat_id=update.effective_chat.id,
-                                 text="Couldn't add token to db. Check logs.",
-                                 parse_mode=telegram.ParseMode.MARKDOWN_V2)
+                                 text="Couldn't add token to db. Check logs.")
 
 
 def set_credentials_mode(update, context):
     if len(context.args) < 1:
         context.bot.send_message(chat_id=update.effective_chat.id,
-                                 text="Please add either private or open after the command -> /set_credentials_mode [open|private]",
-                                 parse_mode=telegram.ParseMode.MARKDOWN_V2)
+                                 text="Please add either private or open after the command -> /set_credentials_mode [open|private]")
         return
 
     if str(context.args[0]).find("private") >= 0:
         setting_updated = credentials.update_credentials_mode(credentials_mode_private)
         if setting_updated:
             context.bot.send_message(chat_id=update.effective_chat.id,
-                                     text="Api Mode set to private token.",
-                                     parse_mode=telegram.ParseMode.MARKDOWN_V2)
+                                     text="Api Mode set to private token.")
         else:
             context.bot.send_message(chat_id=update.effective_chat.id,
-                                     text="Error setting Api Mode to private token. Check the logs",
-                                     parse_mode=telegram.ParseMode.MARKDOWN_V2)
+                                     text="Error setting Api Mode to private token. Check the logs")
         return
 
     if str(context.args[0]).find("open") >= 0:
         setting_updated = credentials.update_credentials_mode(credentials_mode_open)
         if setting_updated:
             context.bot.send_message(chat_id=update.effective_chat.id,
-                                     text="Api Mode set to open token.",
-                                     parse_mode=telegram.ParseMode.MARKDOWN_V2)
+                                     text="Api Mode set to open token.")
         else:
             context.bot.send_message(chat_id=update.effective_chat.id,
-                                     text="Error setting Api Mode to open source. Check the logs",
-                                     parse_mode=telegram.ParseMode.MARKDOWN_V2)
+                                     text="Error setting Api Mode to open source. Check the logs")
 
 
 def missing_credentials(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id,
-                             text=credentials_missing_message,
-                             parse_mode=telegram.ParseMode.MARKDOWN_V2)
+                             text=credentials_missing_message)
 
 
 def missing_parameter(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id,
-                             text=parameter_missing_message,
-                             parse_mode=telegram.ParseMode.MARKDOWN_V2)
+                             text=parameter_missing_message)
 
 
 #####################
