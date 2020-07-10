@@ -4,7 +4,7 @@ from pathlib import Path
 from debrid.constants import open_source_client_id, credential_url, device_url, new_credentials, \
     client_id, client_secret, code, grant_type, token_url, refresh_token, grant_type_url, db_path, access_token, \
     grant_type_oauth, error_code_bad_token, \
-    base_url, user_endpoint, credentials_scheme, user_id, credentials_mode
+    base_url, user_endpoint, credentials_scheme, user_id, credentials_mode, credentials_mode_open
 from utilities.util import make_get, make_post
 
 # create database if missing
@@ -149,6 +149,26 @@ def get_settings(settings_id=0):
                     user_id: result[1],
                 }
             return settings
+
+
+def insert_settings(_id=0, _credentials_mode=credentials_mode_open, _user_id=None):
+    with sqlite3.connect(db_path) as chain_db:
+        cursor = chain_db.cursor()
+        insert_query = "INSERT OR REPLACE INTO settings(" \
+                       "id," \
+                       "credentials_mode," \
+                       "user_id) " \
+                       "VALUES(?,?,?) "
+        errors = False
+        try:
+            cursor.execute(insert_query, (_id, _credentials_mode, _user_id))
+            chain_db.commit()
+        except Exception as e:
+            print("Error while inserting settings into database: ", e)
+            raise e
+        finally:
+            cursor.close()
+            return errors
 
 
 #   PRIVATE TOKEN   #
