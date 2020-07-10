@@ -195,6 +195,26 @@ def get_private_token():
             return token
 
 
+def set_private_token(_token):
+    disable_old_private_tokens()
+    with sqlite3.connect(db_path) as chain_db:
+        cursor = chain_db.cursor()
+        insert_query = "INSERT OR REPLACE INTO private_token(" \
+                       "access_token," \
+                       "active) " \
+                       "VALUES(?,?) "
+        errors = False
+        try:
+            cursor.execute(insert_query, (_token, 1))
+            chain_db.commit()
+        except Exception as e:
+            print("Error while setting private token into database: ", e)
+            raise e
+        finally:
+            cursor.close()
+            return errors
+
+
 def disable_old_private_tokens():
     with sqlite3.connect(db_path) as chain_db:
         cursor = chain_db.cursor()
