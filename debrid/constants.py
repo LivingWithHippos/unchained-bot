@@ -43,13 +43,15 @@ code = "code"
 device_code_param = "device_code"
 grant_type = "grant_type"
 
-credentials_mode = "credentials_mode"
 user_id = "user_id"
+credentials_mode = "credentials_mode"
+credentials_mode_open = 0
+credentials_mode_private = 1
 
 grant_type_oauth = "http://oauth.net/grant_type/device/1.0"
 
 db_path = "user_data/unchaindb"
 credentials_scheme = "CREATE TABLE credentials(client_id TEXT PRIMARY KEY, client_secret TEXT, device_code TEXT" \
                      ", access_token TEXT, refresh_token TEXT, active NUMERIC DEFAULT 1 ) \n" \
-                     "CREATE TABLE settings (id INTEGER PRIMARY KEY, credentials_mode TEXT, user_id TEXT)\n" \
+                     "CREATE TABLE settings (id INTEGER PRIMARY KEY, credentials_mode NUMERIC DEFAULT 0, user_id TEXT)\n" \
                      "CREATE TABLE private_token (access_token TEXT PRIMARY KEY, active NUMERIC DEFAULT 1 )"
