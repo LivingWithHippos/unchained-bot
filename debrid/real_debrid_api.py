@@ -201,7 +201,7 @@ def api_streaming_transcode(link):
         access_token=user_credentials[access_token])
 
     streaming_json = result.json()
-    markdown = ""
+    markdown = "If the links are not working, unrestrict the file again and try to /stream with the new ID\.\n"
 
     if "apple" in streaming_json:
         markdown += "Apple:\n" + escape_markdown(streaming_json["apple"]["full"], version=2) + "\n"
@@ -214,7 +214,7 @@ def api_streaming_transcode(link):
 
     markdown += "\n"
 
-    if len(markdown) > 5:
+    if len(markdown) > 90:
         return markdown
     else:
         return prettify_json(streaming_json)
