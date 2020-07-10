@@ -11,7 +11,6 @@ from utilities.util import make_get, prettify_json, make_post
 
 
 def get_credentials():
-    user_credentials = None
     user_credentials = credentials.get_credentials()
     if user_credentials is None:
         print("Couldn't load credentials from db, maybe the user skipped the login procedure?")
