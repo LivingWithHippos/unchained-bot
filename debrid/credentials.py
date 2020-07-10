@@ -139,7 +139,7 @@ def get_settings(settings_id=0):
             cursor.execute(select_query, str(settings_id))
             result = cursor.fetchone()
         except Exception as e:
-            print("Error while recovering credentials from database: ", e)
+            print("Error while recovering settings from database: ", e)
             raise e
         finally:
             cursor.close()
@@ -164,7 +164,7 @@ def get_private_token():
             cursor.execute(select_query)
             result = cursor.fetchone()
         except Exception as e:
-            print("Error while recovering credentials from database: ", e)
+            print("Error while recovering private token from database: ", e)
             raise e
         finally:
             cursor.close()
