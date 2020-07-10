@@ -59,12 +59,13 @@ def help_command(update, context):
              "/help - to see the available commands\n"
              "/login - to start the authentication process\n"
              "/set_token TOKEN - to set the private api token (check the github instructions)\n"
-             "/set_credentials_mode MODE - to set the use of the private or public token. MODE = open or private\n"
-             "/check URL [password] - to see if a file is available on the hoster (has issues)\n"
              "/unrestrict URL [password] -  to unrestrict a download link\n"
              "/magnet URL - to unrestrict a magnet\n"
              "/torrents [number] - returns the last five or [number] torrents\n"
              "/downloads [number] - returns the last five or [number] downloads\n"
+             "/stream ID - returns the streaming links from a file ID (not a URL)\n"
+             "/set_credentials_mode MODE - to set the use of the private or public token. MODE = open or private\n"
+             "/check URL [password] - to see if a file is available on the hoster (has issues)\n"
     )
 
 
