@@ -113,8 +113,9 @@ def save_credentials(update, context, device_code, verification_result):
     credentials.save_credentials(client_id, client_secret, device_code, refresh_json["access_token"],
                                  refresh_json["refresh_token"])
 
+    credentials.update_credentials_mode(credentials_mode_open)
     context.bot.send_message(chat_id=update.effective_chat.id,
-                             text="Token obtained and saved",
+                             text="Token obtained and saved, credentials mode set to open.",
                              reply_markup=reply_markup)
 
 
