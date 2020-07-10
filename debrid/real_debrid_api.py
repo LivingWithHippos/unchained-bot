@@ -32,8 +32,6 @@ def get_credentials():
         return token
 
 
-
-
 # todo: refactor the api calls, maybe with the class, so that the credentials recovery and check doesn't need to be
 #  added to every api call function
 
@@ -141,10 +139,11 @@ def api_unrestrict_link(link, password=None, remote=None):
     if "download" in download:
         markdown += escape_markdown("Download Link:\n" + download["download"] + "\n", version=2)
     if "streamable" in download:
-        streamable = "No"
         if download["streamable"] == 1:
-            streamable = "Yes"
-        markdown += escape_markdown("Streamable: " + streamable + "\n", version=2)
+            markdown += "Streamable: Yes\n"
+            markdown += escape_markdown("Streaming ID: " + download["id"] + "\n", version=2)
+        else:
+            markdown += "Streamable: No\n"
 
     if len(markdown) > 5:
         return markdown
@@ -261,10 +260,11 @@ def api_downloads_list(offset=None, page=1, limit=5):
         if "download" in download:
             markdown += escape_markdown("Download Link:\n" + download["download"] + "\n", version=2)
         if "streamable" in download:
-            streamable = "No"
             if download["streamable"] == 1:
-                streamable = "Yes"
-            markdown += escape_markdown("Streamable: " + streamable + "\n", version=2)
+                markdown += "Streamable: Yes\n"
+                markdown += escape_markdown("Streaming ID: " + download["id"] + "\n", version=2)
+            else:
+                markdown += "Streamable: No\n"
 
         markdown += "\n"
 
