@@ -120,8 +120,7 @@ def save_credentials(update, context, device_code, verification_result):
 
     credentials.update_credentials_mode(credentials_mode_open)
     context.bot.send_message(chat_id=update.effective_chat.id,
-                             text="Token obtained and saved, credentials mode set to open.",
-                             reply_markup=reply_markup)
+                             text="Token obtained and saved, credentials mode set to open.")
 
 
 # step 2 of the login procedure
@@ -171,8 +170,7 @@ def login(update, context):
     # credentials are working and loaded. Should also refresh token if necessary
     if credentials.check_credentials():
         context.bot.send_message(chat_id=update.effective_chat.id,
-                                 text="Credentials correctly loaded",
-                                 reply_markup=reply_markup)
+                                 text="Credentials correctly loaded")
         return
 
     # credentials missing, start the authentication process
