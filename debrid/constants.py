@@ -52,7 +52,7 @@ grant_type_oauth = "http://oauth.net/grant_type/device/1.0"
 
 db_path = "user_data/unchaindb"
 table_credentials_scheme = "CREATE TABLE credentials(client_id TEXT PRIMARY KEY, client_secret TEXT, device_code TEXT" \
-                     ", access_token TEXT, refresh_token TEXT, active NUMERIC DEFAULT 1 )"
+                           ", access_token TEXT, refresh_token TEXT, active NUMERIC DEFAULT 1 )"
 
 table_settings_scheme = "CREATE TABLE settings (id INTEGER PRIMARY KEY, credentials_mode NUMERIC DEFAULT 0, user_id TEXT)"
 
