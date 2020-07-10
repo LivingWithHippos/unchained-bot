@@ -55,7 +55,7 @@ def update_token(a_token, r_token):
             cursor.execute(update_query, (a_token, r_token))
             chain_db.commit()
         except Exception as e:
-            print("Error inserting tokens: {e}")
+            print("Error inserting tokens: ", e)
             errors = True
             chain_db.rollback()
             raise e
@@ -73,7 +73,7 @@ def disable_old_credentials():
             cursor.execute(disable_query)
             chain_db.commit()
         except Exception as e:
-            print("Error while disabling old credentials: {e}")
+            print("Error while disabling old credentials: ", e)
             errors = True
             chain_db.rollback()
             raise e
@@ -91,7 +91,7 @@ def disable_credentials(ci):
             cursor.execute(disable_query, ci)
             chain_db.commit()
         except Exception as e:
-            print("Error while disabling credentials for client_id {ci}: {e}")
+            print("Error while disabling credentials for client_id {ci}:  ", e)
             errors = True
             chain_db.rollback()
             raise e
