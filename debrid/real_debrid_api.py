@@ -185,16 +185,16 @@ streaming_endpoint = "streaming/"
 streaming_url = base_url + streaming_endpoint
 rd_id_pattern = "https://real-debrid.com/d/([\w]+)"
 
+
 # Get streaming links from a streamable source
 def api_streaming_transcode(link):
+    transcode_endpoint = "transcode/"
     user_credentials = get_credentials()
     if user_credentials is None:
         print("No credentials were loaded, check if the user has gone through the authentication procedure")
         return None
 
-    rd_id = re.search(rd_id_pattern, link).group(1)
-    endpoint = streaming_url + rd_id
-    # 'https://real-debrid.com/d/ABFKRBVB5B6YI'
+    endpoint = streaming_url + transcode_endpoint + link
 
     result = make_get(
         endpoint,
