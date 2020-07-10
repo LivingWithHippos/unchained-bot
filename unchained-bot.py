@@ -55,10 +55,10 @@ def help_command(update, context):
     context.bot.send_message(
         chat_id=update.effective_chat.id,
         text="Welcome to the unchained-bot ⛓🔨️💥\n"
-             "Available commands ([parameters] are optional):\n "
+             "Available commands,[parameters] are optional:\n"
              "/help - to see the available commands\n"
              "/login - to start the authentication process\n"
-             "/set_token TOKEN - to set the private api token (check the bot instructions)\n"
+             "/set_token TOKEN - to set the private api token (check the github instructions)\n"
              "/set_credentials_mode MODE - to set the use of the private or public token. MODE = open or private\n"
              "/check URL [password] - to see if a file is available on the hoster (has issues)\n"
              "/unrestrict URL [password] -  to unrestrict a download link\n"
