@@ -177,6 +177,9 @@ def insert_settings(_id=0, _credentials_mode=credentials_mode_open, _user_id=Non
 
 
 def update_credentials_mode(_credentials_mode, _id=0):
+    # if these settings are missing we'll create them
+    if get_settings(_id) is None:
+        insert_settings(_id)
     with sqlite3.connect(db_path) as chain_db:
         cursor = chain_db.cursor()
         update_query = "UPDATE settings SET credentials_mode = ? WHERE id = ?"
