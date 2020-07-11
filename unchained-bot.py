@@ -454,6 +454,9 @@ def main():
                 print("Missing token in file: {}.\nObtain one following instruction at "
                       "https://core.telegram.org/bots#6-botfather".format(bot_config_path))
                 exit(1)
+                # create empty settings if none is available
+            if(credentials.get_settings()) is None:
+                credentials.insert_settings()
 
             updater = Updater(token=my_token, use_context=True)
             dispatcher = updater.dispatcher
