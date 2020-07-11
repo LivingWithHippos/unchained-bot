@@ -51,7 +51,7 @@ You can alternatively copy and paste the file `templates/config.json` and edit i
 
 ####  4. Install the software
 
-This part will assume you have python > 3.4 installed.
+This part will assume you have Python > 3.4 installed.
 
 **IMPORTANT:**
 The bot will respond only as long as the software runs. My suggestion is to use a raspberry pi.
@@ -72,7 +72,7 @@ pipenv shell
 python3 unchained-bot.py
 ```
 
-**Note about pipenv:** minimum python version [is not supported](https://github.com/pypa/pipenv/issues/1050) by `pipenv` so I put `python_version = "3"` in Pipfile. This value means any version 3.x of Python will be considered acceptable, but to run unchained-bot, you need a version >=3.4. It also won't work with any version >=4, but at the moment, this avoids python 2.x, which is the most probable "wrong version."
+**Note about pipenv:** minimum python version [is not supported](https://github.com/pypa/pipenv/issues/1050) by `pipenv` so I put `python_version = "3"` in Pipfile. This value means any version 3.x of Python will be considered acceptable, but to run unchained-bot, you need a version >=3.4. It also won't work with any version >=4, but at the moment, this avoids Python 2.x, which is the most probable "wrong version."
 
 ##### Automatic install with setup.py
 
@@ -80,7 +80,7 @@ Use `pip3` to install from setup.py
 ```shell script
 # install the dependencies (mind the dot at the end)
 pip3 install .
-# wait for eveything to be installed and then start the bot
+# wait for everything to be installed and then start the bot
 python3 unchained-bot.py
 ```
 
@@ -105,7 +105,7 @@ __IMPORTANT:__ Beside the configuration in `config.json`, the first time you run
 
 ####  6. Restricting the bot access
 
-Optionally, it's possible to lock the bot so it only converse with a single user. Use `/get_id` to discover your telegram user id and copy-paste it into your `config.json` file like this, without quotes:
+Optionally, it's possible to lock the bot, so it only converses with a single user. Use `/get_id` to discover your telegram user id and copy-paste it into your `config.json` file like this, without quotes:
 
  ```json
 {
@@ -126,11 +126,11 @@ Parameters between [square brackets] are optional.
 |:---:|:---:|:---:|
 | `/help`  | Shows a message similar to this table  |  |
 | `/login`  | Start the login flow  | Usually needed only once, at the start  |
-| `/set_token`  | Set the private api token  | with /login the app is allowed only on the following scopes: unrestrict, torrents, downloads, user |
+| `/set_token`  | Set the private API token  | with /login the app is allowed only on the following scopes: unrestrict, torrents, downloads, user |
 | `/set_credentials_mode  mode`  | Set if the app should use the private or public token  | mode = `open` or `private` automatically switched with `/set_token` or completing `/login` |
 |  `/get_id` | Returns the user telegram id to be used for locking the bot access.  |   |
 
-### Real-Debrid Api commands
+### Real-Debrid API commands
 
 The plan is to implement all the APIs available [here](https://api.real-debrid.com/).
 
@@ -163,11 +163,11 @@ beautifulsoup4
 lxml
 ```
 
-And use it with:
+And run it with:
 
 `python3 api_parser/api_page_parser.py` 
 
-that will save a file under the `parsed` folder. A `parsed_api.json` should already be available
+which will save a file under the `parsed` folder. A `parsed_api.json` should already be available
 
 #### Code state: ugly
 
