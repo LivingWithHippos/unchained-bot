@@ -54,6 +54,6 @@ db_path = "user_data/unchaindb"
 table_credentials_scheme = "CREATE TABLE credentials(client_id TEXT PRIMARY KEY, client_secret TEXT, device_code TEXT" \
                            ", access_token TEXT, refresh_token TEXT, active NUMERIC DEFAULT 1 )"
 
-table_settings_scheme = "CREATE TABLE settings (id INTEGER PRIMARY KEY, credentials_mode NUMERIC DEFAULT 0, user_id TEXT)"
+table_settings_scheme = "CREATE TABLE settings (id INTEGER PRIMARY KEY, credentials_mode NUMERIC DEFAULT 0, user_id INTEGER)"
 
 table_private_token_scheme = "CREATE TABLE private_token (access_token TEXT PRIMARY KEY, active NUMERIC DEFAULT 1 );"
