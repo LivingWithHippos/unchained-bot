@@ -5,21 +5,6 @@
 
 UnchainedBot is a [Telegram Bot](https://core.telegram.org/bots) that allows you to interface with [Real-Debrid](https://real-debrid.com/). If you want to support me, you can instead click through [this referral link](http://real-debrid.com/?id=78841).
 
-- [unchained-bot](#unchained-bot)
-  * [Setup](#setup)
-      - [1. Create your telegram bot](#1-create-your-telegram-bot)
-      - [2. Get the repository](#2-get-the-repository)
-      - [3. Save your bot's token](#3-save-your-bot-s-token)
-      - [4. Install the software](#4-install-the-software)
-        * [Docker (recommended)](#docker--recommended-)
-        * [Automatic install with pipenv (recommended)](#automatic-install-with-pipenv--recommended-)
-        * [Automatic install with setup.py](#automatic-install-with-setuppy)
-        * [Manual install](#manual-install)
-      - [5. Bot initialization](#5-bot-initialization)
-      - [6. Restricting the bot access](#6-restricting-the-bot-access)
-  * [Available Commands](#available-commands)
-  * [Development](#development)
-    + [API Parser](#api-parser)
 
 - [unchained-bot](#unchained-bot)
   * [Setup](#setup)
