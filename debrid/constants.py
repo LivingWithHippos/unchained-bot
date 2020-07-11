@@ -1,6 +1,8 @@
 credentials_file_name = "user_data/credentials.json"
 refresh_token_file_name = "user_data/refresh_token.json"
 
+bot_config_file_name = "config.json"
+
 base_url = "https://api.real-debrid.com/rest/1.0/"
 auth_url = "https://api.real-debrid.com/oauth/v2"
 grant_type_url = "http://oauth.net/grant_type/device/1.0"

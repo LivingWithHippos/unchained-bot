@@ -16,11 +16,9 @@ from telegram.ext import Updater
 import debrid.credentials as credentials
 # unchained imports
 import debrid.real_debrid_api as real_debrid
-from debrid.constants import credentials_mode_private, credentials_mode_open
+from debrid.constants import credentials_mode_private, credentials_mode_open, bot_config_file_name
 
 sleep_time = 5
-
-bot_config_path = "config.json"
 
 json_markdown_formatting = "```json\n{}\n```"
 
@@ -448,13 +446,13 @@ def missing_parameter(update, context):
 
 def main():
     # load the bot properties
-    if Path(bot_config_path).is_file():
-        with open(bot_config_path, 'r') as f:
+    if Path(bot_config_file_name).is_file():
+        with open(bot_config_file_name, 'r') as f:
             bot_data = json.load(f)
             my_token = bot_data["bot_token"]
             if my_token is None:
                 print("Missing token in file: {}.\nObtain one following instruction at "
-                      "https://core.telegram.org/bots#6-botfather".format(bot_config_path))
+                      "https://core.telegram.org/bots#6-botfather".format(bot_config_file_name))
                 exit(1)
                 # create empty settings if none is available
             if(credentials.get_settings()) is None:
@@ -470,7 +468,7 @@ def main():
                                 level=logging.INFO)
             logger = logging.getLogger(__name__)
     else:
-        print("Missing bot token file: " + bot_config_path)
+        print("Missing bot token file: " + bot_config_file_name)
         exit(1)
 
     # add the commands handlers
