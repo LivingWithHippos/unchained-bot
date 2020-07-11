@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name="unchained-bot-LivingWithHippos",
-    version="0.1",
+    version="0.2",
     description="Telegram Bot for Real-Debrid.",
     url="https://github.com/LivingWithHippos/unchained-bot",
     author="LivingWithHippos",
