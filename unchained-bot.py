@@ -86,6 +86,7 @@ def help_command(update, context):
              "/help - to see the available commands\n"
              "/login - to start the authentication process\n"
              "/set_token TOKEN - to set the private api token (check the github instructions)\n"
+             "/user - report information about the real-debrid user\n"
              "/unrestrict URL [password] -  to unrestrict a download link\n"
              "/magnet URL - to unrestrict a magnet\n"
              "/torrents [number] - returns the last five or [number] torrents\n"
