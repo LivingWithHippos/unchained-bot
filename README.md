@@ -127,7 +127,7 @@ Parameters between [square brackets] are optional.
 | `/help`  | Shows a message similar to this table  |  |
 | `/login`  | Start the login flow  | Usually needed only once, at the start  |
 | `/set_token`  | Set the private API token  | with /login the app is allowed only on the following scopes: unrestrict, torrents, downloads, user |
-| `/set_credentials_mode  mode`  | Set if the app should use the private or public token  | mode = `open` or `private` automatically switched with `/set_token` or completing `/login` |
+| `/set_credentials_mode  mode`  | Set if the app should use the private or public token  | mode = `open` or `private`. automatically switched by `/set_token` or by completing `/login` |
 |  `/get_id` | Returns the user telegram id to be used for locking the bot access.  |   |
 
 ### Real-Debrid API commands
