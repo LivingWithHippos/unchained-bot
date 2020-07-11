@@ -23,7 +23,7 @@ UnchainedBot is a [Telegram Bot](https://core.telegram.org/bots) that allows you
 
 #### 1. Create your telegram bot
 
-Follow the [official instructions](https://core.telegram.org/bots#6-botfather) to chat with the BotFather, choose a name, a username, and get your private token. 
+Follow the [official instructions](https://core.telegram.org/bots#6-botfather) to chat with the BotFather, choose a name, a username, and get your bot's token. 
 
 #### 2. Get the repository
 
