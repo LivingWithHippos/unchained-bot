@@ -69,6 +69,14 @@ def restricted(func):
     return wrapped
 
 
+def get_id_command(update, context):
+    user_id = update.effective_user.id
+    context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text="User id is {}".format(user_id)
+    )
+
+
 def help_command(update, context):
     context.bot.send_message(
         chat_id=update.effective_chat.id,
@@ -465,6 +473,9 @@ def main():
 
     login_handler = CommandHandler('login', login)
     dispatcher.add_handler(login_handler)
+
+    get_id_handler = CommandHandler('get_id', get_id_command)
+    dispatcher.add_handler(get_id_handler)
 
     api_user_handler = CommandHandler('user', user)
     dispatcher.add_handler(api_user_handler)
