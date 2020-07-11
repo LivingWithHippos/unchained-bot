@@ -197,6 +197,27 @@ def update_credentials_mode(_credentials_mode, _id=0):
             return updated
 
 
+def update_allowed_user(_user, _id=0):
+    # if these settings are missing we'll create them
+    if get_settings(_id) is None:
+        insert_settings(_id)
+    with sqlite3.connect(db_path) as chain_db:
+        cursor = chain_db.cursor()
+        update_query = "UPDATE settings SET user_id = ? WHERE id = ?"
+
+        updated = True
+        try:
+            cursor.execute(update_query, (_user, _id))
+            chain_db.commit()
+        except Exception as e:
+            print("Error while updating mode in settings table: ", e)
+            updated = False
+            raise e
+        finally:
+            cursor.close()
+            return updated
+
+
 #   PRIVATE TOKEN   #
 
 def get_private_token():
