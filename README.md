@@ -15,6 +15,7 @@ UnchainedBot is a [Telegram Bot](https://core.telegram.org/bots) that allows you
         * [Automatic install with setup.py](#automatic-install-with-setuppy)
         * [Manual install](#manual-install)
       - [5. Talking with the bot](#5-talking-with-the-bot)
+      - [6. Restricting the bot access](#6-restricting-the-bot-access)
   * [Available Commands](#available-commands)
   * [Development](#development)
     + [API Parser](#api-parser)
@@ -42,7 +43,8 @@ Don't use git:
  
  ```json
 {
-  "bot_token": "Paste here your bot token, check https://core.telegram.org/bots#6-botfather"
+  "bot_token": "Paste here your bot token, check https://core.telegram.org/bots#6-botfather",
+  "allowed_user": "optional, see restricting users section"
 }
 ```
 You can alternatively copy and paste the file `templates/config.json` and edit its content.
@@ -101,6 +103,19 @@ python3 unchained-bot.py
 
 IMPORTANT: If this your first time running it, talk to the bot (search for it using the username you chose in [step 1](#1-create-your-telegram-bot)) and use `/login` to start the login procedure, which will populate credentials.json).
 
+####  6. Restricting the bot access
+
+Optionally, it's possible to lock the bot so it only converse with a single user. Use `/get_id` to discover your telegram user id and copy-paste it into your `config.json` file like this, without quotes:
+
+ ```json
+{
+  "bot_token": "Paste here your bot token, check https://core.telegram.org/bots#6-botfather",
+  "allowed_user": 12345678
+}
+```
+
+Restarting the bot will update the allowed user id with this value.
+
 ## Available Commands
 The plan is to implement all the APIs available [here](https://api.real-debrid.com/).
 
@@ -120,6 +135,7 @@ Parameters between [square brackets] are optional.
 |  `/downloads [number]` | Returns the last five or [number] downloads.  |   |
 |  `/torrents [number]` | Returns the last five or [number] torrents.  |   |
 |  `/magnet magnet_link` | Add `magnet_link` to the torrents.  |   |
+|  `/get_id` | Returns the user telegram id to be used for locking the bot access.  |   |
 
 ## Development
 
