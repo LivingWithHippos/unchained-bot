@@ -8,16 +8,16 @@ UnchainedBot is a [Telegram Bot](https://core.telegram.org/bots) that allows you
 
 - [unchained-bot](#unchained-bot)
   * [Setup](#setup)
-      - [1. Get the repository](#1-get-the-repository)
-      - [2. Create your telegram bot](#2-create-your-telegram-bot)
-      - [3. Save your bot's token](#3-save-your-bot-s-token)
-      - [4. Restricting the bot access (optional)](#4-restricting-the-bot-access--optional-)
-      - [5. Install the software](#5-install-the-software)
-        * [Dockerfile (recommended)](#dockerfile--recommended-)
-        * [Automatic install with pipenv (recommended)](#automatic-install-with-pipenv--recommended-)
-        * [Automatic install with setup.py](#automatic-install-with-setuppy)
-        * [Manual install](#manual-install)
-      - [6. Bot initialization](#6-bot-initialization)
+    + [1. Get the repository](#1-get-the-repository)
+    + [2. Setup your Telegram bot](#2-setup-your-telegram-bot)
+      - [Save your bot's token](#save-your-bot-s-token)
+      - [Restricting the bot access (optional)](#restricting-the-bot-access--optional-)
+    + [3. Install the software](#3-install-the-software)
+      - [Dockerfile (recommended)](#dockerfile--recommended-)
+      - [Automatic install with pipenv (recommended)](#automatic-install-with-pipenv--recommended-)
+      - [Automatic install with setup.py](#automatic-install-with-setuppy)
+      - [Manual install](#manual-install)
+    + [4. Bot initialization](#4-bot-initialization)
   * [Available Commands](#available-commands)
     + [Bot commands](#bot-commands)
     + [Real-Debrid API commands](#real-debrid-api-commands)
@@ -28,7 +28,7 @@ UnchainedBot is a [Telegram Bot](https://core.telegram.org/bots) that allows you
 
 ## Setup
 
-#### 1. Get the repository
+### 1. Get the repository
 
 Use git:
 ```shell script
@@ -39,12 +39,12 @@ Don't use git:
 * download this repository as a zip file ("Clone Or Download" on the right and then "Download ZIP")
 * extract it somewhere
 
-#### 2. Create your telegram bot
+### 2. Setup your Telegram bot
 
 Follow the [official instructions](https://core.telegram.org/bots#6-botfather) to chat with the BotFather, choose a name, a username, and get your bot's token. 
 
 
-####  3. Save your bot's token
+#### Save your bot's token
  Create a file named `config.json` under the root directory of the repository (unchained-bot).
  Copy and paste this, using your token:
  
@@ -55,7 +55,7 @@ Follow the [official instructions](https://core.telegram.org/bots#6-botfather) t
 ```
 You can alternatively copy and paste the file `templates/config.json` and edit its content.
 
-####  4. Restricting the bot access (optional)
+#### Restricting the bot access (optional)
 
 It is possible to lock the bot, so it only converses with a single user. You can run it withouth this option and then use `/get_id` to discover your telegram user id, or use other bots to discover it. 
 
@@ -72,14 +72,14 @@ If you don't want to restrict the access remove the "allowed_user" line in confi
 
 Restarting the bot will update the allowed user id with this value.
 
-####  5. Install the software
+###  3. Install the software
 
 Either use [Docker](https://www.docker.com/) or Python > 3.4. 
 
 **IMPORTANT:**
 The bot will respond only as long as the software runs. My suggestion is to use a raspberry pi.
 
-##### Dockerfile (recommended)
+#### Dockerfile (recommended)
 
 Run 
 
@@ -91,7 +91,7 @@ to build the docker image and then
 
 to execute it.
 
-##### Automatic install with pipenv (recommended)
+#### Automatic install with pipenv (recommended)
 
 If you do not have `pipenv` installed, follow [these instructions.](https://pipenv.readthedocs.io/en/latest/#install-pipenv-today) If you have `brew`,
 just run `brew install pipenv`.
@@ -109,7 +109,7 @@ python3 unchained-bot.py
 
 **Note about pipenv:** minimum python version [is not supported](https://github.com/pypa/pipenv/issues/1050) by `pipenv` so I put `python_version = "3"` in Pipfile. This value means any version 3.x of Python will be considered acceptable, but to run unchained-bot, you need a version >=3.4. It also won't work with any version >=4, but at the moment, this avoids Python 2.x, which is the most probable "wrong version."
 
-##### Automatic install with setup.py
+#### Automatic install with setup.py
 
 Use `pip3` to install from setup.py
 ```shell script
@@ -120,7 +120,7 @@ python3 unchained-bot.py
 ```
 
 
-##### Manual install
+#### Manual install
 
 - Install the following dependencies:
 
@@ -134,7 +134,7 @@ requests
 python3 unchained-bot.py
 ```
 
-####  6. Bot initialization
+###  4. Bot initialization
 
 __IMPORTANT:__ Beside the configuration in `config.json`, the first time you run the bot (search for it using the username you chose in [step 1](#1-create-your-telegram-bot)) you need to use `/login` to start the login procedure or `/set_token YOUR_TOKEN` to configure the access to the real-debrid's API.
 
@@ -169,7 +169,9 @@ The plan is to implement all the APIs available [here](https://api.real-debrid.c
 
 ## Development
 
-UnchainedBot was made using Python 3.7, thanks to the wrapper [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot).
+UnchainedBot was made using Python 3.7, thanks to the wrapper [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot) and with Pycharm as IDE.
+
+You can check the project page to see the roadmap and what's happening.
 
 PRs are welcome.
 
