@@ -51,6 +51,24 @@ def send_action(action):
 send_typing_action = send_action(ChatAction.TYPING)
 
 
+def restricted(func):
+    @wraps(func)
+    def wrapped(update, context, *args, **kwargs):
+        user_id = update.effective_user.id
+        allowed_user = credentials.get_settings()["user_id"]
+        # if the user has not been set everyone can access the bot
+        if allowed_user is None:
+            return func(update, context, *args, **kwargs)
+
+        if user_id != allowed_user:
+            print("Unauthorized access denied for {}.".format(user_id))
+            return
+
+        return func(update, context, *args, **kwargs)
+
+    return wrapped
+
+
 def help_command(update, context):
     context.bot.send_message(
         chat_id=update.effective_chat.id,
@@ -166,6 +184,7 @@ def wait_confirmation(update, context, device_code):
 
 
 # step 1 of the login procedure
+@restricted
 def login(update, context):
     # credentials are working and loaded. Should also refresh token if necessary
     if credentials.check_credentials():
@@ -194,6 +213,7 @@ def login(update, context):
     wait_confirmation(update, context, device_code)
 
 
+@restricted
 def user(update, context):
     user_info = real_debrid.api_user_get()
     # credentials error
@@ -216,6 +236,7 @@ def check_file(update, context):
                              parse_mode=telegram.ParseMode.MARKDOWN_V2)
 
 
+@restricted
 def stream_file(update, context):
     # todo: add this check to others handlers
     if len(context.args) < 1:
@@ -237,6 +258,7 @@ def stream_file(update, context):
                              parse_mode=telegram.ParseMode.MARKDOWN_V2)
 
 
+@restricted
 def unrestrict_file(update, context):
     file_data = None
     if len(context.args) < 2:
@@ -254,6 +276,7 @@ def unrestrict_file(update, context):
 
 # todo: check if it is normal that a list of restricted link is returned
 #  optionally directly pass the links to the unrestrict function
+@restricted
 def unrestrict_folder(update, context):
     folder_data = real_debrid.api_unrestrict_folder(context.args[0])
     # credentials error
@@ -285,6 +308,7 @@ def unrestrict_folder(update, context):
                                  parse_mode=telegram.ParseMode.MARKDOWN_V2)
 
 
+@restricted
 def downloads_list(update, context):
     dlist = None
     if len(context.args) > 0 and context.args[0].isnumeric():
@@ -300,6 +324,7 @@ def downloads_list(update, context):
                              parse_mode=telegram.ParseMode.MARKDOWN_V2)
 
 
+@restricted
 def torrents_list(update, context):
     # return a list of this json:
     # {
@@ -337,6 +362,7 @@ def torrents_list(update, context):
                              parse_mode=telegram.ParseMode.MARKDOWN_V2)
 
 
+@restricted
 def add_magnet(update, context):
     response = real_debrid.api_add_magnet(context.args[0])
     # credentials error
@@ -348,6 +374,7 @@ def add_magnet(update, context):
                              parse_mode=telegram.ParseMode.MARKDOWN_V2)
 
 
+@restricted
 def set_private_token(update, context):
     if len(context.args) < 1:
         context.bot.send_message(chat_id=update.effective_chat.id,
@@ -368,6 +395,7 @@ def set_private_token(update, context):
                                  text="Couldn't add token to db. Check logs.")
 
 
+@restricted
 def set_credentials_mode(update, context):
     if len(context.args) < 1:
         context.bot.send_message(chat_id=update.effective_chat.id,
