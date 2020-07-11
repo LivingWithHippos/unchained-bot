@@ -55,6 +55,7 @@ def restricted(func):
     @wraps(func)
     def wrapped(update, context, *args, **kwargs):
         user_id = update.effective_user.id
+
         allowed_user = credentials.get_settings()["user_id"]
         # if the user has not been set everyone can access the bot
         if allowed_user is None:
@@ -458,6 +459,10 @@ def main():
             if(credentials.get_settings()) is None:
                 credentials.insert_settings()
 
+            if "allowed_user" in bot_data:
+                my_user = bot_data["allowed_user"]
+                if my_user is not None:
+                    credentials.update_allowed_user(my_user)
             updater = Updater(token=my_token, use_context=True)
             dispatcher = updater.dispatcher
             logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
