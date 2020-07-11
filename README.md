@@ -117,9 +117,10 @@ Optionally, it's possible to lock the bot so it only converse with a single user
 Restarting the bot will update the allowed user id with this value.
 
 ## Available Commands
-The plan is to implement all the APIs available [here](https://api.real-debrid.com/).
 
 Parameters between [square brackets] are optional.
+
+### Bot commands
 
 | Command  | Action  | Notes   |
 |:---:|:---:|:---:|
@@ -127,6 +128,14 @@ Parameters between [square brackets] are optional.
 | `/login`  | Start the login flow  | Usually needed only once, at the start  |
 | `/set_token`  | Set the private api token  | with /login the app is allowed only on the following scopes: unrestrict, torrents, downloads, user |
 | `/set_credentials_mode  mode`  | Set if the app should use the private or public token  | mode = `open` or `private` automatically switched with `/set_token` or completing `/login` |
+|  `/get_id` | Returns the user telegram id to be used for locking the bot access.  |   |
+
+### Real-Debrid Api commands
+
+The plan is to implement all the APIs available [here](https://api.real-debrid.com/).
+
+| Command  | Action  | Notes   |
+|:---:|:---:|:---:|
 | `/user`  | Gives information about the user  |   |
 |  `/unrestrict link` [password] | Unrestrict the `link`  |   |
 |  `/stream id` | Return the streaming options for `id`  | `id` is a field shown when a link is streamable. Unrestrict it first.  |
@@ -135,7 +144,6 @@ Parameters between [square brackets] are optional.
 |  `/downloads [number]` | Returns the last five or [number] downloads.  |   |
 |  `/torrents [number]` | Returns the last five or [number] torrents.  |   |
 |  `/magnet magnet_link` | Add `magnet_link` to the torrents.  |   |
-|  `/get_id` | Returns the user telegram id to be used for locking the bot access.  |   |
 
 ## Development
 
