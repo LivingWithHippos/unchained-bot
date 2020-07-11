@@ -8,8 +8,8 @@ UnchainedBot is a [Telegram Bot](https://core.telegram.org/bots) that allows you
 
 - [unchained-bot](#unchained-bot)
   * [Setup](#setup)
-      - [1. Create your telegram bot](#1-create-your-telegram-bot)
-      - [2. Get the repository](#2-get-the-repository)
+      - [1. Get the repository](#1-get-the-repository)
+      - [2. Create your telegram bot](#2-create-your-telegram-bot)
       - [3. Save your bot's token](#3-save-your-bot-s-token)
       - [4. Restricting the bot access (optional)](#4-restricting-the-bot-access--optional-)
       - [5. Install the software](#5-install-the-software)
@@ -28,11 +28,7 @@ UnchainedBot is a [Telegram Bot](https://core.telegram.org/bots) that allows you
 
 ## Setup
 
-#### 1. Create your telegram bot
-
-Follow the [official instructions](https://core.telegram.org/bots#6-botfather) to chat with the BotFather, choose a name, a username, and get your bot's token. 
-
-#### 2. Get the repository
+#### 1. Get the repository
 
 Use git:
 ```shell script
@@ -42,6 +38,11 @@ git clone https://github.com/LivingWithHippos/unchained-bot.git
 Don't use git:
 * download this repository as a zip file ("Clone Or Download" on the right and then "Download ZIP")
 * extract it somewhere
+
+#### 2. Create your telegram bot
+
+Follow the [official instructions](https://core.telegram.org/bots#6-botfather) to chat with the BotFather, choose a name, a username, and get your bot's token. 
+
 
 ####  3. Save your bot's token
  Create a file named `config.json` under the root directory of the repository (unchained-bot).
