@@ -14,7 +14,7 @@ UnchainedBot is a [Telegram Bot](https://core.telegram.org/bots) that allows you
         * [Automatic install with pipenv (recomended)](#automatic-install-with-pipenv--recomended-)
         * [Automatic install with setup.py](#automatic-install-with-setuppy)
         * [Manual install](#manual-install)
-      - [5. Talking with the bot](#5-talking-with-the-bot)
+      - [5. Bot initialization](#5-bot-initialization)
       - [6. Restricting the bot access](#6-restricting-the-bot-access)
   * [Available Commands](#available-commands)
   * [Development](#development)
@@ -99,9 +99,9 @@ requests
 python3 unchained-bot.py
 ```
 
-####  5. Talking with the bot
+####  5. Bot initialization
 
-IMPORTANT: If this your first time running it, talk to the bot (search for it using the username you chose in [step 1](#1-create-your-telegram-bot)) and use `/login` to start the login procedure, which will populate credentials.json).
+__IMPORTANT:__ Beside the configuration in `config.json`, the first time you run the bot (search for it using the username you chose in [step 1](#1-create-your-telegram-bot)) you need to use `/login` to start the login procedure or `/set_token YOUR_TOKEN` to configure the access to the real-debrid's API.
 
 ####  6. Restricting the bot access
 
