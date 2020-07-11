@@ -451,8 +451,8 @@ def main():
             bot_data = json.load(f)
             my_token = bot_data["bot_token"]
             if my_token is None:
-                print("Missing token in file: " + bot_config_path + "./nObtain one following instruction at "
-                                                                    "https://core.telegram.org/bots#6-botfather")
+                print("Missing token in file: {}.\nObtain one following instruction at "
+                      "https://core.telegram.org/bots#6-botfather".format(bot_config_path))
                 exit(1)
 
             updater = Updater(token=my_token, use_context=True)
