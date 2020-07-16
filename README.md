@@ -81,7 +81,7 @@ The bot will respond only as long as the software runs. My suggestion is to use 
 
 #### Dockerfile (recommended)
 
-Run 
+After configuring the `config.json` file, run 
 
 `docker build -t unchained-bot .`
 
