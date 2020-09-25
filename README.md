@@ -5,6 +5,8 @@
 
 UnchainedBot is a [Telegram Bot](https://core.telegram.org/bots) that allows you to interface with [Real-Debrid](https://real-debrid.com/). If you want to support me, you can instead click through [this referral link](http://real-debrid.com/?id=78841).
 
+I also realized and are actively developing [Unchained for Android,](https://github.com/LivingWithHippos/unchained-android) which the same features and more.
+
 
 - [unchained-bot](#unchained-bot)
   * [Setup](#setup)
