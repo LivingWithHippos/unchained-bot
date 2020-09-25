@@ -5,7 +5,7 @@
 
 UnchainedBot is a [Telegram Bot](https://core.telegram.org/bots) that allows you to interface with [Real-Debrid](https://real-debrid.com/). If you want to support me, you can instead click through [this referral link](http://real-debrid.com/?id=78841).
 
-I also realized and are actively developing [Unchained for Android,](https://github.com/LivingWithHippos/unchained-android) which the same features and more.
+I also realized and am actively developing [Unchained for Android](https://github.com/LivingWithHippos/unchained-android), which the same features and more.
 
 
 - [unchained-bot](#unchained-bot)
@@ -59,7 +59,7 @@ You can alternatively copy and paste the file `templates/config.json` and edit i
 
 #### Restricting the bot access (optional)
 
-It is possible to lock the bot, so it only converses with a single user. You can run it withouth this option and then use `/get_id` to discover your telegram user id, or use other bots to discover it. 
+It is possible to lock the bot, so it only converses with a single user. You can run it without this option and then use `/get_id` to discover your telegram user id or use other bots to find it. 
 
 Copy-paste it into your `config.json` file like this, without quotes:
 
@@ -70,7 +70,7 @@ Copy-paste it into your `config.json` file like this, without quotes:
 }
 ```
 
-If you don't want to restrict the access remove the "allowed_user" line in config.json
+If you don't want to restrict the access, remove the "allowed_user" line in config.json
 
 Restarting the bot will update the allowed user id with this value.
 
@@ -113,11 +113,11 @@ python3 unchained-bot.py
 
 #### Automatic install with setup.py
 
-Use `pip3` to install from setup.py
+Use `pip3` to install unchained-bot from setup.py
 ```shell script
 # install the dependencies (mind the dot at the end)
 pip3 install .
-# wait for everything to be installed and then start the bot
+# wait for everything to install and then start the bot
 python3 unchained-bot.py
 ```
 
@@ -199,7 +199,7 @@ which will save a file under the `parsed` folder. A `parsed_api.json` should alr
 
 <a href="https://ibb.co/s21dMZq"><img src="https://i.ibb.co/f2NzPsH/danger.png" width=150 alt="danger" border="0"></a>
 
-I coded the core of this software in a single day, and python is not my strong suit. But for now, "it just works."
+I coded the core of this software in a single day, and Python is not my strong suit. But for now, "it just works."
 
 ### Thanks, Mr. Unchained
 <a href="https://imgbb.com/"><img src="https://i.ibb.co/grzjQsT/Oliva.jpg" width=300 alt="Mr. Unchained" border="0"></a>
