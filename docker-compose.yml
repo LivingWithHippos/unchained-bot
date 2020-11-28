@@ -1,0 +1,12 @@
+version: "3.5"
+
+services:
+  db:
+    build: .
+    container_name: unchained_bot
+    environment:
+      # needed to start the bot
+      - "BOT_TOKEN="
+      # optional, restrict the bot to a single user
+      - "ALLOWED_USER="
+    restart: unless-stopped
