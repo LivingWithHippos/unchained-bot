@@ -1,3 +1,7 @@
+# ARCHIVED REPO
+
+This repository has been archived in favor of [Unchained Bot Kotlin](https://github.com/LivingWithHippos/unchained-bot-kotlin). This new repository shares a lot of code with [Unchained for Android](https://github.com/LivingWithHippos/unchained-android) and is written in Kotlin, letting me have better code and easier updates.
+
 # unchained-bot
 ![Python Version](https://img.shields.io/badge/python-3.5+-brightgreen)
 [![Python-Wrapper Version](https://img.shields.io/badge/python--telegram--bot-12.8-blue)](https://github.com/python-telegram-bot/python-telegram-bot)
